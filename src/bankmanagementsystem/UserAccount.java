@@ -1,15 +1,12 @@
 package bankmanagementsystem;
 
-public class UserAccount extends Bank{
+public class UserAccount{
 	
 	public int accountNumber;
 	public double accountBalance;
 	
 	UserAccount(){}
 
-	UserAccount(String atmNum, String c, String adr, String nm) {
-		super(atmNum, c, adr, nm);
-	}
 	
 	UserAccount(int acNumber, double acBal){
 		this.accountNumber = acNumber;

@@ -1,15 +1,12 @@
 package bankmanagementsystem;
 
-public class Atm extends Bank {
+public class Atm{
 	
 	public String atmLocation;
 
-	Atm(String atmNum, String c, String adr, String nm) {
-		super(atmNum, c, adr, nm);
-	}
 	
-	Atm(){
-		this.atmLocation = super.address;
+	Atm(String adr){
+		this.atmLocation = adr;
 	}
 	
 	public void deposit() {

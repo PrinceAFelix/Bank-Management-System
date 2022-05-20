@@ -1,5 +1,7 @@
 package bankmanagementsystem;
 
+import java.util.ArrayList;
+
 public class Bank {
 
 	public String atmNumber;
@@ -16,7 +18,12 @@ public class Bank {
 		this.name = nm;
 	}
 	
+	private ArrayList<User> users = new ArrayList<User>();
+	
+	
+	
 	protected void getAccount() {
+		System.out.println("Enter the details of the user");
 		
 	}
 	
