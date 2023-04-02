@@ -15,6 +15,7 @@ public class User{
 	public String userAddress;
 	public long user_CardNumber;
 	public ArrayList<UserAccount> userAccount;
+	public ArrayList<AtmTransaction> transactions;
 	
 	private static long idCounter = 0;
 	
@@ -23,9 +24,8 @@ public class User{
 	User(int id, String fname, String e, String phone, String pwd, String usrn, String adr, long cnum){
 		userAccount = new ArrayList<UserAccount>();
 		UserAccount temp = new Chequing(0002, 200, "Chequing");
-
 		this.userAccount.add(temp);
-
+		transactions = new ArrayList<AtmTransaction>();
 		this.id = id;
 		this.user_FullName = fname;
 		this.password = pwd;

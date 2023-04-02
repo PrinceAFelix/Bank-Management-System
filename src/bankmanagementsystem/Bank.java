@@ -1,5 +1,6 @@
 package bankmanagementsystem;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.InputMismatchException;
@@ -14,12 +15,17 @@ public class Bank {
 	public String name;
 	
 	private ArrayList<User> users = new ArrayList<User>(20);
-	private ArrayList<AtmTransaction> transactions = new ArrayList<AtmTransaction>();
+	
 	
 	Atm atm;
 
 	
 	UserAccount useraccount;
+	
+	String pattern = "MM-dd-yyyy";
+	SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
+
 	
 	
 	
@@ -183,11 +189,11 @@ public class Bank {
 	}
 	
 	private void manageAccount(Scanner sc, User activeUser) {
+		AtmTransaction atmtransaction = new AtmTransaction();
 		Random random = new Random();
 		atm = new Atm(this.atmNumber);
-		Date d = new Date();
-		AtmTransaction temp = null;
-		
+		AtmTransaction transactionTemp = null;
+		String date = simpleDateFormat.format(new Date());
 		float value = 0;
 		UserAccount tempAccount = null;
 		
@@ -203,7 +209,7 @@ public class Bank {
 		do {
 			
 			System.out.print("Please select one of the following:\n");
-			System.out.print("1: Deposit\n2: Withdraw\n3: Check balance\n4: Open another account\n5: Delete an account\n6: Sign out\n\n> ");
+			System.out.print("1: Deposit\n2: Withdraw\n3: Check balance\n4: Open another account\n5: Delete an account\n6: View transaction\n7: Sign out\n\n> ");
 			int userChoice = sc.nextInt();
 			
 			switch(userChoice) {
@@ -234,7 +240,8 @@ public class Bank {
 				System.out.print("Enter amount to deposit: ");
 				value = sc.nextFloat();
 				atm.deposit(activeUser, value, isChequing);
-				temp = new AtmTransaction(random.nextInt(10000), d, "deposit", Float.toString(value), activeUser.userAccount.get(isChequing).accountBalance);
+				transactionTemp = new AtmTransaction(random.nextInt(10000), date, "deposit", value, activeUser.userAccount.get(isChequing).accountBalance);
+				activeUser.transactions.add(transactionTemp);
 				break;
 			case 2:
 				do {
@@ -263,6 +270,8 @@ public class Bank {
 				System.out.print("Enter amount to withdraw: ");
 				value = sc.nextFloat();
 				atm.withdraw(activeUser, value, isChequing);;
+				transactionTemp = new AtmTransaction(random.nextInt(10000), date, "withdraw", value, activeUser.userAccount.get(isChequing).accountBalance);
+				activeUser.transactions.add(transactionTemp);
 				break;
 			case 3:
 				do {
@@ -341,6 +350,9 @@ public class Bank {
 				
 				break;
 			case 6:
+				atmtransaction.transactions(activeUser.transactions);
+				break;
+			case 7:
 				return;
 			default:
 				System.out.println("\nInvalid Choice.. Please Try Again\n");
@@ -348,7 +360,9 @@ public class Bank {
 				
 			}
 			
-			transactions.add(temp);
+			
+	
+			
 			
 			
 		}while(true);
@@ -358,6 +372,13 @@ public class Bank {
 	private int getUser(int i) {
 		return i;
 	}
+	
+	private void displayTransactions() {
+		
+		System.out.println();
+	}
+	
+	
 	
 	
 
