@@ -2,8 +2,9 @@ package bankmanagementsystem;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class User implements Comparable<User>{
+public class User{
 
 	protected int id;
 	public String user_FullName;
@@ -12,11 +13,19 @@ public class User implements Comparable<User>{
 	public String password;
 	public String username;
 	public String userAddress;
-	public String user_CardNumber;
+	public long user_CardNumber;
+	public ArrayList<UserAccount> userAccount;
 	
 	private static long idCounter = 0;
 	
-	User(int id, String fname, String e, String phone, String pwd, String usrn, String adr, String cnum){
+	User() {}
+	
+	User(int id, String fname, String e, String phone, String pwd, String usrn, String adr, long cnum){
+		userAccount = new ArrayList<UserAccount>();
+		UserAccount temp = new Chequing(0002, 200, "Chequing");
+
+		this.userAccount.add(temp);
+
 		this.id = id;
 		this.user_FullName = fname;
 		this.password = pwd;
@@ -26,32 +35,53 @@ public class User implements Comparable<User>{
 	} 
 	
 
-	public void addCustomer(Scanner sc) {
+	public boolean addCustomer(Scanner sc, int an, float ib) {
 		
-		id = (int)idCounter++;
-		System.out.print("Enter user First Name: ");
-		String fname = sc.next();
-		System.out.print("Enter user Last Name: ");
-		String lname = sc.next();
-		user_FullName = getFullName(fname, lname);
+	    /* return a random long of 16 length */
+	    long smallest = 1000_0000_0000_0000L;
+	    long biggest =  9999_9999_9999_9999L;
 		
-		System.out.print("Enter user email: ");
-		email = sc.next();
+		try {
+			
+			
+			id = (int)idCounter++;
+			System.out.print("Enter user First Name: ");
+			String fname = sc.next();
+			System.out.print("Enter user Last Name: ");
+			String lname = sc.next();
+			user_FullName = getFullName(fname, lname);
+			
+			System.out.print("Enter user email: ");
+			email = sc.next();
+			
+			System.out.print("Enter user phone number: ");
+			userPhone = sc.next();
+			
+			System.out.print("Enter user password: ");
+			password = sc.next();
+			
+			System.out.print("Enter user desired username: ");
+			username = sc.next();
+			
+			System.out.print("Enter user address: ");
+			userAddress = sc.next();
+			
+			
+			user_CardNumber = ThreadLocalRandom.current().nextLong(smallest, biggest+1);
+			
+			Chequing temp = new Chequing(an, ib, "Chequing");
+			
+			this.userAccount.add(temp);
+			
+			
+			
+			System.out.println("\nYour Card Number is: " + user_CardNumber +
+					"\nPlease save this number for you'll be using this to log in along with your password");
+		}catch(Exception e) {
+			return false;
+		}
 		
-		System.out.print("Enter user phone number: ");
-		userPhone = sc.next();
-		
-		System.out.print("Enter user password: ");
-		password = sc.next();
-		
-		System.out.print("Enter user desired username: ");
-		username = sc.next();
-		
-		System.out.print("Enter user address: ");
-		userAddress = sc.next();
-		
-		System.out.print("Enter user card number: ");
-		user_CardNumber = sc.next();
+		return true;
 		
 	}
 	
@@ -83,25 +113,10 @@ public class User implements Comparable<User>{
 		
 	}
 	
-	public void verifyCustomer() {
-		
-	}
 	
-	public String getFullName(String fname, String lname) {
+	private String getFullName(String fname, String lname) {
 		return fname + " " + lname;
 	}
 
-
-	@Override
-	public int compareTo(User u) {
-		if(this.id > u.id)
-			return 1;
-		else if(this.id < u.id)
-			return -1;
-		else return 0;
-	}
-	
-	
-	
 	
 }

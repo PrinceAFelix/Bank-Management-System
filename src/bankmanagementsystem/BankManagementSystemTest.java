@@ -1,21 +1,48 @@
 package bankmanagementsystem;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class BankManagementSystemTest {
 
 	public static void main(String[] args) {
 		
+		//String atmNum, String c, String adr, String nm
+		Bank b = new Bank("0001", "01", "123 Street", "Bank of PA");
+		
+		Scanner sc = new Scanner(System.in);
+		int userChoice = 0;
+		
+		boolean isSignedIn = false;
+		do {
+			//Sign in or create an account
+			System.out.print("Welcome to Banko De Oro\n\nPlease select one of the following:\n");
+			System.out.print("\nSign in as\n1: Customer\n2: Admin\n3: exit\n\n> ");
+			userChoice = sc.nextInt();
+			
+			switch(userChoice) {
+			case 1:
+				b.signIn(sc);
+				break;
+			case 2:
+				b.getAccount(sc);
+				break;
+			case 3:
+				return;
+			default:
+				System.out.println("\nInvalid Choice.. Please Try Again\n");
+				break;
+				
+			}
+			
+			//While user is log in
+			do {
+				
+			}while(isSignedIn);
+			
+			
+		}while(true);
 		
 		
 	}
 }
-
-//protected int id;
-//public String user_FullName;
-//public String email;
-//public String userPhone;
-//public String password;
-//public String username;
-//public String userAddress;
-//public String user_CardNumber;

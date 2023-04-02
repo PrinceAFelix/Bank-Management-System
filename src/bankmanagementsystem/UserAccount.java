@@ -1,33 +1,45 @@
 package bankmanagementsystem;
 
-public class UserAccount{
+import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
+
+public abstract class UserAccount{
 	
-	public int accountNumber;
-	public double accountBalance;
+	
+	public long accountNumber;
+	public float accountBalance;
+	public String accountTitle;
+	
 	
 	UserAccount(){}
 
 	
-	UserAccount(int acNumber, double acBal){
+	UserAccount(long acNumber, float acBal, String at){
 		this.accountNumber = acNumber;
 		this.accountBalance = acBal;
+		this.accountTitle = at;
 	}
+
+	
+	public abstract boolean addAccount(Scanner sc, User user);
 	
 	
-	public void updateAccount() {
-		
-	}
+//	public abstract boolean updateAccount(Scanner sc, User user);
 	
-	public void addAccount() {
-		
-	}
+//	public abstract boolean edit_account(Scanner sc, User user);
+
 	
-	public void deleteAccount() {
-		
-	}
-	
-	public void searchAccount() {
-		
+	public abstract boolean deleteAccount(Scanner sc, User user);
+
+
+
+	protected long accountNumberGenerator() {
+		 long smallest = 1000_0000_0000_0000L;
+		 long biggest =  9999_9999_9999_9999L;
+		 
+		 return ThreadLocalRandom.current().nextLong(smallest, biggest+1);
 	}
 	
 	
