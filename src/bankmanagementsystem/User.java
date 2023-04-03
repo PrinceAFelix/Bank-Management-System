@@ -1,6 +1,7 @@
 package bankmanagementsystem;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -116,7 +117,137 @@ public class User{
 		return false;
 	}
 	
-	public boolean editCustomer(ArrayList<User> user, int userId) {
+//	public String user_FullName;
+//	public String email;
+//	public String userPhone;
+//	public String password;
+//	public String username;
+//	public String userAddress;
+//	public long user_CardNumber;
+	
+	public boolean editCustomer(ArrayList<User> user, String userId,Scanner sc) {
+		ArrayList<User> updatedUser = new ArrayList<User>();
+		try {
+			for(int i = 0; i < user.size(); i++) {
+				if((user.get(i).id).equals(userId)) {
+					
+					String input = "";
+					String confirmInput = "";
+					
+					do {
+						
+						
+						try {
+							
+							System.out.print("Please select what you'd like to update\n\n"
+									+ "1: Email\n"
+									+ "2: Phone Number\n"
+									+ "3: Password\n"
+									+ "4: Username\n"
+									+ "5: Address\n"
+									+ "6: Exit\n"
+									+ "> ");
+							
+							int userInput = sc.nextInt();
+							
+							switch(userInput) {
+							case 1:
+								System.out.print("Enter the new email: ");
+								input = sc.next();
+								System.out.print("Confirm the new email: ");
+								confirmInput = sc.next();
+								if(confirmInput.equals(input)) {
+									user.get(i).email = confirmInput;
+								}else {
+									System.out.println("\n\nEmail you entered didn't match\n");
+								}
+								
+								break;
+							case 2:
+								System.out.print("Enter the new phone number: ");
+								input = sc.next();
+								System.out.print("Confirm the new phone number: ");
+								confirmInput = sc.next();
+								if(confirmInput.equals(input)) {
+									user.get(i).userPhone = confirmInput;
+								}else {
+									System.out.println("\n\nPhone Number you entered didn't match\n");
+								}
+								
+								break;
+							case 3:
+								System.out.print("Enter the new password: ");
+								input = sc.next();
+								System.out.print("Confirm the new password: ");
+								confirmInput = sc.next();
+								if(confirmInput.equals(input)) {
+									user.get(i).password = confirmInput;
+								}else {
+									System.out.println("\n\nPassword you entered didn't match\n");
+								}
+								
+								break;
+							case 4:
+								System.out.print("Enter the new username: ");
+								input = sc.next();
+								System.out.print("Confirm the new username: ");
+								confirmInput = sc.next();
+								if(confirmInput.equals(input)) {
+									user.get(i).username = confirmInput;
+								}else {
+									System.out.println("\n\nUsername you entered didn't match\n");
+								}
+								
+								break;
+							case 5:
+								System.out.print("Enter the new address: ");
+								sc.nextLine();
+								input = sc.nextLine();
+								System.out.print("Confirm the new address: ");
+								confirmInput = sc.nextLine();
+								if(confirmInput.equals(input)) {
+									user.get(i).userAddress = confirmInput;
+								}else {
+									System.out.println("\n\nAddress you entered didn't match\n");
+								}
+								
+								break;
+							case 6:
+								return true;
+							default:
+								break;
+							
+							}
+							if(!updatedUser.contains(user.get(i))) {
+								updatedUser.add(user.get(i));
+							}
+							
+							
+							
+							displayUsers(updatedUser);
+							
+							 
+						}catch(InputMismatchException ime) {
+							
+						}catch(Exception e) {
+							
+						}
+						
+						
+						
+					}while(true);
+					
+					
+					
+				}
+			}
+			
+			
+		}catch(Exception e) {
+			return false;
+		}
+		
+		System.out.printf("\nNo customer match with ID number: %s\n", userId);
 		
 		return false;
 	}

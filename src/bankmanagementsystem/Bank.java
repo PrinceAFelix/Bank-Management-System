@@ -87,7 +87,7 @@ public class Bank {
 			}
 			
 			System.out.print("\nPlease select one of the following:\n");
-			System.out.print("1: Register a customer\n2: Unregister a customer\n3: Display customers\n4: Search customer\n5: Exit \n\n> ");
+			System.out.print("1: Register a customer\n2: Unregister a customer\n3: Display customers\n4: Search customer\n5: Modify customer\n6: Exit\n\n> ");
 			
 			int userChoice = sc.nextInt();
 			
@@ -126,7 +126,6 @@ public class Bank {
 			case 4:
 				try {
 					
-					if(user.displayUsers(users) == false) break;
 					
 					System.out.print("Enter the customer's ID: ");
 					String userInput = sc.next();
@@ -140,6 +139,20 @@ public class Bank {
 				}
 				break;
 			case 5:
+				try {
+					
+					System.out.print("Enter the customer's ID: ");
+					String userInput = sc.next();
+					
+					user.editCustomer(users, userInput, sc);
+					 
+				}catch(InputMismatchException ime) {
+					
+				}catch(Exception e) {
+					
+				}
+				break;
+			case 6:
 				isAdmin = !isAdmin;
 				return;
 			default:
