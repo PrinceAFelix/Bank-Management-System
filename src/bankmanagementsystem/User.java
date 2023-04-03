@@ -122,7 +122,25 @@ public class User{
 	}
 	
 	
-	public void searchCustomer() {
+	public boolean searchCustomer(ArrayList<User> user, String userId) {
+		ArrayList<User> result = new ArrayList<User>();
+		try {
+			for(int i = 0; i < user.size(); i++) {
+				if((user.get(i).id).equals(userId)) {
+					result.add(user.get(i));
+					displayUsers(result);
+					return true;
+				}
+			}
+			
+			
+		}catch(Exception e) {
+			return false;
+		}
+		
+		System.out.printf("\nNo customer match with ID number: %s\n", userId);
+		
+		return false;
 		
 	}
 	
