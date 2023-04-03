@@ -6,7 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class User{
 
-	protected int id;
+	protected String id;
 	public String user_FullName;
 	public String email;
 	public String userPhone;
@@ -19,19 +19,26 @@ public class User{
 	
 	private static long idCounter = 0;
 	
+	int index;
+	
 	User() {}
 	
-	User(int id, String fname, String e, String phone, String pwd, String usrn, String adr, long cnum){
+	User(String id, String fname, String e, String phone, String pwd, String usrn, String adr, long cnum){
 		userAccount = new ArrayList<UserAccount>();
 		UserAccount temp = new Chequing(0002, 200, "Chequing");
 		this.userAccount.add(temp);
 		transactions = new ArrayList<AtmTransaction>();
+		
+		
 		this.id = id;
 		this.user_FullName = fname;
+		this.email = e;
+		this.userPhone = phone;
 		this.password = pwd;
 		this.username = usrn;
 		this.userAddress = adr;
 		this.user_CardNumber = cnum;
+
 	} 
 	
 
@@ -44,7 +51,8 @@ public class User{
 		try {
 			
 			
-			id = (int)idCounter++;
+			id = String.format("%04d", idCounter++);
+			
 			System.out.print("Enter user First Name: ");
 			String fname = sc.next();
 			System.out.print("Enter user Last Name: ");
@@ -64,7 +72,8 @@ public class User{
 			username = sc.next();
 			
 			System.out.print("Enter user address: ");
-			userAddress = sc.next();
+			sc.nextLine();
+			userAddress = sc.nextLine();
 			
 			
 			user_CardNumber = ThreadLocalRandom.current().nextLong(smallest, biggest+1);
@@ -86,21 +95,25 @@ public class User{
 	}
 	
 	
-	public boolean deleteCustomer(ArrayList<User> user, int userId) {
+	public boolean deleteCustomer(ArrayList<User> user, String userId) {
 		
-		//Learn Binary Search to search specific user
+		//For faster search -> Learn Binary Search to search specific user
 		
 		try {
-			for(int i = 0; i < user.size() - 1; i++) {
-				if(user.get(i).id == userId)
+			for(int i = 0; i < user.size(); i++) {
+				if((user.get(i).id).equals(userId)) {
 					user.remove(i);
+					System.out.printf("\nSuccessfully dereister a customer with ID number: %s\n", userId);
+					return true;
+				}
 			}
 		}catch(Exception e) {
 			return false;
 		}
 		
+		System.out.printf("\nNo customer match with ID number: %s\n", userId);
 		
-		return true;
+		return false;
 	}
 	
 	public boolean editCustomer(ArrayList<User> user, int userId) {
@@ -116,6 +129,32 @@ public class User{
 	
 	private String getFullName(String fname, String lname) {
 		return fname + " " + lname;
+	}
+
+	
+	public boolean displayUsers(ArrayList<User> list) {
+		
+		if(list.isEmpty()) {
+			System.out.println("\nNo customers yet\n");
+			return false;
+		}
+		index = 1;
+
+
+		System.out.println ("\n\n\t\t\t\t\tCustomers");
+	    System.out.println("<***************************************************************************************>");
+	    
+	    System.out.printf ("%9s%7s%15s%17s%17s%17s", "No.", "ID", "Name","email", "Phone Number", "Address");
+	    
+	    list.forEach((u) -> {
+	    	System.out.printf ("\n%8d%8s%15s%17s%17s%17s", index, u.id, u.user_FullName, u.email, u.userPhone, u.userAddress);
+	    	index++;
+	    });
+
+	    System.out.println("\n<***************************************************************************************>\n\n");
+	
+	    return true;
+	
 	}
 
 	

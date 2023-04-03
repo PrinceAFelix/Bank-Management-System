@@ -16,6 +16,7 @@ public class Bank {
 	
 	private ArrayList<User> users = new ArrayList<User>(20);
 	
+	User user = new User();
 	
 	Atm atm;
 
@@ -29,9 +30,9 @@ public class Bank {
 	
 	
 	
-	User initialUser = new User(0001, "John Doe", "doe@test.com", "123456789", "12345", "doe", "doe St", 987625481918L);
+	User initialUser = new User("0001", "John Doe", "doe@test.com", "123456789", "12345", "doe", "doe St", 987625481918L);
 	
-	Scanner scan = new Scanner(System.in);
+
 	
 	
 	Bank(){
@@ -54,7 +55,7 @@ public class Bank {
 		
 		String admin = "admin";
 		String password = "admin";
-		
+		Random random = new Random();
 		boolean isAdmin = false;
 		
 		do {
@@ -86,7 +87,7 @@ public class Bank {
 			}
 			
 			System.out.print("\nPlease select one of the following:\n");
-			System.out.print("1:Register customer\n2: Exit\n\n> ");
+			System.out.print("1: Register a customer\n2: Unregister a customer\n3: Display customers\n4: Exit \n\n> ");
 			
 			int userChoice = sc.nextInt();
 			
@@ -95,7 +96,7 @@ public class Bank {
 			case 1:
 				try {
 					User temp = new User();
-					temp.addCustomer(scan, 0002, 500);
+					temp.addCustomer(sc, random.nextInt(10000), 500);
 					users.add(temp);
 				}catch(InputMismatchException ime) {
 					
@@ -104,6 +105,25 @@ public class Bank {
 				}
 				break;
 			case 2:
+				try {
+					
+					if(user.displayUsers(users) == false) break;
+					
+					System.out.print("Enter the customer's ID: ");
+					String userInput = sc.next();
+					
+					user.deleteCustomer(users, userInput);
+					 
+				}catch(InputMismatchException ime) {
+					
+				}catch(Exception e) {
+					
+				}
+				break;
+			case 3:
+				user.displayUsers(users);
+				break;
+			case 4:
 				isAdmin = !isAdmin;
 				return;
 			default:
@@ -111,29 +131,6 @@ public class Bank {
 				break;
 				
 			}
-			
-//			System.out.print("Please select one of the following:\n");
-//			System.out.print("1: Add accountn\n2: Delete account\n3: Edit Account\n4: Search account\n5: Exit\n\n>");
-//			int userChoice = sc.nextInt();
-//			
-//			switch(userChoice) {
-//			case 1:
-//				useraccount.addAccount(users, sc);
-//				break;
-//			case 2:
-//				
-//				break;
-//			case 3:
-//				break;
-//			case 4:
-//				return;
-//			case 5:
-//				return;
-//			default:
-//				System.out.println("\nInvalid Choice.. Please Try Again\n");
-//				break;
-//				
-//			}
 			
 			
 		}while(true);
@@ -209,7 +206,7 @@ public class Bank {
 		do {
 			
 			System.out.print("Please select one of the following:\n");
-			System.out.print("1: Deposit\n2: Withdraw\n3: Check balance\n4: Open another account\n5: Delete an account\n6: View transaction\n7: Sign out\n\n> ");
+			System.out.print("\n1: Deposit\n2: Withdraw\n3: Check balance\n4: Open another account\n5: Delete an account\n6: View transaction\n7: Sign out\n\n> ");
 			int userChoice = sc.nextInt();
 			
 			switch(userChoice) {
@@ -360,11 +357,6 @@ public class Bank {
 				
 			}
 			
-			
-	
-			
-			
-			
 		}while(true);
 	}
 	
@@ -373,14 +365,5 @@ public class Bank {
 		return i;
 	}
 	
-	private void displayTransactions() {
-		
-		System.out.println();
-	}
-	
-	
-	
-	
-
 	
 }
