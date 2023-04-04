@@ -28,6 +28,8 @@ public class Atm{
 	}
 	
 	public boolean validateActiveAccount(User user, int account) {
+		
+		if(account != 0 || account != 1) return false;
 		if(account == 1 && user.getUserAccount().size() < 2) {
 			System.out.println("\nYou Do not have a Savings Account\n");
 			return false;

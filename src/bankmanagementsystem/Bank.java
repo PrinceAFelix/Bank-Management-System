@@ -141,7 +141,7 @@ public class Bank {
 				break;
 			}
 			
-			System.out.print("Please enter your card number: ");
+			System.out.print("\nPlease enter your card number: ");
 			userInput = sc.next();
 			//Validate if card number is present
 			
@@ -158,6 +158,7 @@ public class Bank {
 				//Validate password
 				if(users.get(userIndex).verifyPassword(users.get(userIndex).getPassword(), passwordInput)) {
 					manageAccount(sc, users.get(userIndex));
+					return;
 				}
 			}else {
 				System.out.println("Invalid card number");
@@ -179,105 +180,138 @@ public class Bank {
 		
 		int isChequing = 0;
 		
+
+		
 		try {
 			
 			do {
 				
-				System.out.print("Please select one of the following:\n");
+				System.out.print("\nPlease select one of the following:\n");
 				System.out.print("\n1: Deposit\n2: Withdraw\n3: Check balance\n4: Open another account\n5: Delete an account\n6: View transaction\n7: View Accounts\n8: Sign out\n\n> ");
 				int userChoice = sc.nextInt();
 				
 				switch(userChoice) {
 				case 1:
+					
+					try {
+						do {
+							System.out.print("\nPlease select one of the following:\n");
+							System.out.print("1: Chequing\n2: Savings\n3: Cancel\n\n> ");
+							userChoice = sc.nextInt();
+							
+							if(userChoice == 3) break;
+							
+							switch(userChoice) {
+							case 1:
+								isChequing = 0;
+								break;
+							case 2:
+								isChequing = 1;
+								break;
+							default:
+								break;
+							}
+							
+							if(atm.validateActiveAccount(activeUser, isChequing)) {
+								System.out.print("Enter amount to deposit: ");
+								value = sc.nextFloat();
+								atm.deposit(activeUser, value, isChequing);
+								transactionTemp = new AtmTransaction(random.nextInt(10000), userChoice == 1 ? "Chequing" : "Savings" , date, "deposit", value, activeUser.getUserAccount().get(isChequing).accountBalance);
+								activeUser.getTransactions().add(transactionTemp);
+							}
 
-					do {
-						System.out.print("Please select one of the following:\n");
-						System.out.print("1: Chequing\n2: Savings\n3: Cancel\n\n> ");
-						userChoice = sc.nextInt();
-						
-						switch(userChoice) {
-						case 1:
-							isChequing = 0;
 							break;
-						case 2:
-							isChequing = 1;
-							break;
-						case 3:
-							return;
-						default:
-							break;
-						}
+							
+						} while(true);
 						
-						break;
-						
-					} while(true);
-					if(!atm.validateActiveAccount(activeUser, isChequing)) break;
-					System.out.print("Enter amount to deposit: ");
-					value = sc.nextFloat();
-					atm.deposit(activeUser, value, isChequing);
-					transactionTemp = new AtmTransaction(random.nextInt(10000), userChoice == 1 ? "Chequing" : "Savings" , date, "deposit", value, activeUser.getUserAccount().get(isChequing).accountBalance);
-					activeUser.getTransactions().add(transactionTemp);
+					}catch(InputMismatchException ime) {
+						System.err.flush();
+						System.out.println("\nInput Mismatch Exception occured while selecting choices\n");
+						System.err.flush();
+						sc.next();
+					}
+
 					break;
 				case 2:
-					do {
-						System.out.print("Please select one of the following:\n");
-						System.out.print("1: Chequing\n2: Savings\n3: Cancel\n\n> ");
-						userChoice = sc.nextInt();
-						
-						switch(userChoice) {
-						case 1:
-							isChequing = 0;
+					try {
+						do {
+							System.out.print("\nPlease select one of the following:\n");
+							System.out.print("1: Chequing\n2: Savings\n3: Cancel\n\n> ");
+							userChoice = sc.nextInt();
+							
+							if(userChoice == 3) break;
+							
+							switch(userChoice) {
+							case 1:
+								isChequing = 0;
+								break;
+							case 2:
+								isChequing = 1;
+								break;
+							default:
+								break;
+							}
+							if(atm.validateActiveAccount(activeUser, isChequing)) {
+								System.out.print("Enter amount to withdraw: ");
+								value = sc.nextFloat();
+								atm.withdraw(activeUser, value, isChequing);;
+								transactionTemp = new AtmTransaction(random.nextInt(10000), userChoice == 1 ? "Chequing" : "Savings", date, "withdraw", value, activeUser.getUserAccount().get(isChequing).accountBalance);
+								activeUser.getTransactions().add(transactionTemp);
+							}
+
 							break;
-						case 2:
-							isChequing = 1;
-							break;
-						case 3:
-							return;
-						default:
-							break;
-						}
-						
-						break;
-						
-					} while(true);
+							
+						} while(true);
+					}catch(InputMismatchException ime) {
+						System.err.flush();
+						System.out.println("\nInput Mismatch Exception occured while selecting choices\n");
+						System.err.flush();
+						sc.next();
+					}
 					
-					if(!atm.validateActiveAccount(activeUser, isChequing)) break;
-					System.out.print("Enter amount to withdraw: ");
-					value = sc.nextFloat();
-					atm.withdraw(activeUser, value, isChequing);;
-					transactionTemp = new AtmTransaction(random.nextInt(10000), userChoice == 1 ? "Chequing" : "Savings", date, "withdraw", value, activeUser.getUserAccount().get(isChequing).accountBalance);
-					activeUser.getTransactions().add(transactionTemp);
+					
+					
 					break;
 				case 3:
-					do {
-						System.out.print("Please select one of the following:\n");
-						System.out.print("1: Chequing\n2: Savings\n3: Cancel\n\n> ");
-						userChoice = sc.nextInt();
+					try {
+						do {
+							System.out.print("\nPlease select one of the following:\n");
+							System.out.print("1: Chequing\n2: Savings\n3: Cancel\n\n> ");
+							userChoice = sc.nextInt();
+							
+							if(userChoice == 3) break;
+							
+							switch(userChoice) {
+							case 1:
+								isChequing = 0;
+								break;
+							case 2:
+								isChequing = 1;
+								break;
+							default:
+								break;
+							}
+							
+							break;
+							
+						} while(true);
 						
-						switch(userChoice) {
-						case 1:
-							isChequing = 0;
-							break;
-						case 2:
-							isChequing = 1;
-							break;
-						case 3:
-							return;
-						default:
-							break;
-						}
+						if(atm.validateActiveAccount(activeUser, isChequing)) atm.checkBalance(activeUser, isChequing);
 						
 						break;
-						
-					} while(true);
-					if(!atm.validateActiveAccount(activeUser, isChequing)) break;
-					atm.checkBalance(activeUser, isChequing);
-					break;
+					}catch(InputMismatchException ime) {
+						System.err.flush();
+						System.out.println("\nInput Mismatch Exception occured while selecting choices\n");
+						System.err.flush();
+						sc.next();
+					}
 				case 4:
 					do {
-						System.out.print("Please select an account you'd like to open:\n");
+						System.out.print("\nPlease select an account you'd like to open:\n");
 						System.out.print("1: Chequing\n2: Savings\n3: Cancel\n\n> ");
 						userChoice = sc.nextInt();
+						
+						if(userChoice == 3) break;
 						
 						switch(userChoice) {
 						case 1:
@@ -286,8 +320,6 @@ public class Bank {
 						case 2:
 							tempAccount = new Savings();
 							break;
-						case 3:
-							return;
 						default:
 							break;
 						}
@@ -301,9 +333,11 @@ public class Bank {
 				case 5:
 					
 					do {
-						System.out.print("Please select an account you'd like to delete:\n");
+						System.out.print("\nPlease select an account you'd like to delete:\n");
 						System.out.print("1: Chequing\n2: Savings\n3: Cancel\n\n> ");
 						userChoice = sc.nextInt();
+						
+						if(userChoice == 3) break;
 						
 						switch(userChoice) {
 						case 1:
@@ -312,8 +346,6 @@ public class Bank {
 						case 2:
 							tempAccount = new Savings();
 							break;
-						case 3:
-							return;
 						default:
 							break;
 						}
@@ -330,9 +362,12 @@ public class Bank {
 				case 7:
 					try {
 						do {
-							System.out.print("Please select an account you'd like to view:\n");
+							System.out.print("\nPlease select an account you'd like to view:\n");
 							System.out.print("1: Chequing\n2: Savings\n3: Cancel\n\n> ");
 							userChoice = sc.nextInt();
+							
+							if(userChoice == 3) break;
+							
 							switch(userChoice) {
 							case 1:
 								Chequing temp = new Chequing();
@@ -342,8 +377,6 @@ public class Bank {
 								Savings temp1 = new Savings();
 								temp1.view_Account(activeUser);
 								break;
-							case 3:
-								return;
 							default:
 								break;
 							}
@@ -357,6 +390,8 @@ public class Bank {
 						System.err.flush();
 						sc.next();
 					}
+					
+					
 					
 					break;
 				case 8:
@@ -373,13 +408,15 @@ public class Bank {
 			System.err.flush();
 			System.out.println("\nInput Mismatch Exception occured while selecting choices\n");
 			System.err.flush();
-			sc.next();
+		
 		}catch(Exception ime) {
 			System.err.flush();
 			System.out.println("\nAn exception occured while selecting choices\n");
 			System.err.flush();
-			sc.next();
+	
 		}
+		
+		return;
 
 
 	}

@@ -17,9 +17,11 @@ public class BankManagementSystemTest {
 		
 		
 		
-		System.out.print("Welcome to Banko De Oro\n\n");
+		
 		do {
 			try {
+				System.out.print("Welcome to Banko De Oro\n\n");
+				
 				//Sign in or create an account
 				System.out.print("Please select one of the following:\n");
 				System.out.print("\nSign in as\n1: Customer\n2: Admin\n3: exit\n\n> ");
