@@ -41,7 +41,7 @@ public class BankManagementSystemTest {
 				}
 			}catch(InputMismatchException ime) {
 				System.err.flush();
-				System.out.println("\nInput Mismatch Exception occured while selecting choices\n");
+				System.out.println("\nInput Mismatch Exception occured while selecting choicess\n");
 				System.err.flush();
 				sc.next();
 			}catch(Exception ime) {

@@ -7,28 +7,59 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class User{
 
-	protected String id;
-	public String user_FullName;
-	public String email;
-	public String userPhone;
-	public String password;
-	public String username;
-	public String userAddress;
-	public long user_CardNumber;
-	public ArrayList<UserAccount> userAccount;
-	public ArrayList<AtmTransaction> transactions;
+	private String id;
+	private String fullName;
+	private String email;
+	private String phone;
+	private String password;
+	private String username;
+	private String address;
+	private long cardNumber;
+	
+	
+	private ArrayList<UserAccount> userAccount;
+	private ArrayList<AtmTransaction> transactions;
+	
 	
 	private static long idCounter = 0;
-	public static long accountNumberCounter = 9999;
+	private static long accountNumberCounter;
 	
 	int index;
+	
 	
 	User() {
 		userAccount = new ArrayList<UserAccount>();
 		transactions = new ArrayList<AtmTransaction>();
 	}
 	
+	
+	/**
+	 * Admin
+	 * 
+	 * @param id
+	 * @param username
+	 * @param password
+	 */
+	User(String id, String username, String password){
+		this.id = id;
+		this.username = username;
+		this.password = password;
+	}
+	
+	/**
+	 * Normal User
+	 * 
+	 * @param id
+	 * @param fname
+	 * @param e
+	 * @param phone
+	 * @param pwd
+	 * @param usrn
+	 * @param adr
+	 * @param cnum
+	 */
 	User(String id, String fname, String e, String phone, String pwd, String usrn, String adr, long cnum){
+		setAccountNumberCounter(9999);
 		userAccount = new ArrayList<UserAccount>();
 		UserAccount temp = new Chequing("5000", 200, "Chequing");
 		this.userAccount.add(temp);
@@ -36,18 +67,26 @@ public class User{
 		
 		
 		this.id = id;
-		this.user_FullName = fname;
+		this.fullName = fname;
 		this.email = e;
-		this.userPhone = phone;
+		this.phone = phone;
 		this.password = pwd;
 		this.username = usrn;
-		this.userAddress = adr;
-		this.user_CardNumber = cnum;
+		this.address = adr;
+		this.cardNumber = cnum;
 
 	} 
 	
+	public ArrayList<UserAccount> getUserAccount(){
+		return userAccount;
+	}
+	
+	public ArrayList<AtmTransaction> getTransactions(){
+		return transactions;
+	}
+	
 
-	public boolean addCustomer(Scanner sc, int an, float ib) {
+	public boolean addUser(Scanner sc, float ib) {
 		
 	    /* return a random long of 16 length */
 	    long smallest = 1000_0000_0000_0000L;
@@ -62,34 +101,36 @@ public class User{
 			String fname = sc.next();
 			System.out.print("Enter user Last Name: ");
 			String lname = sc.next();
-			user_FullName = getFullName(fname, lname);
+			
+			setFullName(getFullName(fname, lname));
 			
 			System.out.print("Enter user email: ");
-			email = sc.next();
+			setEmail(sc.next());
 			
 			System.out.print("Enter user phone number: ");
-			userPhone = sc.next();
+			setPhone(sc.next());
 			
 			System.out.print("Enter user password: ");
-			password = sc.next();
+			setPassword(sc.next());
 			
 			System.out.print("Enter user desired username: ");
-			username = sc.next();
+			setUsername(sc.next());
 			
 			System.out.print("Enter user address: ");
 			sc.nextLine();
-			userAddress = sc.nextLine();
+			setAddress(sc.nextLine());
 			
 			
-			user_CardNumber = ThreadLocalRandom.current().nextLong(smallest, biggest+1);
 			
-			Chequing temp = new Chequing(String.format("%04d", accountNumberCounter--), ib, "Chequing");
+			setCardNumber(ThreadLocalRandom.current().nextLong(smallest, biggest+1));
+			
+			Chequing temp = new Chequing(String.format("%04d", getAccountNumberCounter()), ib, "Chequing");
 			
 			this.userAccount.add(temp);
 			
 			
 			
-			System.out.println("\nYour Card Number is: " + user_CardNumber +
+			System.out.println("\nYour Card Number is: " + getCardNumber() +
 					"\nPlease save this number for you'll be using this to log in along with your password");
 			
 		}catch(Exception e) {
@@ -101,7 +142,7 @@ public class User{
 	}
 	
 	
-	public boolean deleteCustomer(ArrayList<User> user, String userId) {
+	public boolean deleteUser(ArrayList<User> user, String userId) {
 		
 		//For faster search -> Learn Binary Search to search specific user
 		
@@ -123,7 +164,7 @@ public class User{
 	}
 	
 	
-	public boolean editCustomer(ArrayList<User> user, String userId,Scanner sc) {
+	public boolean editUser(ArrayList<User> user, String userId,Scanner sc) {
 		ArrayList<User> updatedUser = new ArrayList<User>();
 		try {
 			for(int i = 0; i < user.size(); i++) {
@@ -167,7 +208,7 @@ public class User{
 								System.out.print("Confirm the new phone number: ");
 								confirmInput = sc.next();
 								if(confirmInput.equals(input)) {
-									user.get(i).userPhone = confirmInput;
+									user.get(i).phone = confirmInput;
 								}else {
 									System.out.println("\n\nPhone Number you entered didn't match\n");
 								}
@@ -204,7 +245,7 @@ public class User{
 								System.out.print("Confirm the new address: ");
 								confirmInput = sc.nextLine();
 								if(confirmInput.equals(input)) {
-									user.get(i).userAddress = confirmInput;
+									user.get(i).address = confirmInput;
 								}else {
 									System.out.println("\n\nAddress you entered didn't match\n");
 								}
@@ -222,7 +263,7 @@ public class User{
 							
 							
 							
-							displayUsers(updatedUser);
+							AdminUser.viewCustomers(updatedUser);
 							
 							 
 						}catch(InputMismatchException ime) {
@@ -251,13 +292,13 @@ public class User{
 	}
 	
 	
-	public boolean searchCustomer(ArrayList<User> user, String userId) {
+	public boolean searchUser(ArrayList<User> user, String userId) {
 		ArrayList<User> result = new ArrayList<User>();
 		try {
 			for(int i = 0; i < user.size(); i++) {
 				if((user.get(i).id).equals(userId)) {
 					result.add(user.get(i));
-					displayUsers(result);
+					AdminUser.viewCustomers(result);
 					return true;
 				}
 			}
@@ -278,30 +319,161 @@ public class User{
 		return fname + " " + lname;
 	}
 
+
 	
-	public boolean displayUsers(ArrayList<User> list) {
-		
-		if(list.isEmpty()) {
-			System.out.println("\nNo customers yet\n");
+	
+	public boolean verifyPassword(String password, String inputpassword) {
+		if((password).equals(inputpassword)) {
+			System.out.println("\nSuccess Sign in\n");
+			return true;
+		}else {
+			System.out.println("Wrong password");
 			return false;
 		}
-		index = 1;
+	}
 
 
-		System.out.println ("\n\n\t\t\t\t\tCustomers");
-	    System.out.println("<***************************************************************************************>");
-	    
-	    System.out.printf ("%9s%7s%15s%17s%17s%17s", "No.", "ID", "Name","email", "Phone Number", "Address");
-	    
-	    list.forEach((u) -> {
-	    	System.out.printf ("\n%8d%8s%15s%17s%17s%17s", index, u.id, u.user_FullName, u.email, u.userPhone, u.userAddress);
-	    	index++;
-	    });
+	/**
+	 * @return the id
+	 */
+	public String getId() {
+		return id;
+	}
 
-	    System.out.println("\n<***************************************************************************************>\n\n");
-	
-	    return true;
-	
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(String id) {
+		this.id = id;
+	}
+
+
+	/**
+	 * @return the fullName
+	 */
+	public String getFullName() {
+		return fullName;
+	}
+
+
+	/**
+	 * @param fullName the fullName to set
+	 */
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+
+
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+
+	/**
+	 * @return the phone
+	 */
+	public String getPhone() {
+		return phone;
+	}
+
+
+	/**
+	 * @param phone the phone to set
+	 */
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+
+	/**
+	 * @return the password
+	 */
+	public String getPassword() {
+		return password;
+	}
+
+
+	/**
+	 * @param password the password to set
+	 */
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+
+	/**
+	 * @return the username
+	 */
+	public String getUsername() {
+		return username;
+	}
+
+
+	/**
+	 * @param username the username to set
+	 */
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+
+	/**
+	 * @return the address
+	 */
+	public String getAddress() {
+		return address;
+	}
+
+
+	/**
+	 * @param address the address to set
+	 */
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+
+	/**
+	 * @return the cardNumber
+	 */
+	public long getCardNumber() {
+		return cardNumber;
+	}
+
+
+	/**
+	 * @param cardNumber the cardNumber to set
+	 */
+	public void setCardNumber(long cardNumber) {
+		this.cardNumber = cardNumber;
+	}
+
+
+	/**
+	 * @return the accountNumberCounter
+	 */
+	public static long getAccountNumberCounter() {
+		return accountNumberCounter--;
+	}
+
+
+	/**
+	 * @param accountNumberCounter the accountNumberCounter to set
+	 */
+	public static void setAccountNumberCounter(long accountNumberCounter) {
+		User.accountNumberCounter = accountNumberCounter;
 	}
 
 	

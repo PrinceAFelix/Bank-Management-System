@@ -15,6 +15,7 @@ public class Bank {
 	public String name;
 	
 	private ArrayList<User> users = new ArrayList<User>(20);
+	private AdminUser admin;
 	
 	User user = new User();
 	
@@ -30,16 +31,19 @@ public class Bank {
 	
 	
 	
-	User initialUser = new User("0001", "John Doe", "doe@test.com", "123456789", "12345", "doe", "doe St", 987625481918L);
+	User initialUser = new User("0001", "John Doe", "doe@test.com", "123456789", "12345", "doe", "doe St", 123);
 	
 
 	
 	
 	Bank(){
-		
+		admin = new AdminUser("adm001", "admin", "admin");
 	}
 	
 	Bank(String atmNum, String c, String adr, String nm){
+		
+		admin = new AdminUser("adm001", "admin", "admin");
+		
 		users.add(initialUser);
 		this.atmNumber = atmNum;
 		this.code = c;
@@ -53,8 +57,6 @@ public class Bank {
 	
 	protected void getAccount(Scanner sc) {
 		
-		String admin = "admin";
-		String password = "admin";
 		Random random = new Random();
 		boolean isAdmin = false;
 		
@@ -63,15 +65,15 @@ public class Bank {
 			if(isAdmin == false) {
 				
 				do {
-					System.out.print("Username: ");
+					System.out.print("\nUsername: ");
 					String userInput = sc.next();
 					
-					if(userInput.equals(admin)) {
+					if(userInput.equals(admin.getUsername())) {
 						do {
 							System.out.print("Password: ");
 							userInput = sc.next();
 							
-							if(userInput.equals(password)) {
+							if(userInput.equals(admin.getPassword())) {
 								break;
 							}else {
 								System.out.println("Invalid password");
@@ -94,63 +96,19 @@ public class Bank {
 			
 			switch(userChoice) {
 			case 1:
-				try {
-					User temp = new User();
-					temp.addCustomer(sc, random.nextInt(10000), 500);
-					users.add(temp);
-				}catch(InputMismatchException ime) {
-					
-				}catch(Exception e) {
-					
-				}
+				admin.addCustomer(users);
 				break;
 			case 2:
-				try {
-					
-					if(user.displayUsers(users) == false) break;
-					
-					System.out.print("Enter the customer's ID: ");
-					String userInput = sc.next();
-					
-					user.deleteCustomer(users, userInput);
-					 
-				}catch(InputMismatchException ime) {
-					
-				}catch(Exception e) {
-					
-				}
+				admin.deleteCustomer(users, user);
 				break;
 			case 3:
-				user.displayUsers(users);
+				AdminUser.viewCustomers(users);
 				break;
 			case 4:
-				try {
-					
-					
-					System.out.print("Enter the customer's ID: ");
-					String userInput = sc.next();
-					
-					user.searchCustomer(users, userInput);
-					 
-				}catch(InputMismatchException ime) {
-					
-				}catch(Exception e) {
-					
-				}
+				admin.searchCustomer(users, user);
 				break;
 			case 5:
-				try {
-					
-					System.out.print("Enter the customer's ID: ");
-					String userInput = sc.next();
-					
-					user.editCustomer(users, userInput, sc);
-					 
-				}catch(InputMismatchException ime) {
-					
-				}catch(Exception e) {
-					
-				}
+				admin.editCustomer(users, user);
 				break;
 			case 6:
 				isAdmin = !isAdmin;
@@ -188,7 +146,7 @@ public class Bank {
 			//Validate if card number is present
 			
 			for(int i = 0; i < users.size(); i++) {
-				isValid = (Long.toString(users.get(i).user_CardNumber).equals(userInput));
+				isValid = (Long.toString(users.get(i).getCardNumber()).equals(userInput));
 				if(isValid) userIndex = getUser(i);
 			}
 			
@@ -198,12 +156,8 @@ public class Bank {
 				passwordInput = sc.next();
 				
 				//Validate password
-				if((users.get(userIndex).password).equals(passwordInput)) {
-					System.out.println("\nSuccess Sign in\n");
+				if(users.get(userIndex).verifyPassword(users.get(userIndex).getPassword(), passwordInput)) {
 					manageAccount(sc, users.get(userIndex));
-					break;
-				}else {
-					System.out.println("Wrong password");
 				}
 			}else {
 				System.out.println("Invalid card number");
@@ -225,188 +179,209 @@ public class Bank {
 		
 		int isChequing = 0;
 		
-//		protected int id;
-//		public Date transaction_Date;
-//		public String transaction_Type;
-//		public String transaction_Amount;
-//		public float post_balance;
-
-		
-		do {
+		try {
 			
-			System.out.print("Please select one of the following:\n");
-			System.out.print("\n1: Deposit\n2: Withdraw\n3: Check balance\n4: Open another account\n5: Delete an account\n6: View transaction\n7: View Accounts\n8: Sign out\n\n> ");
-			int userChoice = sc.nextInt();
-			
-			switch(userChoice) {
-			case 1:
-
-				do {
-					System.out.print("Please select one of the following:\n");
-					System.out.print("1: Chequing\n2: Savings\n3: Cancel\n\n> ");
-					userChoice = sc.nextInt();
-					
-					switch(userChoice) {
-					case 1:
-						isChequing = 0;
-						break;
-					case 2:
-						isChequing = 1;
-						break;
-					case 3:
-						return;
-					default:
-						break;
-					}
-					
-					break;
-					
-				} while(true);
-				if(!atm.validateActiveAccount(activeUser, isChequing)) break;
-				System.out.print("Enter amount to deposit: ");
-				value = sc.nextFloat();
-				atm.deposit(activeUser, value, isChequing);
-				transactionTemp = new AtmTransaction(random.nextInt(10000), date, "deposit", value, activeUser.userAccount.get(isChequing).accountBalance);
-				activeUser.transactions.add(transactionTemp);
-				break;
-			case 2:
-				do {
-					System.out.print("Please select one of the following:\n");
-					System.out.print("1: Chequing\n2: Savings\n3: Cancel\n\n> ");
-					userChoice = sc.nextInt();
-					
-					switch(userChoice) {
-					case 1:
-						isChequing = 0;
-						break;
-					case 2:
-						isChequing = 1;
-						break;
-					case 3:
-						return;
-					default:
-						break;
-					}
-					
-					break;
-					
-				} while(true);
+			do {
 				
-				if(!atm.validateActiveAccount(activeUser, isChequing)) break;
-				System.out.print("Enter amount to withdraw: ");
-				value = sc.nextFloat();
-				atm.withdraw(activeUser, value, isChequing);;
-				transactionTemp = new AtmTransaction(random.nextInt(10000), date, "withdraw", value, activeUser.userAccount.get(isChequing).accountBalance);
-				activeUser.transactions.add(transactionTemp);
-				break;
-			case 3:
-				do {
-					System.out.print("Please select one of the following:\n");
-					System.out.print("1: Chequing\n2: Savings\n3: Cancel\n\n> ");
-					userChoice = sc.nextInt();
-					
-					switch(userChoice) {
-					case 1:
-						isChequing = 0;
-						break;
-					case 2:
-						isChequing = 1;
-						break;
-					case 3:
-						return;
-					default:
-						break;
-					}
-					
-					break;
-					
-				} while(true);
-				if(!atm.validateActiveAccount(activeUser, isChequing)) break;
-				atm.checkBalance(activeUser, isChequing);
-				break;
-			case 4:
-				do {
-					System.out.print("Please select an account you'd like to open:\n");
-					System.out.print("1: Chequing\n2: Savings\n3: Cancel\n\n> ");
-					userChoice = sc.nextInt();
-					
-					switch(userChoice) {
-					case 1:
-						tempAccount = new Chequing();
-						break;
-					case 2:
-						tempAccount = new Savings();
-						break;
-					case 3:
-						return;
-					default:
-						break;
-					}
-					
-					tempAccount.addAccount(sc, activeUser);
-
-					break;
-				}while(true);
+				System.out.print("Please select one of the following:\n");
+				System.out.print("\n1: Deposit\n2: Withdraw\n3: Check balance\n4: Open another account\n5: Delete an account\n6: View transaction\n7: View Accounts\n8: Sign out\n\n> ");
+				int userChoice = sc.nextInt();
 				
-				break;
-			case 5:
-				
-				do {
-					System.out.print("Please select an account you'd like to open:\n");
-					System.out.print("1: Chequing\n2: Savings\n3: Cancel\n\n> ");
-					userChoice = sc.nextInt();
-					
-					switch(userChoice) {
-					case 1:
-						tempAccount = new Chequing();
-						break;
-					case 2:
-						tempAccount = new Savings();
-						break;
-					case 3:
-						return;
-					default:
-						break;
-					}
-					
-					tempAccount.deleteAccount(sc, activeUser);
-
-					break;
-				}while(true);
-				
-				break;
-			case 6:
-				atmtransaction.transactions(activeUser.transactions);
-				break;
-			case 7:
-				System.out.print("Please select an account you'd like to view:\n");
-				System.out.print("1: Chequing\n2: Savings\n3: Cancel\n\n> ");
-				userChoice = sc.nextInt();
 				switch(userChoice) {
 				case 1:
-					Chequing temp = new Chequing();
-					temp.view_Account(activeUser);
+
+					do {
+						System.out.print("Please select one of the following:\n");
+						System.out.print("1: Chequing\n2: Savings\n3: Cancel\n\n> ");
+						userChoice = sc.nextInt();
+						
+						switch(userChoice) {
+						case 1:
+							isChequing = 0;
+							break;
+						case 2:
+							isChequing = 1;
+							break;
+						case 3:
+							return;
+						default:
+							break;
+						}
+						
+						break;
+						
+					} while(true);
+					if(!atm.validateActiveAccount(activeUser, isChequing)) break;
+					System.out.print("Enter amount to deposit: ");
+					value = sc.nextFloat();
+					atm.deposit(activeUser, value, isChequing);
+					transactionTemp = new AtmTransaction(random.nextInt(10000), userChoice == 1 ? "Chequing" : "Savings" , date, "deposit", value, activeUser.getUserAccount().get(isChequing).accountBalance);
+					activeUser.getTransactions().add(transactionTemp);
 					break;
 				case 2:
-					Savings temp1 = new Savings();
-					temp1.view_Account(activeUser);
+					do {
+						System.out.print("Please select one of the following:\n");
+						System.out.print("1: Chequing\n2: Savings\n3: Cancel\n\n> ");
+						userChoice = sc.nextInt();
+						
+						switch(userChoice) {
+						case 1:
+							isChequing = 0;
+							break;
+						case 2:
+							isChequing = 1;
+							break;
+						case 3:
+							return;
+						default:
+							break;
+						}
+						
+						break;
+						
+					} while(true);
+					
+					if(!atm.validateActiveAccount(activeUser, isChequing)) break;
+					System.out.print("Enter amount to withdraw: ");
+					value = sc.nextFloat();
+					atm.withdraw(activeUser, value, isChequing);;
+					transactionTemp = new AtmTransaction(random.nextInt(10000), userChoice == 1 ? "Chequing" : "Savings", date, "withdraw", value, activeUser.getUserAccount().get(isChequing).accountBalance);
+					activeUser.getTransactions().add(transactionTemp);
 					break;
 				case 3:
+					do {
+						System.out.print("Please select one of the following:\n");
+						System.out.print("1: Chequing\n2: Savings\n3: Cancel\n\n> ");
+						userChoice = sc.nextInt();
+						
+						switch(userChoice) {
+						case 1:
+							isChequing = 0;
+							break;
+						case 2:
+							isChequing = 1;
+							break;
+						case 3:
+							return;
+						default:
+							break;
+						}
+						
+						break;
+						
+					} while(true);
+					if(!atm.validateActiveAccount(activeUser, isChequing)) break;
+					atm.checkBalance(activeUser, isChequing);
+					break;
+				case 4:
+					do {
+						System.out.print("Please select an account you'd like to open:\n");
+						System.out.print("1: Chequing\n2: Savings\n3: Cancel\n\n> ");
+						userChoice = sc.nextInt();
+						
+						switch(userChoice) {
+						case 1:
+							tempAccount = new Chequing();
+							break;
+						case 2:
+							tempAccount = new Savings();
+							break;
+						case 3:
+							return;
+						default:
+							break;
+						}
+						
+						tempAccount.addAccount(sc, activeUser);
+
+						break;
+					}while(true);
+					
+					break;
+				case 5:
+					
+					do {
+						System.out.print("Please select an account you'd like to delete:\n");
+						System.out.print("1: Chequing\n2: Savings\n3: Cancel\n\n> ");
+						userChoice = sc.nextInt();
+						
+						switch(userChoice) {
+						case 1:
+							tempAccount = new Chequing();
+							break;
+						case 2:
+							tempAccount = new Savings();
+							break;
+						case 3:
+							return;
+						default:
+							break;
+						}
+						
+						tempAccount.deleteAccount(sc, activeUser);
+
+						break;
+					}while(true);
+					
+					break;
+				case 6:
+					atmtransaction.transactions(activeUser.getTransactions());
+					break;
+				case 7:
+					try {
+						do {
+							System.out.print("Please select an account you'd like to view:\n");
+							System.out.print("1: Chequing\n2: Savings\n3: Cancel\n\n> ");
+							userChoice = sc.nextInt();
+							switch(userChoice) {
+							case 1:
+								Chequing temp = new Chequing();
+								temp.view_Account(activeUser);
+								break;
+							case 2:
+								Savings temp1 = new Savings();
+								temp1.view_Account(activeUser);
+								break;
+							case 3:
+								return;
+							default:
+								break;
+							}
+							
+							break;
+						}while(true);
+						
+					}catch(InputMismatchException ime) {
+						System.err.flush();
+						System.out.println("\nInput Mismatch Exception occured while selecting choices\n");
+						System.err.flush();
+						sc.next();
+					}
+					
+					break;
+				case 8:
 					return;
 				default:
+					System.out.println("\nInvalid Choice.. Please Try Again\n");
 					break;
+					
 				}
 				
-				
-			case 8:
-				return;
-			default:
-				System.out.println("\nInvalid Choice.. Please Try Again\n");
-				break;
-				
-			}
+			}while(true);
 			
-		}while(true);
+		}catch(InputMismatchException ime) {
+			System.err.flush();
+			System.out.println("\nInput Mismatch Exception occured while selecting choices\n");
+			System.err.flush();
+			sc.next();
+		}catch(Exception ime) {
+			System.err.flush();
+			System.out.println("\nAn exception occured while selecting choices\n");
+			System.err.flush();
+			sc.next();
+		}
+
+
 	}
 	
 	
