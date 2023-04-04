@@ -19,14 +19,18 @@ public class User{
 	public ArrayList<AtmTransaction> transactions;
 	
 	private static long idCounter = 0;
+	public static long accountNumberCounter = 9999;
 	
 	int index;
 	
-	User() {}
+	User() {
+		userAccount = new ArrayList<UserAccount>();
+		transactions = new ArrayList<AtmTransaction>();
+	}
 	
 	User(String id, String fname, String e, String phone, String pwd, String usrn, String adr, long cnum){
 		userAccount = new ArrayList<UserAccount>();
-		UserAccount temp = new Chequing(0002, 200, "Chequing");
+		UserAccount temp = new Chequing("5000", 200, "Chequing");
 		this.userAccount.add(temp);
 		transactions = new ArrayList<AtmTransaction>();
 		
@@ -79,7 +83,7 @@ public class User{
 			
 			user_CardNumber = ThreadLocalRandom.current().nextLong(smallest, biggest+1);
 			
-			Chequing temp = new Chequing(an, ib, "Chequing");
+			Chequing temp = new Chequing(String.format("%04d", accountNumberCounter--), ib, "Chequing");
 			
 			this.userAccount.add(temp);
 			
@@ -87,6 +91,7 @@ public class User{
 			
 			System.out.println("\nYour Card Number is: " + user_CardNumber +
 					"\nPlease save this number for you'll be using this to log in along with your password");
+			
 		}catch(Exception e) {
 			return false;
 		}
@@ -117,13 +122,6 @@ public class User{
 		return false;
 	}
 	
-//	public String user_FullName;
-//	public String email;
-//	public String userPhone;
-//	public String password;
-//	public String username;
-//	public String userAddress;
-//	public long user_CardNumber;
 	
 	public boolean editCustomer(ArrayList<User> user, String userId,Scanner sc) {
 		ArrayList<User> updatedUser = new ArrayList<User>();

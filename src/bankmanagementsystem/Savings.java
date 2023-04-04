@@ -11,13 +11,15 @@ public class Savings extends UserAccount {
 		
 	}
 
-	Savings(long acNumber, float acBal, String title) {
+	Savings(String acNumber, float acBal, String title) {
 		super(acNumber, acBal, title);
 		this.account_title = title;
 	}
 	
-	public void view_Account() {
-		
+	public void view_Account(User user) {
+		System.out.printf("----------------%s----------------", this.account_title);
+		System.out.printf("Account Number: %d\n"
+				+ "Accouunt Balance: %.2f", this.accountNumber, this.accountBalance);
 	}
 
 	@Override
@@ -30,7 +32,7 @@ public class Savings extends UserAccount {
 		System.out.print("Enter the amount you'd like to deposit into your new Account: ");
 		float val = sc.nextFloat();
 		
-		Savings temp = new Savings(super.accountNumberGenerator(), val, "Savings");
+		Savings temp = new Savings(String.format("%04d", User.accountNumberCounter--), val, "Savings");
 		
 		user.userAccount.add(temp);
 		

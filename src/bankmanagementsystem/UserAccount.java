@@ -8,15 +8,17 @@ import java.util.concurrent.ThreadLocalRandom;
 public abstract class UserAccount{
 	
 	
-	public long accountNumber;
+	public String accountNumber;
 	public float accountBalance;
 	public String accountTitle;
+	
+
 	
 	
 	UserAccount(){}
 
 	
-	UserAccount(long acNumber, float acBal, String at){
+	UserAccount(String acNumber, float acBal, String at){
 		this.accountNumber = acNumber;
 		this.accountBalance = acBal;
 		this.accountTitle = at;

@@ -235,7 +235,7 @@ public class Bank {
 		do {
 			
 			System.out.print("Please select one of the following:\n");
-			System.out.print("\n1: Deposit\n2: Withdraw\n3: Check balance\n4: Open another account\n5: Delete an account\n6: View transaction\n7: Sign out\n\n> ");
+			System.out.print("\n1: Deposit\n2: Withdraw\n3: Check balance\n4: Open another account\n5: Delete an account\n6: View transaction\n7: View Accounts\n8: Sign out\n\n> ");
 			int userChoice = sc.nextInt();
 			
 			switch(userChoice) {
@@ -379,6 +379,26 @@ public class Bank {
 				atmtransaction.transactions(activeUser.transactions);
 				break;
 			case 7:
+				System.out.print("Please select an account you'd like to view:\n");
+				System.out.print("1: Chequing\n2: Savings\n3: Cancel\n\n> ");
+				userChoice = sc.nextInt();
+				switch(userChoice) {
+				case 1:
+					Chequing temp = new Chequing();
+					temp.view_Account(activeUser);
+					break;
+				case 2:
+					Savings temp1 = new Savings();
+					temp1.view_Account(activeUser);
+					break;
+				case 3:
+					return;
+				default:
+					break;
+				}
+				
+				
+			case 8:
 				return;
 			default:
 				System.out.println("\nInvalid Choice.. Please Try Again\n");

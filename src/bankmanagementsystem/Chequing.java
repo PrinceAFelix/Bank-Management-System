@@ -6,17 +6,22 @@ public class Chequing extends UserAccount {
 	
 	public String account_title;
 	
+
+	
 	Chequing(){
 		
 	}
 
-	Chequing(long acNumber, float acBal, String title) {
+	Chequing(String acNumber, float acBal, String title) {
 		super(acNumber, acBal, title);
 		this.account_title = title;
 	}
 	
-	public void view_Account() {
-		
+	public void view_Account(User user) {
+		System.out.printf("----------------%s----------------", user.userAccount.get(0).accountTitle);
+		System.out.printf("\nAccount Number: %s\n"
+				+ "Accouunt Balance: %.2f\n", user.userAccount.get(0).accountNumber, user.userAccount.get(0).accountBalance);
+		System.out.println("---------------------------------");
 	}
 
 	@Override
@@ -30,7 +35,7 @@ public class Chequing extends UserAccount {
 		System.out.print("Enter the amount you'd like to deposit into your new Account: ");
 		float val = sc.nextFloat();
 		
-		Chequing temp = new Chequing(super.accountNumberGenerator(), val, "Chequing");
+		Chequing temp = new Chequing(String.format("%04d", User.accountNumberCounter--), val, "Chequing");
 		
 		user.userAccount.add(temp);
 		
