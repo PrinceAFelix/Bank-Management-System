@@ -35,7 +35,8 @@ public class LogIn {
 	private static JPasswordField passwordField;
 	private static JButton logInBtn;
 	
-	boolean showPlaceholder = true;
+	Components comp = new Components();
+	
 	
 	public LogIn(){
 		
@@ -91,65 +92,12 @@ public class LogIn {
 		
 
 		credential = new JTextField();
-		credential.setBackground(new Color(246, 246, 246));
-		credential.setColumns(10);
-		credential.setBorder(BorderFactory.createCompoundBorder(
-				credential.getBorder(), 
-		        BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+		credential = comp.setTextFieldFocusListener(credential, "Access Number or Username");
 		
-		credential.addFocusListener(new FocusListener() {
-		    @Override
-		    public void focusGained(FocusEvent e) {
-		        if (credential.getText().equals("Access Number or Username")) {
-		        	credential.setText("");
-		        	credential.setForeground(Color.BLACK);
-		        }
-		    }
-		    @Override
-		    public void focusLost(FocusEvent e) {
-		        if (credential.getText().isEmpty()) {
-		        	credential.setForeground(Color.GRAY);
-		        	credential.setText("Access Number or Username");
-		        }
-		    }
-		    });
-		
-		
-		
+	
 		
 		passwordField = new JPasswordField();
-		passwordField.setBackground(new Color(246, 246, 246));
-		passwordField.setMargin(new Insets(10, 10, 10, 10));
-		passwordField.setBorder(BorderFactory.createCompoundBorder(
-				credential.getBorder(), 
-		        BorderFactory.createEmptyBorder(0, 0, 0, 0)));
-		passwordField.setText("Password");
-		passwordField.setForeground(Color.GRAY);
-		passwordField.setEchoChar((char) 0);
-		
-		passwordField.addFocusListener(new FocusListener() {
-			
-			
-			
-			@Override
-		    public void focusGained(FocusEvent e) {
-		        if (String.valueOf(passwordField.getPassword()).equals("Password")) {
-		        	passwordField.setText("");
-		        	passwordField.setForeground(Color.BLACK);
-		        	
-		        }
-		        passwordField.setEchoChar('\u2022');
-		    }
-		    @Override
-		    public void focusLost(FocusEvent e) {
-		        if (passwordField.getPassword().length == 0) {
-		        	passwordField.setForeground(Color.GRAY);
-		        	passwordField.setText("Password");
-		        	passwordField.setEchoChar((char) 0);
-		        }
-		    }
-
-		    });
+		passwordField = comp.setPasswordFieldFocusListener(passwordField, "Password");
 		
 		
 		GroupLayout gl_panel = new GroupLayout(panel);

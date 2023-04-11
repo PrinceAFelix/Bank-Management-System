@@ -19,20 +19,25 @@ import bankmanagementsystem.controller.BankController;
 
 public class Admin {
 	
+	private String title;
 	private String bankID;
 	private String location;
-	private JButton registerBtn;
-	private JButton unRegisterBtn;
-	private JButton displayCustomersBtn;
-	private JButton searchCustomerBtn;
-	private JButton modifyCustomerBtn;
-	private static JButton exitBtn;
+	private final static JButton registerBtn = new JButton("Register Customer");
+	private final static JButton unRegisterBtn = new JButton("Unregister Customer");
+	private final static JButton displayCustomersBtn = new JButton("Display Customers");
+	private final static JButton modifyCustomerBtn = new JButton("Modify Customer");
+	private final static JButton exitBtn = new JButton("Exit");
 
 
 	public Admin() {
-		
+//		registerBtn = new JButton("Register Customer");
+//		unRegisterBtn = new JButton("Unregister Customer");
+//		displayCustomersBtn = new JButton("Display Customers");
+//		searchCustomerBtn = new JButton("Search Customer");
+//		modifyCustomerBtn = new JButton("Modify Customer");
+//		exitBtn = new JButton("Exit");
 	}
-	public JPanel header() {
+	public JPanel header(String headerTitle) {
 	
 		JPanel panel = new JPanel();
 
@@ -46,7 +51,7 @@ public class Admin {
 		JLabel bankID = new JLabel("BankID");
 		bankID.setForeground(new Color(255, 255, 255));
 		
-		JLabel title = new JLabel("Admin");
+		JLabel title = new JLabel(headerTitle);
 		title.setForeground(new Color(255, 255, 255));
 		title.setFont(new Font("Lucida Grande", Font.PLAIN, 24));
 		GroupLayout gl_panel = new GroupLayout(panel);
@@ -86,7 +91,7 @@ public class Admin {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 		
-		panel.add(header(), BorderLayout.NORTH);
+		panel.add(header("Admin"), BorderLayout.NORTH);
 		panel.add(actions(controller), BorderLayout.CENTER);
 		
 		return panel;
@@ -100,28 +105,26 @@ public class Admin {
 		
 
 		
-		registerBtn = new JButton("Register Customer");
+		
 		registerBtn.setForeground(new Color(72, 116, 169));
 		registerBtn.setBackground(new Color(255, 255, 255));
 		
 		
-		unRegisterBtn = new JButton("Unregister Customer");
+		
 		unRegisterBtn.setForeground(new Color(72, 116, 169));
 		unRegisterBtn.setBackground(Color.WHITE);
 		
-		displayCustomersBtn = new JButton("Display Customers");
+		
 		displayCustomersBtn.setForeground(new Color(72, 116, 169));
 		displayCustomersBtn.setBackground(Color.WHITE);
 		
-		searchCustomerBtn = new JButton("Search Customer");
-		searchCustomerBtn.setForeground(new Color(72, 116, 169));
-		searchCustomerBtn.setBackground(Color.WHITE);
 		
-		modifyCustomerBtn = new JButton("Modify Customer");
+		
 		modifyCustomerBtn.setForeground(new Color(72, 116, 169));
 		modifyCustomerBtn.setBackground(Color.WHITE);
 		
-		exitBtn = new JButton("Exit");
+
+		
 
 		exitBtn.setForeground(new Color(72, 116, 169));
 		exitBtn.setBackground(Color.WHITE);
@@ -134,7 +137,6 @@ public class Admin {
 							.addGap(27)
 							.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 								.addComponent(modifyCustomerBtn, GroupLayout.PREFERRED_SIZE, 297, GroupLayout.PREFERRED_SIZE)
-								.addComponent(searchCustomerBtn, GroupLayout.PREFERRED_SIZE, 297, GroupLayout.PREFERRED_SIZE)
 								.addComponent(displayCustomersBtn, GroupLayout.PREFERRED_SIZE, 297, GroupLayout.PREFERRED_SIZE)
 								.addComponent(unRegisterBtn, GroupLayout.PREFERRED_SIZE, 297, GroupLayout.PREFERRED_SIZE)
 								.addComponent(registerBtn, GroupLayout.PREFERRED_SIZE, 297, GroupLayout.PREFERRED_SIZE)))
@@ -153,8 +155,6 @@ public class Admin {
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(displayCustomersBtn, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(searchCustomerBtn, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(modifyCustomerBtn, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
 					.addComponent(exitBtn, GroupLayout.PREFERRED_SIZE, 48, GroupLayout.PREFERRED_SIZE)
@@ -165,7 +165,6 @@ public class Admin {
 		registerBtn.addActionListener(controller);
 		unRegisterBtn.addActionListener(controller);
 		displayCustomersBtn.addActionListener(controller);
-		searchCustomerBtn.addActionListener(controller);
 		modifyCustomerBtn.addActionListener(controller);
 		
 		exitBtn.addActionListener(controller);
@@ -175,7 +174,7 @@ public class Admin {
 	/**
 	 * @return the registerBtn
 	 */
-	public JButton getRegisterBtn() {
+	public static JButton getRegisterBtn() {
 		return registerBtn;
 	}
 
@@ -183,7 +182,7 @@ public class Admin {
 	/**
 	 * @return the unRegisterBtn
 	 */
-	public JButton getUnRegisterBtn() {
+	public static JButton getUnRegisterBtn() {
 		return unRegisterBtn;
 	}
 
@@ -191,23 +190,17 @@ public class Admin {
 	/**
 	 * @return the displayCustomersBtn
 	 */
-	public JButton getDisplayCustomersBtn() {
+	public static JButton getDisplayCustomersBtn() {
 		return displayCustomersBtn;
 	}
 
 	
-	/**
-	 * @return the searchCustomerBtn
-	 */
-	public JButton getSearchCustomerBtn() {
-		return searchCustomerBtn;
-	}
 
 	
 	/**
 	 * @return the modifyCustomerBtn
 	 */
-	public JButton getModifyCustomerBtn() {
+	public static JButton getModifyCustomerBtn() {
 		return modifyCustomerBtn;
 	}
 
