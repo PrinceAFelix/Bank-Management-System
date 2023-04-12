@@ -34,6 +34,10 @@ public class BankView extends JFrame {
 		DisplayCustomersPage dp = new DisplayCustomersPage();
 		ModificationPage mp = new ModificationPage();
 		
+		UserAccountPage up = new UserAccountPage();
+		
+		
+		
 		
 		panel.add(l.logInPanel(controller), "login");
 		panel.add(a.adminPanel(controller), "adminmain");
@@ -41,6 +45,7 @@ public class BankView extends JFrame {
 		panel.add(remove.unregisterPanel(controller, mousecontroller), "remove");
 		panel.add(dp.displayPanel(controller, mousecontroller), "display");
 		panel.add(mp.ModifyPanel(controller, mousecontroller), "modify");
+		panel.add(up.userPanel(controller), "user");
 		
 		mainFrame.setLayout(new BorderLayout());
 		mainFrame.setBackground(new Color(255, 255, 255));
