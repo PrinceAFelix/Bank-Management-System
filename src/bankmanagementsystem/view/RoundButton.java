@@ -11,7 +11,9 @@ import javax.swing.JButton;
 
 public class RoundButton extends JButton {
 	 
-	  public RoundButton(String label) {
+	  private static final long serialVersionUID = 1L;
+
+	public RoundButton(String label) {
 	    super(label);
 	
 	    setBorder(BorderFactory.createEmptyBorder(0,0,0,0));

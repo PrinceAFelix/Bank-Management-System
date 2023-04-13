@@ -13,7 +13,7 @@ public class Savings extends UserAccount {
 
 	}
 
-	Savings(String acNumber, float acBal, String title) {
+	public Savings(String acNumber, float acBal, String title) {
 		super(acNumber, acBal, title);
 		this.account_title = title;
 	}

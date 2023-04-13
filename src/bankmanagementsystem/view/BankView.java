@@ -19,8 +19,8 @@ public class BankView extends JFrame {
 	JLabel pageTitle;
 	private static JPanel panel = new JPanel(new CardLayout());
 	
-	BankController controller = new BankController();
-	BankController.MouseClickListener mousecontroller = controller.new MouseClickListener();
+	private static BankController controller = new BankController();
+	private static BankController.MouseClickListener mousecontroller = controller.new MouseClickListener();
 	
 	
 	JButton registerBtn = new JButton("Register Customers");
@@ -33,19 +33,19 @@ public class BankView extends JFrame {
 		UnregisterPage remove = new UnregisterPage();
 		DisplayCustomersPage dp = new DisplayCustomersPage();
 		ModificationPage mp = new ModificationPage();
-		
-		UserAccountPage up = new UserAccountPage();
-		
-		
+		UserAccount u = new UserAccount();
+	
 		
 		
+		
+//		panel.add(u.userAccountPanel(controller, mousecontroller), "login");
 		panel.add(l.logInPanel(controller), "login");
 		panel.add(a.adminPanel(controller), "adminmain");
 		panel.add(register.registerPanel(controller, mousecontroller), "register");
 		panel.add(remove.unregisterPanel(controller, mousecontroller), "remove");
 		panel.add(dp.displayPanel(controller, mousecontroller), "display");
 		panel.add(mp.ModifyPanel(controller, mousecontroller), "modify");
-		panel.add(up.userPanel(controller), "user");
+//		panel.add(up.userPanel(controller), "user");
 		
 		mainFrame.setLayout(new BorderLayout());
 		mainFrame.setBackground(new Color(255, 255, 255));
@@ -62,6 +62,14 @@ public class BankView extends JFrame {
 		return panel;
 	}
 	
+	public static BankController getController() {
+		return controller;
+	}
+	
+	
+	public static BankController.MouseClickListener getMouseController() {
+		return mousecontroller;
+	}
 	
 
 	/**

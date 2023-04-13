@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import bankmanagementsystem.controller.BankController;
 import bankmanagementsystem.controller.BankController.MouseClickListener;
+import bankmanagementsystem.model.User;
 
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
@@ -24,6 +25,14 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class UserAccountPage {
 	
+	private static JButton signoutBtn;
+	private static JButton accountBtn;
+	protected JButton depositBtn;
+	protected JButton withdrawBtn;
+	protected static User activeUser;
+	
+	
+
 	
 	public JPanel header(String headerTitle) {
 		
@@ -73,7 +82,7 @@ public class UserAccountPage {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 		
-		panel.add(header("Name"), BorderLayout.NORTH);
+		panel.add(header(activeUser.getFullName()), BorderLayout.NORTH);
 		panel.add(main(controller), BorderLayout.CENTER);
 		
 		panel.add(footer(controller), BorderLayout.SOUTH);
@@ -82,21 +91,20 @@ public class UserAccountPage {
 	}
 	
 	
-	public JPanel main(BankController controller) {
+	private JPanel main(BankController controller) {
 		
 		JPanel main = new JPanel();
 		main.setBackground(new Color(205, 205, 205));
 		
+		accountBtn = new JButton("My Accounts");
+		accountBtn.setForeground(new Color(72, 116, 169));
+		accountBtn.setFocusable(false);
 		
-		JButton depositBtn = new RoundButton("Deposit");
-		
-		RoundButton withdrawBtn = new RoundButton("Withdraw");
+		accountBtn.addActionListener(controller);
 		
 		
-		JButton btnNewButton = new JButton("My Accounts");
-		btnNewButton.setForeground(new Color(72, 116, 169));
-		btnNewButton.setFocusable(false);
-		
+		depositBtn = new RoundButton("Deposit");
+		withdrawBtn = new RoundButton("Withdraw");
 		
 		GroupLayout gl_main = new GroupLayout(main);
 		gl_main.setHorizontalGroup(
@@ -110,7 +118,7 @@ public class UserAccountPage {
 							.addComponent(withdrawBtn, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_main.createSequentialGroup()
 							.addGap(18)
-							.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 309, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(accountBtn, GroupLayout.PREFERRED_SIZE, 309, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap(23, Short.MAX_VALUE))
 		);
 		gl_main.setVerticalGroup(
@@ -121,7 +129,7 @@ public class UserAccountPage {
 						.addComponent(depositBtn, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
 						.addComponent(withdrawBtn, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE))
 					.addGap(33)
-					.addComponent(btnNewButton, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
+					.addComponent(accountBtn, GroupLayout.PREFERRED_SIZE, 61, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(221, Short.MAX_VALUE))
 		);
 		main.setLayout(gl_main);
@@ -130,18 +138,19 @@ public class UserAccountPage {
 	}
 	
 	
-	public JPanel footer(BankController controller) {
+	private JPanel footer(BankController controller) {
 		JPanel footer = new JPanel();
 		footer.setBackground(new Color(205, 205, 205));
 		
 		footer.setPreferredSize(new Dimension(350,70));
 		
+		signoutBtn = new JButton("Sign out");
 		
-		JButton signoutBtn = new JButton("Sign out");
 		signoutBtn.setBackground(new Color(255, 255, 255));
 		signoutBtn.setFocusable(false);
 		
-
+		signoutBtn.addActionListener(controller);
+		
 		GroupLayout gl_footer = new GroupLayout(footer);
 		gl_footer.setHorizontalGroup(
 			gl_footer.createParallelGroup(Alignment.LEADING)
@@ -160,6 +169,34 @@ public class UserAccountPage {
 		footer.setLayout(gl_footer);
 		
 		return footer;
+	}
+	
+	
+	public static JButton getAccountBtn() {
+		return accountBtn;
+	}
+	
+	
+	public static JButton getSignoutBtn() {
+		return signoutBtn;
+	}
+
+
+
+	/**
+	 * @return the activeUser
+	 */
+	public static User getActiveUser() {
+		return activeUser;
+	}
+
+
+
+	/**
+	 * @param activeUser the activeUser to set
+	 */
+	public static void setActiveUser(User activeUser) {
+		UserAccountPage.activeUser = activeUser;
 	}
 
 	

@@ -53,7 +53,7 @@ public class Bank {
 
 	public void getAccount(Scanner sc) {
 
-		Random random = new Random();
+		
 		boolean isAdmin = false;
 
 		do {

@@ -7,6 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import bankmanagementsystem.AtmTransaction;
 import bankmanagementsystem.Chequing;
+import bankmanagementsystem.Savings;
 
 public class User {
 
@@ -60,8 +61,10 @@ public class User {
 	public User(String id, String fname, String e, String phone, String pwd, String usrn, String adr, long cnum) {
 		setAccountNumberCounter(9999);
 		userAccount = new ArrayList<UserAccount>();
-		UserAccount temp = new Chequing("5000", 200, "Chequing");
+		UserAccount temp = new Chequing("19836482", 200, "Chequing");
+//		UserAccount temp2 = new Savings("19387625", 200, "Savings");
 		this.userAccount.add(temp);
+//		this.userAccount.add(temp2);
 		transactions = new ArrayList<AtmTransaction>();
 
 		this.id = id;
