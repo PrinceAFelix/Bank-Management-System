@@ -42,6 +42,7 @@ public class Components {
 		        	textfield.setText("");
 		        	textfield.setForeground(Color.BLACK);
 		        }
+		        
 		    }
 		    @Override
 		    public void focusLost(FocusEvent e) {

@@ -39,6 +39,7 @@ public class BankController implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent ae) {
 		
+		Admin a = new Admin();
 		UserAccount u = new UserAccount();
 		UserAccountPage up = new UserAccountPage();
 		User activeUser;
@@ -53,6 +54,7 @@ public class BankController implements ActionListener {
 			if(LogIn.getCredential().getText().equals(admin.getUsername()) 
 					&& String.valueOf(LogIn.getPasswordField().getPassword()).equals(admin.getPassword())) {
 				System.out.println("Authenticate");
+				BankView.getPanel().add(a.adminPanel(BankView.getController()), "adminmain");
 				cardLayout.show(BankView.getPanel(), "adminmain");
 			}
 			
@@ -85,10 +87,43 @@ public class BankController implements ActionListener {
 		}
 		
 		
+		//Register
 		if(ae.getSource().equals(Admin.getRegisterBtn())) {
 			System.out.println("Register");
 			cardLayout.show(BankView.getPanel(), "register");
+//			admin.addCustomer(users);
 		}
+		
+		if(ae.getSource().equals(RegisterPage.getSubmitForm())) {
+			
+			String firstName = RegisterPage.getFirstName().getText();
+			String lastName =  RegisterPage.getLastName().getText();
+			String username = RegisterPage.getUsername().getText();
+			String email = RegisterPage.getEmail().getText();
+			String phone = RegisterPage.getPhone().getText();
+			String address = RegisterPage.getAddress().getText();
+			String password = String.valueOf(RegisterPage.getPassword().getPassword());
+			String confirmPass = String.valueOf(RegisterPage.getConfirmPassword().getPassword());
+			
+			RegisterPage.getFields()[0] = (firstName.equals("First Name") ? "" : firstName);
+			RegisterPage.getFields()[1] = (lastName.equals("Last Name") ? "" : lastName);
+			RegisterPage.getFields()[2] = (username.equals("Username") ? "" : username);
+			RegisterPage.getFields()[3] = (email.equals("Email") ? "" : email);
+			RegisterPage.getFields()[4] = (phone.equals("Phone Number") ? "" : phone);
+			RegisterPage.getFields()[5] = (address.equals("Address") ? "" : address);
+			RegisterPage.getFields()[6] = (password.equals("Password") ? "" : password);
+			RegisterPage.getFields()[7] = (confirmPass.equals("Confirm Password") ? "" : confirmPass);
+			
+			
+			
+			if(RegisterPage.verifyEmptyFields()) {
+				System.out.println("Complete");
+			}else {
+				System.out.println("Missing");
+			}
+		}
+		
+		//End Register
 		
 		if(ae.getSource().equals(Admin.getUnRegisterBtn())) {
 			System.out.println("Remove");
@@ -117,6 +152,8 @@ public class BankController implements ActionListener {
 			BankView.getPanel().add(u.userAccountPanel(BankView.getController(), BankView.getMouseController()), "useraccounts");
 			cardLayout.show(BankView.getPanel(), "useraccounts");
 		}
+		
+		
 		
 	}
 	

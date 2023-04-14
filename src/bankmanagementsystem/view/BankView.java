@@ -28,7 +28,7 @@ public class BankView extends JFrame {
 	public BankView() {
 		
 		LogIn l = new LogIn();
-		Admin a = new Admin();
+		
 		RegisterPage register = new RegisterPage();
 		UnregisterPage remove = new UnregisterPage();
 		DisplayCustomersPage dp = new DisplayCustomersPage();
@@ -40,7 +40,7 @@ public class BankView extends JFrame {
 		
 //		panel.add(u.userAccountPanel(controller, mousecontroller), "login");
 		panel.add(l.logInPanel(controller), "login");
-		panel.add(a.adminPanel(controller), "adminmain");
+		
 		panel.add(register.registerPanel(controller, mousecontroller), "register");
 		panel.add(remove.unregisterPanel(controller, mousecontroller), "remove");
 		panel.add(dp.displayPanel(controller, mousecontroller), "display");

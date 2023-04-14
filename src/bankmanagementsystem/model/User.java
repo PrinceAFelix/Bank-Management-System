@@ -94,7 +94,8 @@ public class User {
 
 		try {
 
-			id = String.format("%04d", idCounter++);
+			
+			setId(String.format("%04d", idCounter++));
 
 			System.out.print("Enter user First Name: ");
 			String fname = sc.next();
@@ -122,7 +123,6 @@ public class User {
 			setCardNumber(ThreadLocalRandom.current().nextLong(smallest, biggest + 1));
 
 			Chequing temp = new Chequing(String.format("%04d", getAccountNumberCounter()), ib, "Chequing");
-
 			this.userAccount.add(temp);
 
 			System.out.println("\nYour Card Number is: " + getCardNumber()

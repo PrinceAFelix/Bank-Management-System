@@ -5,7 +5,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.lang.ModuleLayer.Controller;
+import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -20,20 +22,27 @@ import bankmanagementsystem.controller.BankController.MouseClickListener;
 
 public class RegisterPage {
 	
-	private JTextField firstName;
-	private JTextField lastName;
-	private JTextField username;
-	private JTextField email;
-	private JTextField phone;
-	private JTextField address;
-	private JPasswordField password;
-	private JPasswordField confirmPassword;
+	private static JTextField firstName;
+	private static JTextField lastName;
+	private static JTextField username;
+	private static JTextField email;
+	private static JTextField phone;
+	private static JTextField address;
+	private static JPasswordField password;
+	private static JPasswordField confirmPassword;
+	private static JButton submitForm;
 	private static JLabel cancelBtn;
+	
+	private static String[] fields;
+	
 	
 	Components comp = new Components();
 	
 	
-	public RegisterPage() {}
+	public RegisterPage() {
+		fields = new String[8];
+		
+	}
 	
 	public JPanel header(String headerTitle) {
 		
@@ -125,8 +134,9 @@ public class RegisterPage {
 		address.setBackground(new Color(246, 246, 246));
 		comp.setTextFieldFocusListener(address, "Address");
 		
-		JButton submitForm = new JButton("Register");
+		submitForm = new JButton("Register");
 		submitForm.setBackground(new Color(72, 116, 169));
+		submitForm.addActionListener(controller);
 		
 		password = new JPasswordField();
 		password.setBackground(new Color(246, 246, 246));
@@ -185,8 +195,11 @@ public class RegisterPage {
 		formsPanel.setLayout(gl_formsPanel);
 		
 		
+		
 		return formsPanel;
 	}
+	
+	
 
 	public JPanel footer(MouseClickListener mousecontroller) {
 		
@@ -194,6 +207,83 @@ public class RegisterPage {
 
 		return comp.setFooter(mousecontroller, getCancelBtn());
 	}
+	
+	
+	public static boolean verifyEmptyFields() {
+		boolean isFormComplete = false;
+		boolean conifrmForm = false;
+		for(int i = 0; i < getFields().length; i++) {
+			
+			if(getFields()[i].equals("")) {
+				showEmptyFields(i);
+				isFormComplete = false;
+			}else {
+				isFormComplete = true;
+			}
+			
+		}
+		
+		for(int i = 0; i < getFields().length; i++) {
+			
+			if(getFields()[i].equals("")) {
+				
+				isFormComplete = false;
+
+			}
+			
+		}
+		
+		return isFormComplete;
+	}
+	
+	
+	public static void showEmptyFields(int index) {
+		
+		JTextField textField = new JTextField();
+		
+		switch(index) {
+		case 0:
+			textField = getFirstName();
+			break;
+		case 1:
+			textField = getLastName();
+			break;
+		case 2:
+			textField = getUsername();
+			break;
+		case 3:
+			textField = getEmail();
+			break;
+		case 4:
+			textField = getPhone();
+			break;
+		case 5:
+			textField = getAddress();
+			break;
+		case 6:
+			textField = getPassword();
+			break;
+		case 7:
+			textField = getConfirmPassword();
+			break;
+		default:
+			break;
+		}
+		
+		textField.setForeground(Color.RED);
+
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public static JLabel getCancelBtn() {
 		return cancelBtn;
@@ -206,6 +296,92 @@ public class RegisterPage {
 	public static void setCancelBtn(JLabel cancelBtn) {
 		RegisterPage.cancelBtn = cancelBtn;
 	}
+	
+	public static String[] getFields() {
+		return fields;
+	}
+
+	/**
+	 * @return the firstName
+	 */
+	public static JTextField getFirstName() {
+		return firstName;
+	}
+
+
+
+	/**
+	 * @return the lastName
+	 */
+	public static JTextField getLastName() {
+		return lastName;
+	}
+
+
+
+	/**
+	 * @return the username
+	 */
+	public static JTextField getUsername() {
+		return username;
+	}
+
+
+
+	/**
+	 * @return the email
+	 */
+	public static JTextField getEmail() {
+		return email;
+	}
+
+
+
+	/**
+	 * @return the phone
+	 */
+	public static JTextField getPhone() {
+		return phone;
+	}
+
+
+
+	/**
+	 * @return the address
+	 */
+	public static JTextField getAddress() {
+		return address;
+	}
+
+
+
+	/**
+	 * @return the password
+	 */
+	public static JPasswordField getPassword() {
+		return password;
+	}
+
+
+
+	/**
+	 * @return the confirmPassword
+	 */
+	public static JPasswordField getConfirmPassword() {
+		return confirmPassword;
+	}
+
+
+	/**
+	 * @return the submitForm
+	 */
+	public static JButton getSubmitForm() {
+		return submitForm;
+	}
+
+
+	
+	
 
 
 }
