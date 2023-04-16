@@ -118,11 +118,9 @@ public class BankController implements ActionListener {
 			
 			if(RegisterPage.verifyEmptyFields()) {
 				
-				long carnNumber = admin.addCustomer(users, RegisterPage.getFields());
-				System.out.println(carnNumber);
-			
+				admin.addCustomer(users, RegisterPage.getFields());
 				RegisterPage.setIsFormSubmit(true);
-				BankView.register.updatePanel(BankView.getMouseController(), BankView.getController());
+				BankView.register.updatePanel(BankView.getMouseController(), BankView.getController(), users.get(users.size()-1));
 				
 			}
 		}
@@ -175,7 +173,7 @@ public class BankController implements ActionListener {
 	        		|| e.getSource().equals(ModificationPage.getCancelBtn())) {
 				cardLayout.show(BankView.getPanel(), "adminmain");
 				RegisterPage.setIsFormSubmit(false);
-				BankView.register.updatePanel(BankView.getMouseController(), BankView.getController());
+				BankView.register.updatePanel(BankView.getMouseController(), BankView.getController(), null);
 	        }
 	        
 	        if(e.getSource().equals(UserAccount.getBackBtn())) {

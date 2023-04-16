@@ -20,6 +20,7 @@ import javax.swing.SwingConstants;
 import javax.swing.GroupLayout.Alignment;
 
 import bankmanagementsystem.controller.BankController.MouseClickListener;
+import bankmanagementsystem.model.User;
 
 public class Components {
 	
@@ -119,7 +120,7 @@ public class Components {
 	}
 	
 	
-	public JPanel showResults(boolean isRegister, String name) {
+	public JPanel showResults(User user, boolean isRegister, String name) {
 		JPanel panel = new JPanel();
 	
 		panel.setBackground(Color.WHITE);
@@ -139,7 +140,7 @@ public class Components {
 		JLabel idLabel = new JLabel("User's ID");
 		idLabel.setFont(new Font("Lucida Grande", Font.BOLD, 15));
 
-		JLabel idValue = new JLabel("0999");
+		JLabel idValue = new JLabel(user.getId());
 		idValue.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		if(isRegister) {
@@ -179,7 +180,7 @@ public class Components {
 			cardNumLabel.setFont(new Font("Lucida Grande", Font.BOLD, 15));
 
 			
-			JLabel cardNumValue = new JLabel("7920 1943 5719 9864");
+			JLabel cardNumValue = new JLabel(String.valueOf(user.getCardNumber()).replaceAll("(.{4})", "$1 "));
 			cardNumValue.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 			
 			hGroup.addGroup(

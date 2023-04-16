@@ -19,6 +19,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import bankmanagementsystem.controller.BankController;
 import bankmanagementsystem.controller.BankController.MouseClickListener;
+import bankmanagementsystem.model.User;
 
 
 
@@ -219,13 +220,13 @@ public class RegisterPage {
 	}
 	
 	
-	public void updatePanel(MouseClickListener mousecontroller, BankController controller) {
+	public void updatePanel(MouseClickListener mousecontroller, BankController controller, User user) {
 		
 		 panel.removeAll();
 		 
 		 if(isFormSubmit) {
 			 
-			 panel.add(comp.showResults(true, null), BorderLayout.CENTER);
+			 panel.add(comp.showResults(user, true, null), BorderLayout.CENTER);
 			 panel.add(footer(mousecontroller, isFormSubmit ? "Return Home" : "Cancel"), BorderLayout.SOUTH);
 		 }else {
 			registerPanel(controller,  mousecontroller);
