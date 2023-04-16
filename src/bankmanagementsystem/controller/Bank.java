@@ -92,7 +92,7 @@ public class Bank {
 
 			switch (userChoice) {
 			case 1:
-				admin.addCustomer(users);
+//				admin.addCustomer(users);
 				break;
 			case 2:
 				admin.deleteCustomer(users, user);

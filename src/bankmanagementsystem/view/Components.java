@@ -4,16 +4,20 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.GroupLayout.Alignment;
 
 import bankmanagementsystem.controller.BankController.MouseClickListener;
 
@@ -112,6 +116,102 @@ public class Components {
 		
 		return footer;
 
+	}
+	
+	
+	public JPanel showResults(boolean isRegister, String name) {
+		JPanel panel = new JPanel();
+	
+		panel.setBackground(Color.WHITE);
+		
+
+		
+		JLabel heading = new JLabel(isRegister ? "Registered" : "<html><body>" +
+	            "<span'>Successfully Removed</span>" +
+	            "<br>" +
+	            "<span style='font-size: 25px; color: gray;'>" + name + "</span>" +
+	            "</body></html>");
+		
+		heading.setFont(new Font("Lucida Grande", Font.PLAIN, 28));
+
+
+		
+		JLabel idLabel = new JLabel("User's ID");
+		idLabel.setFont(new Font("Lucida Grande", Font.BOLD, 15));
+
+		JLabel idValue = new JLabel("0999");
+		idValue.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+
+		if(isRegister) {
+			
+
+		}
+		
+		GroupLayout gl_panel = new GroupLayout(panel);
+		
+		GroupLayout.Group hGroup = gl_panel.createParallelGroup();
+		GroupLayout.Group vGroup = gl_panel.createParallelGroup();
+		
+		hGroup.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+						.addGap(101)
+						.addComponent(heading))
+					.addGroup(gl_panel.createSequentialGroup()
+						.addGap(138)
+						.addComponent(idLabel))
+					.addGroup(gl_panel.createSequentialGroup()
+						.addGap(155)
+						.addComponent(idValue)));
+		
+		
+		vGroup.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+						.addGap(171)
+						.addComponent(heading)
+						.addGap(35)
+						.addComponent(idLabel)
+						.addGap(5)
+						.addComponent(idValue)));
+		
+		if(isRegister) {
+			
+			JLabel cardNumLabel = new JLabel("Card Number");
+			cardNumLabel.setFont(new Font("Lucida Grande", Font.BOLD, 15));
+
+			
+			JLabel cardNumValue = new JLabel("7920 1943 5719 9864");
+			cardNumValue.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
+			
+			hGroup.addGroup(
+					gl_panel.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_panel.createSequentialGroup()
+							.addGap(120)
+							.addComponent(cardNumLabel))
+					.addGroup(gl_panel.createSequentialGroup()
+							.addGap(95)
+							.addComponent(cardNumValue))
+					);
+			
+			vGroup.addGroup(
+					gl_panel.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_panel.createSequentialGroup()
+							.addGap(295)
+							.addComponent(cardNumLabel)
+							.addGap(5)
+							.addComponent(cardNumValue))
+					);
+			
+			
+		}
+		
+		gl_panel.setHorizontalGroup(hGroup);
+		gl_panel.setVerticalGroup(vGroup);
+		
+		panel.setLayout(gl_panel);
+		
+	
+		
+		return panel;
 	}
 
 }

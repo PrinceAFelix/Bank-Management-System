@@ -17,16 +17,18 @@ public class AdminUser extends User {
 		super(id, username, password);
 	}
 
-	public void addCustomer(ArrayList<User> users) {
+	public long addCustomer(ArrayList<User> users, String[] fields) {
 		try {
 			User temp = new User();
-			temp.addUser(sc, 500);
+			long cardNum = temp.addUser(fields);
 			users.add(temp);
+			return cardNum;
 		} catch (InputMismatchException ime) {
-
+			return -1;
 		} catch (Exception e) {
-
+			return -1;
 		}
+		
 	}
 
 	public boolean deleteCustomer(ArrayList<User> users, User user) {

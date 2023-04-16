@@ -30,7 +30,7 @@ public class BankController implements ActionListener {
 	
 
 	
-	private AdminUser admin = new AdminUser("adm001", "admin", "admin");
+	private AdminUser admin = new AdminUser("adm001", "a", "a");
 
 	CardLayout cardLayout = (CardLayout) BankView.getPanel().getLayout();
 	
@@ -91,7 +91,7 @@ public class BankController implements ActionListener {
 		if(ae.getSource().equals(Admin.getRegisterBtn())) {
 			System.out.println("Register");
 			cardLayout.show(BankView.getPanel(), "register");
-//			admin.addCustomer(users);
+
 		}
 		
 		if(ae.getSource().equals(RegisterPage.getSubmitForm())) {
@@ -117,9 +117,13 @@ public class BankController implements ActionListener {
 			
 			
 			if(RegisterPage.verifyEmptyFields()) {
-				System.out.println("Complete");
-			}else {
-				System.out.println("Missing");
+				
+				long carnNumber = admin.addCustomer(users, RegisterPage.getFields());
+				System.out.println(carnNumber);
+			
+				RegisterPage.setIsFormSubmit(true);
+				BankView.register.updatePanel(BankView.getMouseController(), BankView.getController());
+				
 			}
 		}
 		
@@ -170,6 +174,8 @@ public class BankController implements ActionListener {
 	        		|| e.getSource() == DisplayCustomersPage.getCancelBtn()
 	        		|| e.getSource().equals(ModificationPage.getCancelBtn())) {
 				cardLayout.show(BankView.getPanel(), "adminmain");
+				RegisterPage.setIsFormSubmit(false);
+				BankView.register.updatePanel(BankView.getMouseController(), BankView.getController());
 	        }
 	        
 	        if(e.getSource().equals(UserAccount.getBackBtn())) {

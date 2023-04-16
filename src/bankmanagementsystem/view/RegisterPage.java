@@ -20,6 +20,8 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import bankmanagementsystem.controller.BankController;
 import bankmanagementsystem.controller.BankController.MouseClickListener;
 
+
+
 public class RegisterPage {
 	
 	private static JTextField firstName;
@@ -33,14 +35,20 @@ public class RegisterPage {
 	private static JButton submitForm;
 	private static JLabel cancelBtn;
 	
+	private JPanel panel;
+	
 	private static String[] fields;
 	
 	
 	Components comp = new Components();
+	private static boolean isFormSubmit;
 	
 	
 	public RegisterPage() {
+		isFormSubmit = false;
 		fields = new String[8];
+		panel = new JPanel();
+		panel.setLayout(new BorderLayout());
 		
 	}
 	
@@ -87,13 +95,15 @@ public class RegisterPage {
 
 	
 	public JPanel registerPanel(BankController controller, MouseClickListener mousecontroller) {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout());
+		
+		
 		
 		panel.add(header("Register"), BorderLayout.NORTH);
 		panel.add(forms(controller), BorderLayout.CENTER);
+	
 		
-		panel.add(footer(mousecontroller), BorderLayout.SOUTH);
+		panel.add(footer(mousecontroller, isFormSubmit ? "Return Home" : "Cancel"), BorderLayout.SOUTH);
+		
 		
 		return panel;
 	}
@@ -201,12 +211,32 @@ public class RegisterPage {
 	
 	
 
-	public JPanel footer(MouseClickListener mousecontroller) {
+	public JPanel footer(MouseClickListener mousecontroller, String label) {
 		
-		setCancelBtn(new JLabel("Cancel"));
+		setCancelBtn(new JLabel(label));
 
 		return comp.setFooter(mousecontroller, getCancelBtn());
 	}
+	
+	
+	public void updatePanel(MouseClickListener mousecontroller, BankController controller) {
+		
+		 panel.removeAll();
+		 
+		 if(isFormSubmit) {
+			 
+			 panel.add(comp.showResults(true, null), BorderLayout.CENTER);
+			 panel.add(footer(mousecontroller, isFormSubmit ? "Return Home" : "Cancel"), BorderLayout.SOUTH);
+		 }else {
+			registerPanel(controller,  mousecontroller);
+			
+		 }
+		 panel.revalidate(); 
+	     panel.repaint(); 
+	}
+	
+	
+
 	
 	
 	public static boolean verifyEmptyFields() {
@@ -282,7 +312,10 @@ public class RegisterPage {
 	
 	
 	
-	
+	public static boolean setIsFormSubmit(boolean isFormSubmit) {
+		return RegisterPage.isFormSubmit = isFormSubmit;
+		
+	}
 	
 	
 	public static JLabel getCancelBtn() {

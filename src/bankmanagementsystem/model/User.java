@@ -60,12 +60,10 @@ public class User {
 	 */
 	public User(String id, String fname, String e, String phone, String pwd, String usrn, String adr, long cnum) {
 		setAccountNumberCounter(9999);
-		userAccount = new ArrayList<UserAccount>();
+		this.userAccount = new ArrayList<UserAccount>();
 		UserAccount temp = new Chequing("19836482", 200, "Chequing");
-//		UserAccount temp2 = new Savings("19387625", 200, "Savings");
 		this.userAccount.add(temp);
-//		this.userAccount.add(temp2);
-		transactions = new ArrayList<AtmTransaction>();
+		this.transactions = new ArrayList<AtmTransaction>();
 
 		this.id = id;
 		this.fullName = fname;
@@ -86,7 +84,7 @@ public class User {
 		return transactions;
 	}
 
-	public boolean addUser(Scanner sc, float ib) {
+	public long addUser(String[] fields) {
 
 		/* return a random long of 16 length */
 		long smallest = 1000_0000_0000_0000L;
@@ -97,42 +95,35 @@ public class User {
 			
 			setId(String.format("%04d", idCounter++));
 
-			System.out.print("Enter user First Name: ");
-			String fname = sc.next();
-			System.out.print("Enter user Last Name: ");
-			String lname = sc.next();
 
-			setFullName(getFullName(fname, lname));
+			setFullName(getFullName(fields[0], fields[1]));
 
-			System.out.print("Enter user email: ");
-			setEmail(sc.next());
+			setUsername(fields[2]);
+			
+			setEmail(fields[3]);
 
-			System.out.print("Enter user phone number: ");
-			setPhone(sc.next());
-
-			System.out.print("Enter user password: ");
-			setPassword(sc.next());
-
-			System.out.print("Enter user desired username: ");
-			setUsername(sc.next());
-
-			System.out.print("Enter user address: ");
-			sc.nextLine();
-			setAddress(sc.nextLine());
+			setPhone(fields[4]);
+			
+			setAddress(fields[5]);
+		
+			if(fields[6].equals(fields[7])) {
+				setPassword(fields[7]);
+			}else {
+				throw new Exception("Password Not Match");
+			}
 
 			setCardNumber(ThreadLocalRandom.current().nextLong(smallest, biggest + 1));
 
-			Chequing temp = new Chequing(String.format("%04d", getAccountNumberCounter()), ib, "Chequing");
+			Chequing temp = new Chequing(String.format("%04d", getAccountNumberCounter()), 500, "Chequing");
+			
 			this.userAccount.add(temp);
-
-			System.out.println("\nYour Card Number is: " + getCardNumber()
-					+ "\nPlease save this number for you'll be using this to log in along with your password");
+			
 
 		} catch (Exception e) {
-			return false;
+			return -1;
 		}
 
-		return true;
+		return getCardNumber();
 
 	}
 
