@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.GroupLayout.Alignment;
 
+import bankmanagementsystem.controller.BankController;
 import bankmanagementsystem.controller.BankController.MouseClickListener;
 import bankmanagementsystem.model.User;
 
@@ -120,7 +121,7 @@ public class Components {
 	}
 	
 	
-	public JPanel showResults(User user, boolean isRegister, String name) {
+	public JPanel showResults(User user, boolean isRegister, String name, String deletedUserID) {
 		JPanel panel = new JPanel();
 	
 		panel.setBackground(Color.WHITE);
@@ -128,24 +129,25 @@ public class Components {
 
 		
 		JLabel heading = new JLabel(isRegister ? "Registered" : "<html><body>" +
-	            "<span'>Successfully Removed</span>" +
+				"<div style='text-align: center; position: absolute; rigt: 20px'>"+
+	            "<span style='font-size: 14px; color: Blac; '>Successfully Removed</span>" +
 	            "<br>" +
-	            "<span style='font-size: 25px; color: gray;'>" + name + "</span>" +
+	            "<span style='font-size: 12px; color: gray;'>" + name + "</span>" +
+	            "</div>" +
 	            "</body></html>");
 		
-		heading.setFont(new Font("Lucida Grande", Font.PLAIN, 28));
-
+	
 
 		
 		JLabel idLabel = new JLabel("User's ID");
 		idLabel.setFont(new Font("Lucida Grande", Font.BOLD, 15));
 
-		JLabel idValue = new JLabel(user.getId());
+		JLabel idValue = new JLabel(isRegister ? user.getId() : deletedUserID);
 		idValue.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		if(isRegister) {
 			
-
+			heading.setFont(new Font("Lucida Grande", Font.PLAIN, 28));
 		}
 		
 		GroupLayout gl_panel = new GroupLayout(panel);
@@ -214,5 +216,9 @@ public class Components {
 		
 		return panel;
 	}
+	
+	
+	
+	
 
 }

@@ -127,25 +127,26 @@ public class User {
 
 	}
 
-	public boolean deleteUser(ArrayList<User> user, String userId) {
+	public String deleteUser(ArrayList<User> user, String userId) {
 
 		// For faster search -> Learn Binary Search to search specific user
 
 		try {
 			for (int i = 0; i < user.size(); i++) {
 				if ((user.get(i).id).equals(userId)) {
+					String id = user.get(i).id;
 					user.remove(i);
 					System.out.printf("\nSuccessfully dereister a customer with ID number: %s\n", userId);
-					return true;
+					return id;
 				}
 			}
 		} catch (Exception e) {
-			return false;
+			return "-1";
 		}
 
 		System.out.printf("\nNo customer match with ID number: %s\n", userId);
 
-		return false;
+		return "-1";
 	}
 
 	public boolean editUser(ArrayList<User> user, String userId, Scanner sc) {

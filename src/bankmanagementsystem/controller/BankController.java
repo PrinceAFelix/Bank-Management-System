@@ -28,7 +28,7 @@ public class BankController implements ActionListener {
 	
 	private ArrayList<User> users = new ArrayList<User>(20);
 	
-
+	User activeUser = new User();
 	
 	private AdminUser admin = new AdminUser("adm001", "a", "a");
 
@@ -42,9 +42,10 @@ public class BankController implements ActionListener {
 		Admin a = new Admin();
 		UserAccount u = new UserAccount();
 		UserAccountPage up = new UserAccountPage();
-		User activeUser;
+		User activeUser = null;
 		
 		users.add(new User("0001", "John Doe", "doe@test.com", "123456789", "12345", "doe", "doe St", 123));
+		users.add(new User("0000", "John Doe", "doe@test.com", "123456789", "12345", "doe", "doe St", 123));
 
 		
 		
@@ -117,20 +118,36 @@ public class BankController implements ActionListener {
 			
 			
 			if(RegisterPage.verifyEmptyFields()) {
-				
 				admin.addCustomer(users, RegisterPage.getFields());
 				RegisterPage.setIsFormSubmit(true);
-				BankView.register.updatePanel(BankView.getMouseController(), BankView.getController(), users.get(users.size()-1));
-				
+				BankView.register.update(BankView.register.getPanel(), users.get(users.size()-1), BankView.getController(), BankView.getMouseController(), null);
 			}
 		}
 		
 		//End Register
 		
+		
+		//Remove
+		
 		if(ae.getSource().equals(Admin.getUnRegisterBtn())) {
 			System.out.println("Remove");
 			cardLayout.show(BankView.getPanel(), "remove");
 		}
+		
+		if(ae.getSource().equals(UnregisterPage.getSubmitBtn())) {
+			User user = new User();
+			try{
+				String deletedUserID = admin.deleteCustomer(users, user , UnregisterPage.getTextField().getText());
+				UnregisterPage.setIsFormSubmit(true);
+				BankView.unregister.update(BankView.unregister.getPanel(), users.get(users.size()-1), BankView.getController(), BankView.getMouseController(), deletedUserID);
+			}catch(Exception e) {
+				e.getMessage();
+			}
+		}
+		
+		
+		
+		//End Remove
 		
 		if(ae.getSource().equals(Admin.getDisplayCustomersBtn())) {
 			System.out.println("display");
@@ -172,8 +189,11 @@ public class BankController implements ActionListener {
 	        		|| e.getSource() == DisplayCustomersPage.getCancelBtn()
 	        		|| e.getSource().equals(ModificationPage.getCancelBtn())) {
 				cardLayout.show(BankView.getPanel(), "adminmain");
+				
 				RegisterPage.setIsFormSubmit(false);
-				BankView.register.updatePanel(BankView.getMouseController(), BankView.getController(), null);
+				UnregisterPage.setIsFormSubmit(false);
+				BankView.register.update(BankView.register.getPanel(), users.get(users.size()-1), BankView.getController(), BankView.getMouseController(), null);
+				BankView.unregister.update(BankView.unregister.getPanel(), users.get(users.size()-1), BankView.getController(), BankView.getMouseController(), null);
 	        }
 	        
 	        if(e.getSource().equals(UserAccount.getBackBtn())) {

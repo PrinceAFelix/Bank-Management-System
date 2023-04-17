@@ -15,13 +15,22 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 
 import bankmanagementsystem.controller.BankController;
 import bankmanagementsystem.controller.BankController.MouseClickListener;
+import bankmanagementsystem.model.User;
 
-public class UnregisterPage {
+public class UnregisterPage extends Results {
 	
-	private JTextField textField;
+	private static JTextField textField;
 	private static JLabel cancelBtn;
-	
+	private JPanel panel;
 	Components comp = new Components();
+	private static boolean isFormSubmit;
+	private static JButton submitBtn;
+	
+	UnregisterPage(){
+		isFormSubmit = false;
+		panel = new JPanel();
+		panel.setLayout(new BorderLayout());
+	}
 
 	
 	public JPanel header(String headerTitle) {
@@ -68,12 +77,12 @@ public class UnregisterPage {
 
 	
 	public JPanel unregisterPanel(BankController controller, MouseClickListener mousecontroller) {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout());
+		
+	
 		
 		panel.add(header("Remove"), BorderLayout.NORTH);
 		panel.add(forms(controller, mousecontroller), BorderLayout.CENTER);
-		panel.add(footer(mousecontroller), BorderLayout.SOUTH);
+		panel.add(footer(mousecontroller, isFormSubmit ? "Return Home" : "Cancel"), BorderLayout.SOUTH);
 		
 		return panel;
 	}
@@ -87,7 +96,9 @@ public class UnregisterPage {
 		textField = new JTextField();
 		comp.setTextFieldFocusListener(textField, "User's ID");
 		
-		JButton submitBtn = new JButton("Cofirm");
+		submitBtn = new JButton("Cofirm");
+		
+		
 		GroupLayout gl_formsPanel = new GroupLayout(formsPanel);
 		gl_formsPanel.setHorizontalGroup(
 			gl_formsPanel.createParallelGroup(Alignment.TRAILING)
@@ -112,19 +123,26 @@ public class UnregisterPage {
 		);
 		formsPanel.setLayout(gl_formsPanel);
 		
+		submitBtn.addActionListener(controller);
 
 		
 		return formsPanel;
 	}
 
 
-	public JPanel footer(MouseClickListener mousecontroller) {
+	public JPanel footer(MouseClickListener mousecontroller, String label) {
 		
-		setCancelBtn(new JLabel("Cancel"));
+		setCancelBtn(new JLabel(label));
 		
 	
 		return comp.setFooter(mousecontroller, getCancelBtn());
 	}
+	
+	public static boolean setIsFormSubmit(boolean isFormSubmit) {
+		return UnregisterPage.isFormSubmit = isFormSubmit;
+		
+	}
+
 	
 	public static JLabel getCancelBtn() {
 		return cancelBtn;
@@ -142,19 +160,33 @@ public class UnregisterPage {
 	/**
 	 * @return the textField
 	 */
-	public JTextField getTextField() {
+	public static JTextField getTextField() {
 		return textField;
 	}
 
 
+	
+	public static JButton getSubmitBtn() {
+		return submitBtn;
+	}
+	
+	public JPanel getPanel() {
+		return panel;
+	}
 
 
-
-	/**
-	 * @param textField the textField to set
-	 */
-	public void setTextField(JTextField textField) {
-		this.textField = textField;
+	@Override
+	public void condition(User user, BankController controller, MouseClickListener mousecontroller, String id) {
+		
+		if(isFormSubmit) {
+			 
+			 panel.add(comp.showResults(user, false, user.getFullName(), id), BorderLayout.CENTER);
+			 panel.add(footer(mousecontroller, isFormSubmit ? "Return Home" : "Cancel"), BorderLayout.SOUTH);
+		 }else {
+			 unregisterPanel(controller,  mousecontroller);
+			
+		 }
+		
 	}
 
 

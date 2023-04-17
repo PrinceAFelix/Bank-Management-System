@@ -23,7 +23,7 @@ import bankmanagementsystem.model.User;
 
 
 
-public class RegisterPage {
+public class RegisterPage extends Results {
 	
 	private static JTextField firstName;
 	private static JTextField lastName;
@@ -220,26 +220,6 @@ public class RegisterPage {
 	}
 	
 	
-	public void updatePanel(MouseClickListener mousecontroller, BankController controller, User user) {
-		
-		 panel.removeAll();
-		 
-		 if(isFormSubmit) {
-			 
-			 panel.add(comp.showResults(user, true, null), BorderLayout.CENTER);
-			 panel.add(footer(mousecontroller, isFormSubmit ? "Return Home" : "Cancel"), BorderLayout.SOUTH);
-		 }else {
-			registerPanel(controller,  mousecontroller);
-			
-		 }
-		 panel.revalidate(); 
-	     panel.repaint(); 
-	}
-	
-	
-
-	
-	
 	public static boolean verifyEmptyFields() {
 		boolean isFormComplete = false;
 		boolean conifrmForm = false;
@@ -411,6 +391,25 @@ public class RegisterPage {
 	 */
 	public static JButton getSubmitForm() {
 		return submitForm;
+	}
+	
+	
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	@Override
+	public void condition(User user, BankController controller, MouseClickListener mousecontroller, String id) {
+		 
+		 if(isFormSubmit) {
+			 
+			 panel.add(comp.showResults(user, true, null, null), BorderLayout.CENTER);
+			 panel.add(footer(mousecontroller, isFormSubmit ? "Return Home" : "Cancel"), BorderLayout.SOUTH);
+		 }else {
+			registerPanel(controller,  mousecontroller);
+			
+		 }
+		
 	}
 
 

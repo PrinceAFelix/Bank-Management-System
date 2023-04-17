@@ -31,23 +31,17 @@ public class AdminUser extends User {
 		
 	}
 
-	public boolean deleteCustomer(ArrayList<User> users, User user) {
+	public String deleteCustomer(ArrayList<User> users, User user, String id) {
 		try {
 
-			if (viewCustomers(users) == false)
-				return false;
-
-			System.out.print("Enter the customer's ID: ");
-			String userInput = sc.next();
-
-			user.deleteUser(users, userInput);
-
-			return true;
+			
+			return user.deleteUser(users, id);
 
 		} catch (InputMismatchException ime) {
-			return false;
+			return "-1";
 		} catch (Exception e) {
-			return false;
+			System.out.println(e.getMessage());
+			return "-1";
 		}
 	}
 
