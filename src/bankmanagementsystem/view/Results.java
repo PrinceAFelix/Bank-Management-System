@@ -22,7 +22,9 @@ public abstract class Results {
 	}
 	
 	public abstract void reRender(BankController controller, MouseClickListener mousecontroller,  ArrayList<User> users);
-
+	
+	
+	
 	public void update(JPanel panel, User user, BankController controller, MouseClickListener mousecontroller, String[] deleteduser) {
 		
 		 panel.removeAll();
@@ -34,4 +36,5 @@ public abstract class Results {
 	}
 	
 	public abstract void condition(User user, BankController controller, MouseClickListener mousecontroller, String[] deleteduser);
+	
 }

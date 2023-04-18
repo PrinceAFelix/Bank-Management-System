@@ -221,20 +221,16 @@ public class DisplayCustomersPage extends Results {
 		userBtn = new JLabel[users.size()];
 		
 		for(int i = 0; i < users.size(); i++) {
-			
-			
+	
 			JLabel btn = new JLabel(String.valueOf(String.format("%2s%30s%20s", (i + 1), users.get(i).getFullName(), users.get(i).getId())));
 			
 			userBtn[i] = btn;
 			userBtn[i].addMouseListener(mousecontroller);
 			
 			map.put(userBtn[i], users.get(i));
-	
 			
-			if(isSearch) {
-				
+			if(isSearch && !getUserInput().equals("ID")) {
 				if(getUserInput().equals(users.get(i).getId())) {
-					System.out.println("Found");
 					displayedList.insertComponent(userBtn[i]);
 				}
 			}else {

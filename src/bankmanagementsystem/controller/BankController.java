@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -165,7 +166,6 @@ public class BankController implements ActionListener {
 		
 		if(ae.getSource().equals(DisplayCustomersPage.getBtnSearch())) {
 			BankView.display.setUserInput(BankView.display.getTextField().getText());
-			System.out.println(BankView.display.getUserInput());
 			DisplayCustomersPage.setIsSearch(true);
 			BankView.display.defaultUpdate(BankView.display.getPanel(), BankView.getController(), BankView.getMouseController(), users);
 		}
@@ -174,10 +174,52 @@ public class BankController implements ActionListener {
 		
 		//End display
 		
+		
+		//Modify
 		if(ae.getSource().equals(Admin.getModifyCustomerBtn())) {
 			System.out.println("modify");
 			cardLayout.show(BankView.getPanel(), "modify");
 		}
+		
+		if(ae.getSource().equals(ModificationPage.getcConfirmBtn())) {
+			int user = verifyUser(ModificationPage.getTextField().getText());
+			System.out.println(user);
+			BankView.modify.setModifyingUser(BankView.modify.getModifyingUser(), user, getUsers().get(user));
+			if(user != -1) {
+				ModificationPage.setEditing(true);
+				BankView.modify.update(BankView.modify.getPanel(), getUsers().get(user), BankView.getController(), BankView.getMouseController(), null);
+			}
+		}
+		
+		if(ae.getSource().equals(BankView.modify.getSaveBtn())) {
+			
+			try {
+				
+				Map.Entry<Integer, User> entry = BankView.modify.getModifyingUser().entrySet().iterator().next();
+				
+				User temp = entry.getValue();
+				
+				temp.setFullName(BankView.modify.getFirstName().getText() + " " + BankView.modify.getLastName().getText());
+				temp.setUsername(BankView.modify.getUsername().getText());
+				temp.setEmail(BankView.modify.getEmail().getText());
+				temp.setPhone(BankView.modify.getPhoneNumber().getText());
+				temp.setAddress(BankView.modify.getAddress().getText());
+				
+				users.set(entry.getKey(), temp);
+				BankView.modify.defaultUpdate(BankView.modify.getPanel(), BankView.getController(), BankView.getMouseController(), users);
+				
+			}catch(Exception e) {
+				
+			}
+			
+			BankView.modify.getModifyingUser().clear();
+			cardLayout.show(BankView.getPanel(), "modify");
+			ModificationPage.setEditing(false);
+			
+		}
+		
+		
+		//End Modify
 		
 		
 		//User Actions
@@ -214,14 +256,20 @@ public class BankController implements ActionListener {
 				BankView.register.update(BankView.register.getPanel(), users.get(users.size()-1), BankView.getController(), BankView.getMouseController(), null);
 				BankView.unregister.update(BankView.unregister.getPanel(), users.get(users.size()-1), BankView.getController(), BankView.getMouseController(), null);
 				BankView.display.defaultUpdate(BankView.display.getPanel(), BankView.getController(), BankView.getMouseController(), users);
+				BankView.modify.defaultUpdate(BankView.modify.getPanel(), BankView.getController(), BankView.getMouseController(), users);
 				
 				cardLayout.show(BankView.getPanel(), "adminmain");
 				
 				System.out.println(DisplayCustomersPage.getIsSearch());
 				
-				if(DisplayCustomersPage.getIsShwoingInformation() == true) {
+				if(DisplayCustomersPage.getIsShwoingInformation()) {
 					cardLayout.show(BankView.getPanel(), "display");
 					DisplayCustomersPage.setIsShwoingInformation(false);
+				}
+				
+				if(ModificationPage.isEditing()) {
+					cardLayout.show(BankView.getPanel(), "modify");
+					ModificationPage.setEditing(false);
 				}
 				
 				
@@ -255,6 +303,15 @@ public class BankController implements ActionListener {
 	
 	public ArrayList<User> getUsers(){
 		return users;
+	}
+	
+	
+	public int verifyUser(String id) {
+		for(int i = 0; i < getUsers().size(); i++) {
+			if(id.equals(users.get(i).getId())) return i;
+		}
+		
+		return -1;
 	}
 
 	
