@@ -39,6 +39,7 @@ public class RegisterPage extends Results {
 	private JPanel panel;
 	
 	private static String[] fields;
+
 	
 	
 	Components comp = new Components();
@@ -399,16 +400,23 @@ public class RegisterPage extends Results {
 	}
 
 	@Override
-	public void condition(User user, BankController controller, MouseClickListener mousecontroller, String id) {
+	public void condition(User user, BankController controller, MouseClickListener mousecontroller, String[] deleteduser) {
 		 
 		 if(isFormSubmit) {
 			 
-			 panel.add(comp.showResults(user, true, null, null), BorderLayout.CENTER);
+			 panel.add(comp.showResults(user, true, null), BorderLayout.CENTER);
 			 panel.add(footer(mousecontroller, isFormSubmit ? "Return Home" : "Cancel"), BorderLayout.SOUTH);
 		 }else {
 			registerPanel(controller,  mousecontroller);
 			
 		 }
+		
+	}
+
+
+	@Override
+	public void reRender(BankController controller, MouseClickListener mousecontroller, ArrayList<User> users) {
+		// TODO Auto-generated method stub
 		
 	}
 

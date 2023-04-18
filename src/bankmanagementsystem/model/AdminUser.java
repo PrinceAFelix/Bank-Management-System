@@ -3,6 +3,7 @@ package bankmanagementsystem.model;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 public class AdminUser extends User {
 
@@ -31,17 +32,19 @@ public class AdminUser extends User {
 		
 	}
 
-	public String deleteCustomer(ArrayList<User> users, User user, String id) {
+	public String[] deleteCustomer(ArrayList<User> users, User user, String id) {
 		try {
 
 			
-			return user.deleteUser(users, id);
+			 return user.deleteUser(users, id);
+			 
+			  
 
 		} catch (InputMismatchException ime) {
-			return "-1";
+			return  Stream.<String>empty().toArray(String[]::new);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			return "-1";
+			return  Stream.<String>empty().toArray(String[]::new);
 		}
 	}
 

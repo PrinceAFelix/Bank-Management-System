@@ -23,7 +23,7 @@ public class BankView extends JFrame {
 	private static BankController.MouseClickListener mousecontroller = controller.new MouseClickListener();
 	public static RegisterPage register = new RegisterPage();
 	public static UnregisterPage unregister = new UnregisterPage();
-
+	public static DisplayCustomersPage display = new DisplayCustomersPage();
 	
 	JButton registerBtn = new JButton("Register Customers");
 
@@ -33,7 +33,7 @@ public class BankView extends JFrame {
 		
 		
 	
-		DisplayCustomersPage dp = new DisplayCustomersPage();
+		
 		ModificationPage mp = new ModificationPage();
 		UserAccount u = new UserAccount();
 	
@@ -45,7 +45,7 @@ public class BankView extends JFrame {
 		
 		panel.add(register.registerPanel(controller, mousecontroller), "register");
 		panel.add(unregister.unregisterPanel(controller, mousecontroller), "remove");
-		panel.add(dp.displayPanel(controller, mousecontroller), "display");
+		panel.add(display.displayPanel(controller, mousecontroller, controller.getUsers()), "display");
 		panel.add(mp.ModifyPanel(controller, mousecontroller), "modify");
 //		panel.add(up.userPanel(controller), "user");
 		

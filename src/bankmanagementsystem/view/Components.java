@@ -121,7 +121,7 @@ public class Components {
 	}
 	
 	
-	public JPanel showResults(User user, boolean isRegister, String name, String deletedUserID) {
+	public JPanel showResults(User user, boolean isRegister, String[] deletedUser) {
 		JPanel panel = new JPanel();
 	
 		panel.setBackground(Color.WHITE);
@@ -129,10 +129,10 @@ public class Components {
 
 		
 		JLabel heading = new JLabel(isRegister ? "Registered" : "<html><body>" +
-				"<div style='text-align: center; position: absolute; rigt: 20px'>"+
-	            "<span style='font-size: 14px; color: Blac; '>Successfully Removed</span>" +
+				"<div style='text-align: center;'>"+
+	            "<span style='font-size: 14px; color: Black; '>Successfully Removed</span>" +
 	            "<br>" +
-	            "<span style='font-size: 12px; color: gray;'>" + name + "</span>" +
+	            "<span style='font-size: 12px; color: gray;'>" + deletedUser[1] + "</span>" +
 	            "</div>" +
 	            "</body></html>");
 		
@@ -142,7 +142,7 @@ public class Components {
 		JLabel idLabel = new JLabel("User's ID");
 		idLabel.setFont(new Font("Lucida Grande", Font.BOLD, 15));
 
-		JLabel idValue = new JLabel(isRegister ? user.getId() : deletedUserID);
+		JLabel idValue = new JLabel(isRegister ? user.getId() : deletedUser[0]);
 		idValue.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		if(isRegister) {
@@ -157,7 +157,7 @@ public class Components {
 		
 		hGroup.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-						.addGap(101)
+						.addGap(isRegister ? 101 : 75)
 						.addComponent(heading))
 					.addGroup(gl_panel.createSequentialGroup()
 						.addGap(138)

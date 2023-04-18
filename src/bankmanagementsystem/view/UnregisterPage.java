@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.util.ArrayList;
 
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -176,16 +177,26 @@ public class UnregisterPage extends Results {
 
 
 	@Override
-	public void condition(User user, BankController controller, MouseClickListener mousecontroller, String id) {
+	public void condition(User user, BankController controller, MouseClickListener mousecontroller, String[] deleteduser) {
 		
 		if(isFormSubmit) {
 			 
-			 panel.add(comp.showResults(user, false, user.getFullName(), id), BorderLayout.CENTER);
+			 panel.add(comp.showResults(user, false, deleteduser), BorderLayout.CENTER);
 			 panel.add(footer(mousecontroller, isFormSubmit ? "Return Home" : "Cancel"), BorderLayout.SOUTH);
 		 }else {
 			 unregisterPanel(controller,  mousecontroller);
 			
 		 }
+		
+	}
+
+
+	
+
+
+	@Override
+	public void reRender(BankController controller, MouseClickListener mousecontroller, ArrayList<User> users) {
+		// TODO Auto-generated method stub
 		
 	}
 

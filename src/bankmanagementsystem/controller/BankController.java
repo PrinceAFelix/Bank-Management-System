@@ -30,11 +30,20 @@ public class BankController implements ActionListener {
 	
 	User activeUser = new User();
 	
-	private AdminUser admin = new AdminUser("adm001", "a", "a");
+	private AdminUser admin;
 
 	CardLayout cardLayout = (CardLayout) BankView.getPanel().getLayout();
 	
 
+	public BankController(){
+		
+		admin = new AdminUser("adm001", "a", "a");
+		users.add(new User("0001", "John Doe", "doe@test.com", "123456789", "12345", "doe", "doe St", 123));
+		users.add(new User("0006", "Test1 Doe", "doe@test.com", "123456789", "12345", "doe", "doe St", 123));
+		users.add(new User("0005", "John Doe", "doe@test.com", "123456789", "12345", "doe", "doe St", 123));
+		users.add(new User("0007", "Test1 Doe", "doe@test.com", "123456789", "12345", "doe", "doe St", 123));
+		users.add(new User("0009", "Test1 Doe", "doe@test.com", "123456789", "12345", "doe", "doe St", 123));
+	}
 	
 	@Override
 	public void actionPerformed(ActionEvent ae) {
@@ -44,8 +53,7 @@ public class BankController implements ActionListener {
 		UserAccountPage up = new UserAccountPage();
 		User activeUser = null;
 		
-		users.add(new User("0001", "John Doe", "doe@test.com", "123456789", "12345", "doe", "doe St", 123));
-		users.add(new User("0000", "John Doe", "doe@test.com", "123456789", "12345", "doe", "doe St", 123));
+		
 
 		
 		
@@ -137,9 +145,9 @@ public class BankController implements ActionListener {
 		if(ae.getSource().equals(UnregisterPage.getSubmitBtn())) {
 			User user = new User();
 			try{
-				String deletedUserID = admin.deleteCustomer(users, user , UnregisterPage.getTextField().getText());
+				String[] deletedUser = admin.deleteCustomer(users, user , UnregisterPage.getTextField().getText());
 				UnregisterPage.setIsFormSubmit(true);
-				BankView.unregister.update(BankView.unregister.getPanel(), users.get(users.size()-1), BankView.getController(), BankView.getMouseController(), deletedUserID);
+				BankView.unregister.update(BankView.unregister.getPanel(), users.get(users.size()-1), BankView.getController(), BankView.getMouseController(), deletedUser);
 			}catch(Exception e) {
 				e.getMessage();
 			}
@@ -153,6 +161,18 @@ public class BankController implements ActionListener {
 			System.out.println("display");
 			cardLayout.show(BankView.getPanel(), "display");
 		}
+		
+		
+		if(ae.getSource().equals(DisplayCustomersPage.getBtnSearch())) {
+			BankView.display.setUserInput(BankView.display.getTextField().getText());
+			System.out.println(BankView.display.getUserInput());
+			DisplayCustomersPage.setIsSearch(true);
+			BankView.display.defaultUpdate(BankView.display.getPanel(), BankView.getController(), BankView.getMouseController(), users);
+		}
+		
+		
+		
+		//End display
 		
 		if(ae.getSource().equals(Admin.getModifyCustomerBtn())) {
 			System.out.println("modify");
@@ -181,25 +201,45 @@ public class BankController implements ActionListener {
 		
 		@Override
 	    public void mouseClicked(MouseEvent e) {
-			
-			
+		
 			
 	        if(e.getSource() == RegisterPage.getCancelBtn() 
 	        		|| e.getSource() == UnregisterPage.getCancelBtn()
 	        		|| e.getSource() == DisplayCustomersPage.getCancelBtn()
 	        		|| e.getSource().equals(ModificationPage.getCancelBtn())) {
-				cardLayout.show(BankView.getPanel(), "adminmain");
 				
+	        	
 				RegisterPage.setIsFormSubmit(false);
 				UnregisterPage.setIsFormSubmit(false);
 				BankView.register.update(BankView.register.getPanel(), users.get(users.size()-1), BankView.getController(), BankView.getMouseController(), null);
 				BankView.unregister.update(BankView.unregister.getPanel(), users.get(users.size()-1), BankView.getController(), BankView.getMouseController(), null);
+				BankView.display.defaultUpdate(BankView.display.getPanel(), BankView.getController(), BankView.getMouseController(), users);
+				
+				cardLayout.show(BankView.getPanel(), "adminmain");
+				
+				System.out.println(DisplayCustomersPage.getIsSearch());
+				
+				if(DisplayCustomersPage.getIsShwoingInformation() == true) {
+					cardLayout.show(BankView.getPanel(), "display");
+					DisplayCustomersPage.setIsShwoingInformation(false);
+				}
+				
+				
+				
 	        }
 	        
 	        if(e.getSource().equals(UserAccount.getBackBtn())) {
 	        	cardLayout.show(BankView.getPanel(), "user");
 	        }
 	        
+	        
+	        for(int i = 0; i < DisplayCustomersPage.userBtn.length; i++) {
+	        	if(e.getSource().equals(DisplayCustomersPage.userBtn[i])) {
+		        	User user = DisplayCustomersPage.map.get(DisplayCustomersPage.userBtn[i]);
+		        	BankView.display.update(BankView.display.getPanel(), user, BankView.getController(), BankView.getMouseController(), null);
+		        	DisplayCustomersPage.setIsShwoingInformation(true);
+		        }
+	        }
 	     
 	        
 
@@ -210,6 +250,11 @@ public class BankController implements ActionListener {
 	     
 	    }
 		
+	}
+	
+	
+	public ArrayList<User> getUsers(){
+		return users;
 	}
 
 	
