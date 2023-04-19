@@ -48,14 +48,9 @@ public class AdminUser extends User {
 		}
 	}
 
-	public void editCustomer(ArrayList<User> users, User user) {
+	public void editCustomer(ArrayList<User> users, int key, User value) {
 		try {
-
-			System.out.print("Enter the customer's ID: ");
-			String userInput = sc.next();
-
-			user.editUser(users, userInput, sc);
-
+			users.set(key, value);
 		} catch (InputMismatchException ime) {
 
 		} catch (Exception e) {
@@ -63,18 +58,14 @@ public class AdminUser extends User {
 		}
 	}
 
-	public void searchCustomer(ArrayList<User> users, User user) {
+	public int searchCustomer(ArrayList<User> users, User user, String id) {
 		try {
 
-			System.out.print("Enter the customer's ID: ");
-			String userInput = sc.next();
+			return user.searchUser(users, id);
+			
 
-			user.searchUser(users, userInput);
-
-		} catch (InputMismatchException ime) {
-
-		} catch (Exception e) {
-
+		}  catch (Exception e) {
+			return -1;
 		}
 	}
 

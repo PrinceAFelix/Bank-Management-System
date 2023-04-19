@@ -101,10 +101,10 @@ public class Bank {
 				AdminUser.viewCustomers(users);
 				break;
 			case 4:
-				admin.searchCustomer(users, user);
+//				admin.searchCustomer(users, user);
 				break;
 			case 5:
-				admin.editCustomer(users, user);
+//				admin.editCustomer(users, user);
 				break;
 			case 6:
 				isAdmin = !isAdmin;
@@ -194,7 +194,6 @@ public class Bank {
 
 							if (userChoice == 3)
 								break;
-
 							switch (userChoice) {
 							case 1:
 								isChequing = 0;
@@ -213,7 +212,7 @@ public class Bank {
 								transactionTemp = new AtmTransaction(random.nextInt(10000),
 										userChoice == 1 ? "Chequing" : "Savings", date, "deposit", value,
 										activeUser.getUserAccount().get(isChequing).accountBalance);
-								activeUser.getTransactions().add(transactionTemp);
+//								activeUser.getTransactions().add(transactionTemp);
 							}
 
 							break;
@@ -256,7 +255,7 @@ public class Bank {
 								transactionTemp = new AtmTransaction(random.nextInt(10000),
 										userChoice == 1 ? "Chequing" : "Savings", date, "withdraw", value,
 										activeUser.getUserAccount().get(isChequing).accountBalance);
-								activeUser.getTransactions().add(transactionTemp);
+//								activeUser.getTransactions().add(transactionTemp);
 							}
 
 							break;
@@ -359,7 +358,7 @@ public class Bank {
 
 					break;
 				case 6:
-					atmtransaction.transactions(activeUser.getTransactions());
+//					atmtransaction.transactions(activeUser.getTransactions());
 					break;
 				case 7:
 					try {

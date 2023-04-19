@@ -71,20 +71,20 @@ public class DisplayCustomersPage extends Results {
 		JLabel title = new JLabel(headerTitle);
 		title.setPreferredSize(new Dimension(20, 20));
 		title.setForeground(new Color(255, 255, 255));
-		title.setFont(new Font("Lucida Grande", Font.PLAIN, 16));
+		title.setFont(new Font("Lucida Grande", Font.PLAIN, 24));
 
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(130)
-					.addComponent(title, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
+					.addGap(115)
+					.addComponent(title, GroupLayout.PREFERRED_SIZE, 130, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(133, Short.MAX_VALUE))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(Alignment.TRAILING, gl_panel.createSequentialGroup()
-					.addGap(41)
+					.addGap(50)
 					.addComponent(title)
 					.addPreferredGap(ComponentPlacement.RELATED, 44, Short.MAX_VALUE))
 		);

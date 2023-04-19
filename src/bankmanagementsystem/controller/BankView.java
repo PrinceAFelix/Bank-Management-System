@@ -1,4 +1,4 @@
-package bankmanagementsystem.view;
+package bankmanagementsystem.controller;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
@@ -10,10 +10,22 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import bankmanagementsystem.controller.BankController;
 import bankmanagementsystem.controller.BankController.MouseClickListener;
+import bankmanagementsystem.model.AdminUser;
+import bankmanagementsystem.view.DisplayCustomersPage;
+import bankmanagementsystem.view.LogIn;
+import bankmanagementsystem.view.ModificationPage;
+import bankmanagementsystem.view.RegisterPage;
+import bankmanagementsystem.view.TransactionPage;
+import bankmanagementsystem.view.UnregisterPage;
+import bankmanagementsystem.view.UserAccount;
 
 public class BankView extends JFrame {
+	
+	public String atmNumber;
+	public String code;
+	public String address;
+	public String name;
 
 	JLabel mainFrame = new JLabel();
 	JLabel pageTitle;
@@ -25,29 +37,25 @@ public class BankView extends JFrame {
 	public static UnregisterPage unregister = new UnregisterPage();
 	public static DisplayCustomersPage display = new DisplayCustomersPage();
 	public static ModificationPage modify = new ModificationPage();
-	JButton registerBtn = new JButton("Register Customers");
+	
 
+	
+	public BankView(String atmNum, String c, String adr, String nm) {
+		this.atmNumber = atmNum;
+		this.code = c;
+		this.address = adr;
+		this.name = nm;
+	}
+	
 	public BankView() {
 		
 		LogIn l = new LogIn();
-		
-		
 	
-		
-		
-		UserAccount u = new UserAccount();
-	
-		
-	
-		
-//		panel.add(u.userAccountPanel(controller, mousecontroller), "login");
 		panel.add(l.logInPanel(controller), "login");
-		
 		panel.add(register.registerPanel(controller, mousecontroller), "register");
 		panel.add(unregister.unregisterPanel(controller, mousecontroller), "remove");
 		panel.add(display.displayPanel(controller, mousecontroller, controller.getUsers()), "display");
 		panel.add(modify.ModifyPanel(controller, mousecontroller), "modify");
-//		panel.add(up.userPanel(controller), "user");
 		
 		mainFrame.setLayout(new BorderLayout());
 		mainFrame.setBackground(new Color(255, 255, 255));

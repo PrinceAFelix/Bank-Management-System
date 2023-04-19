@@ -37,7 +37,7 @@ public class Admin {
 //		modifyCustomerBtn = new JButton("Modify Customer");
 //		exitBtn = new JButton("Exit");
 	}
-	public JPanel header(String headerTitle) {
+	public JPanel header(String headerTitle, String loc, String ID) {
 	
 		JPanel panel = new JPanel();
 
@@ -45,10 +45,10 @@ public class Admin {
 	
 		panel.setPreferredSize(new Dimension(350, 150));
 		
-		JLabel bankLocation = new JLabel("Location");
+		JLabel bankLocation = new JLabel(loc);
 		bankLocation.setForeground(new Color(255, 255, 255));
 		
-		JLabel bankID = new JLabel("BankID");
+		JLabel bankID = new JLabel(ID);
 		bankID.setForeground(new Color(255, 255, 255));
 		
 		JLabel title = new JLabel(headerTitle);
@@ -87,11 +87,11 @@ public class Admin {
 		
 	}
 	
-	public JPanel adminPanel(BankController controller) {
+	public JPanel adminPanel(BankController controller, String loc, String ID) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 		
-		panel.add(header("Admin"), BorderLayout.NORTH);
+		panel.add(header("Admin", loc, ID), BorderLayout.NORTH);
 		panel.add(actions(controller), BorderLayout.CENTER);
 		
 		return panel;

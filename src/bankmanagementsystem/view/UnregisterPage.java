@@ -27,7 +27,7 @@ public class UnregisterPage extends Results {
 	private static boolean isFormSubmit;
 	private static JButton submitBtn;
 	
-	UnregisterPage(){
+	public UnregisterPage(){
 		isFormSubmit = false;
 		panel = new JPanel();
 		panel.setLayout(new BorderLayout());

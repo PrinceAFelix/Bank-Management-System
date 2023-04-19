@@ -20,6 +20,9 @@ public class UserAccount extends UserAccountPage {
 	private static JLabel backBtn;
 	private User user;
 	
+	private static JButton chequingBtn;
+	private static JButton savingsBtn;
+	
 	Components comp = new Components();
 	
 	public JPanel userAccountPanel(BankController contorller, MouseClickListener mouseListener) {
@@ -59,17 +62,21 @@ public class UserAccount extends UserAccountPage {
 	
 		
 		JLabel chequing = new JLabel(setTitleText("CHEQUING", user.getUserAccount().get(0).accountNumber));
-		JButton chequingBtn = accountBtns(new BorderLayout(0, 0), new Dimension(280, 70), "");
+		chequingBtn = accountBtns(new BorderLayout(0, 0), new Dimension(280, 70), "");
+	
 		accounts.add(chequingBtn);
 		chequingBtn.add(amount[0], BorderLayout.EAST);
 		chequingBtn.add(chequing, BorderLayout.WEST);
 		
+		chequingBtn.addActionListener(contorller);
+		
 		if(!savingIsNull) {
 			JLabel saving = new JLabel(setTitleText("SAVINGS", user.getUserAccount().get(1).accountNumber));
-			JButton savingsBtn = accountBtns(new BorderLayout(0, 0), new Dimension(280, 70), "");
+			savingsBtn = accountBtns(new BorderLayout(0, 0), new Dimension(280, 70), "");
 			accounts.add(savingsBtn);
 			savingsBtn.add(saving, BorderLayout.WEST);
 			savingsBtn.add(amount[1], BorderLayout.EAST);
+			savingsBtn.addActionListener(contorller);
 		}
 		
 		JLabel totalTitle = new JLabel("<html><body>" +
@@ -130,6 +137,14 @@ public class UserAccount extends UserAccountPage {
 	            "</body></html>";
 	}
 	
+	
+	public static JButton getChequingBtn() {
+		return chequingBtn;
+	}
+	
+	public static JButton getSavingsBtn() {
+		return savingsBtn;
+	}
 	
 	
 	

@@ -12,14 +12,15 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
+import bankmanagementsystem.Chequing;
 import bankmanagementsystem.model.AdminUser;
 import bankmanagementsystem.model.User;
 import bankmanagementsystem.view.Admin;
-import bankmanagementsystem.view.BankView;
 import bankmanagementsystem.view.DisplayCustomersPage;
 import bankmanagementsystem.view.LogIn;
 import bankmanagementsystem.view.ModificationPage;
 import bankmanagementsystem.view.RegisterPage;
+import bankmanagementsystem.view.TransactionPage;
 import bankmanagementsystem.view.UnregisterPage;
 import bankmanagementsystem.view.UserAccount;
 import bankmanagementsystem.view.UserAccountPage;
@@ -27,23 +28,22 @@ import bankmanagementsystem.view.UserAccountPage;
 
 public class BankController implements ActionListener {
 	
-	private ArrayList<User> users = new ArrayList<User>(20);
 	
-	User activeUser = new User();
+	private ArrayList<User> users = new ArrayList<User>(20);
+
 	
 	private AdminUser admin;
+	
+	BankView bank;
 
 	CardLayout cardLayout = (CardLayout) BankView.getPanel().getLayout();
 	
 
 	public BankController(){
 		
-		admin = new AdminUser("adm001", "a", "a");
+		admin = new AdminUser("adm001", "admin", "admin");
 		users.add(new User("0001", "John Doe", "doe@test.com", "123456789", "12345", "doe", "doe St", 123));
-		users.add(new User("0006", "Test1 Doe", "doe@test.com", "123456789", "12345", "doe", "doe St", 123));
-		users.add(new User("0005", "John Doe", "doe@test.com", "123456789", "12345", "doe", "doe St", 123));
-		users.add(new User("0007", "Test1 Doe", "doe@test.com", "123456789", "12345", "doe", "doe St", 123));
-		users.add(new User("0009", "Test1 Doe", "doe@test.com", "123456789", "12345", "doe", "doe St", 123));
+		
 	}
 	
 	@Override
@@ -53,9 +53,7 @@ public class BankController implements ActionListener {
 		UserAccount u = new UserAccount();
 		UserAccountPage up = new UserAccountPage();
 		User activeUser = null;
-		
-		
-
+		TransactionPage transaction  = new TransactionPage();
 		
 		
 		if(ae.getSource() ==  LogIn.getLoginBtn()) {
@@ -64,8 +62,12 @@ public class BankController implements ActionListener {
 			if(LogIn.getCredential().getText().equals(admin.getUsername()) 
 					&& String.valueOf(LogIn.getPasswordField().getPassword()).equals(admin.getPassword())) {
 				System.out.println("Authenticate");
-				BankView.getPanel().add(a.adminPanel(BankView.getController()), "adminmain");
+				
+				bank = new BankView("1000", "B01", "Bank Street", "Bank of PA");
+				BankView.getPanel().add(a.adminPanel(BankView.getController(), bank.address, bank.atmNumber), "adminmain");
 				cardLayout.show(BankView.getPanel(), "adminmain");
+				
+				activeUser = admin;
 			}
 			
 			for (int i = 0; i < users.size(); i++) {
@@ -82,6 +84,8 @@ public class BankController implements ActionListener {
 				}
 				
 			}
+			
+			UserAccountPage.setActiveUser(activeUser);
 			
 			//Process login for customers
 		
@@ -158,6 +162,8 @@ public class BankController implements ActionListener {
 		
 		//End Remove
 		
+		//Display
+		
 		if(ae.getSource().equals(Admin.getDisplayCustomersBtn())) {
 			System.out.println("display");
 			cardLayout.show(BankView.getPanel(), "display");
@@ -182,12 +188,14 @@ public class BankController implements ActionListener {
 		}
 		
 		if(ae.getSource().equals(ModificationPage.getcConfirmBtn())) {
-			int user = verifyUser(ModificationPage.getTextField().getText());
+			int user = admin.searchCustomer(users, UserAccountPage.getActiveUser(), ModificationPage.getTextField().getText());
 			System.out.println(user);
-			BankView.modify.setModifyingUser(BankView.modify.getModifyingUser(), user, getUsers().get(user));
 			if(user != -1) {
+				BankView.modify.setModifyingUser(BankView.modify.getModifyingUser(), user, getUsers().get(user));
 				ModificationPage.setEditing(true);
 				BankView.modify.update(BankView.modify.getPanel(), getUsers().get(user), BankView.getController(), BankView.getMouseController(), null);
+			}else {
+				ModificationPage.getTextField().setForeground(Color.RED);
 			}
 		}
 		
@@ -205,7 +213,7 @@ public class BankController implements ActionListener {
 				temp.setPhone(BankView.modify.getPhoneNumber().getText());
 				temp.setAddress(BankView.modify.getAddress().getText());
 				
-				users.set(entry.getKey(), temp);
+				admin.editCustomer(users, entry.getKey(), temp);
 				BankView.modify.defaultUpdate(BankView.modify.getPanel(), BankView.getController(), BankView.getMouseController(), users);
 				
 			}catch(Exception e) {
@@ -232,6 +240,19 @@ public class BankController implements ActionListener {
 			System.out.println("Accounts");
 			BankView.getPanel().add(u.userAccountPanel(BankView.getController(), BankView.getMouseController()), "useraccounts");
 			cardLayout.show(BankView.getPanel(), "useraccounts");
+		}
+		
+		
+		
+		
+		if(ae.getSource().equals(UserAccount.getChequingBtn())) {
+			BankView.getPanel().add(transaction.chequingPanel(BankView.getController(), BankView.getMouseController(), UserAccountPage.getActiveUser(), 0), "transaction");
+			cardLayout.show(BankView.getPanel(), "transaction");
+		}
+		
+		if(ae.getSource().equals(UserAccount.getSavingsBtn())) {
+			BankView.getPanel().add(transaction.chequingPanel(BankView.getController(), BankView.getMouseController(), UserAccountPage.getActiveUser(), 1), "transaction");
+			cardLayout.show(BankView.getPanel(), "transaction");
 		}
 		
 		
@@ -280,6 +301,11 @@ public class BankController implements ActionListener {
 	        	cardLayout.show(BankView.getPanel(), "user");
 	        }
 	        
+	        if(e.getSource().equals(TransactionPage.getCancelBtn())) {
+	        	cardLayout.show(BankView.getPanel(), "useraccounts");
+	        	
+	        }
+	        
 	        
 	        for(int i = 0; i < DisplayCustomersPage.userBtn.length; i++) {
 	        	if(e.getSource().equals(DisplayCustomersPage.userBtn[i])) {
@@ -289,11 +315,6 @@ public class BankController implements ActionListener {
 		        }
 	        }
 	     
-	        
-
-	        
-	        
-	        
 	        
 	     
 	    }

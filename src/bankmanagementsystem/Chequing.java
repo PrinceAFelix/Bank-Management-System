@@ -1,5 +1,6 @@
 package bankmanagementsystem;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import bankmanagementsystem.model.User;
@@ -8,6 +9,7 @@ import bankmanagementsystem.model.UserAccount;
 public class Chequing extends UserAccount {
 
 	public String account_title;
+	private ArrayList<AtmTransaction> transactions;
 
 	public Chequing() {
 

@@ -9,6 +9,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
@@ -215,6 +218,17 @@ public class Components {
 	
 		
 		return panel;
+	}
+	
+	public String getCurrentDate() {
+	    // get current date
+	    LocalDate currentDate = LocalDate.now();
+
+	    // create formatter with desired format
+	    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, MMMM d, yyyy", Locale.ENGLISH);
+
+	    // format current date using formatter and return as string
+	    return currentDate.format(formatter);
 	}
 	
 	

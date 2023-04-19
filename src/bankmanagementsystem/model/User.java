@@ -2,12 +2,14 @@ package bankmanagementsystem.model;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
 import bankmanagementsystem.AtmTransaction;
 import bankmanagementsystem.Chequing;
 import bankmanagementsystem.Savings;
+import bankmanagementsystem.view.Components;
 
 public class User {
 
@@ -21,16 +23,20 @@ public class User {
 	private long cardNumber;
 
 	private ArrayList<UserAccount> userAccount;
-	private ArrayList<AtmTransaction> transactions;
+	private ArrayList<ArrayList<AtmTransaction>> transactions;
 
 	private static long idCounter = 0;
 	private static long accountNumberCounter;
+	
+	Random random = new Random();
+	
+	Components comp = new Components();
 
 	int index;
 
 	public User() {
 		userAccount = new ArrayList<UserAccount>();
-		transactions = new ArrayList<AtmTransaction>();
+		transactions = new ArrayList<ArrayList<AtmTransaction>>();
 	}
 
 	/**
@@ -59,11 +65,21 @@ public class User {
 	 * @param cnum
 	 */
 	public User(String id, String fname, String e, String phone, String pwd, String usrn, String adr, long cnum) {
+		
+		
 		setAccountNumberCounter(9999);
 		this.userAccount = new ArrayList<UserAccount>();
 		UserAccount temp = new Chequing("19836482", 200, "Chequing");
+		UserAccount temp1 = new Savings("19836362", 200, "Savings");
 		this.userAccount.add(temp);
-		this.transactions = new ArrayList<AtmTransaction>();
+		this.userAccount.add(temp1);
+		this.transactions = new ArrayList<ArrayList<AtmTransaction>>();
+		
+		this.transactions.add(new ArrayList<AtmTransaction>());//Represents Chequing
+		this.transactions.add(new ArrayList<AtmTransaction>());//Represents Savings
+		
+		
+		
 
 		this.id = id;
 		this.fullName = fname;
@@ -80,8 +96,8 @@ public class User {
 		return userAccount;
 	}
 
-	public ArrayList<AtmTransaction> getTransactions() {
-		return transactions;
+	public ArrayList<AtmTransaction> getTransactions(int account) {
+		return transactions.get(account);
 	}
 
 	public long addUser(String[] fields) {
@@ -263,24 +279,20 @@ public class User {
 		return false;
 	}
 
-	public boolean searchUser(ArrayList<User> user, String userId) {
-		ArrayList<User> result = new ArrayList<User>();
+	public int searchUser(ArrayList<User> user, String userId) {
+		System.out.println(userId);
 		try {
 			for (int i = 0; i < user.size(); i++) {
-				if ((user.get(i).id).equals(userId)) {
-					result.add(user.get(i));
-					AdminUser.viewCustomers(result);
-					return true;
-				}
+				if ((user.get(i).id).equals(userId)) return i;
 			}
 
 		} catch (Exception e) {
-			return false;
+			return -1;
 		}
 
 		System.out.printf("\nNo customer match with ID number: %s\n", userId);
 
-		return false;
+		return -1;
 
 	}
 

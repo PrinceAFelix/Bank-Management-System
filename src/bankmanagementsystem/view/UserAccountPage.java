@@ -13,6 +13,7 @@ import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import bankmanagementsystem.controller.BankController;
 import bankmanagementsystem.controller.BankController.MouseClickListener;
@@ -32,8 +33,6 @@ public class UserAccountPage {
 	protected static User activeUser;
 	
 	
-
-	
 	public JPanel header(String headerTitle) {
 		
 		JPanel panel = new JPanel();
@@ -45,18 +44,17 @@ public class UserAccountPage {
 		
 		
 		JLabel title = new JLabel(headerTitle);
-		Dimension labelSize = title.getPreferredSize();
-		labelSize.width = (int) title.getPreferredSize().getWidth();
-		labelSize.height = (int) title.getPreferredSize().getHeight();
 		title.setForeground(new Color(255, 255, 255));
 		title.setFont(new Font("Lucida Grande", Font.PLAIN, 22));
-		title.setPreferredSize(labelSize);
+		title.setHorizontalAlignment(SwingConstants.CENTER);
+		title.setPreferredSize(new Dimension(300, 60));
+		
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(130)
-					.addComponent(title, GroupLayout.PREFERRED_SIZE, 87, GroupLayout.PREFERRED_SIZE)
+					.addGap(120)
+					.addComponent(title, GroupLayout.PREFERRED_SIZE, 120, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(133, Short.MAX_VALUE))
 		);
 		gl_panel.setVerticalGroup(

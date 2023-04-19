@@ -7,8 +7,7 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
-
-import bankmanagementsystem.view.BankView;
+import bankmanagementsystem.controller.BankView;
 
 
 
