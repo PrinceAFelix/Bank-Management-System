@@ -19,14 +19,14 @@ import bankmanagementsystem.controller.BankController;
 import bankmanagementsystem.controller.BankController.MouseClickListener;
 import bankmanagementsystem.model.User;
 
-public class TransactionPage {
+public class TransactionHistoryPage {
 	
 	
 	private JPanel panel;
 	private static JLabel cancelBtn;
 	Components comp = new Components();
 	
-	public TransactionPage(){
+	public TransactionHistoryPage(){
 		panel = new JPanel();
 		panel.setLayout(new BorderLayout(0, 0));
 	}
@@ -176,7 +176,7 @@ public class TransactionPage {
 	 * @param cancelBtn the cancelBtn to set
 	 */
 	public static void setCancelBtn(JLabel cancelBtn) {
-		TransactionPage.cancelBtn = cancelBtn;
+		TransactionHistoryPage.cancelBtn = cancelBtn;
 	}
 
 }

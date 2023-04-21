@@ -28,8 +28,8 @@ public class UserAccountPage {
 	
 	private static JButton signoutBtn;
 	private static JButton accountBtn;
-	protected JButton depositBtn;
-	protected JButton withdrawBtn;
+	protected static JButton depositBtn;
+	protected static JButton withdrawBtn;
 	protected static User activeUser;
 	
 	
@@ -102,7 +102,9 @@ public class UserAccountPage {
 		
 		
 		depositBtn = new RoundButton("Deposit");
+		depositBtn.addActionListener(controller);
 		withdrawBtn = new RoundButton("Withdraw");
+		withdrawBtn.addActionListener(controller);
 		
 		GroupLayout gl_main = new GroupLayout(main);
 		gl_main.setHorizontalGroup(
@@ -195,6 +197,24 @@ public class UserAccountPage {
 	 */
 	public static void setActiveUser(User activeUser) {
 		UserAccountPage.activeUser = activeUser;
+	}
+
+
+
+
+
+	/**
+	 * @return the depositBtn
+	 */
+	public static JButton getDepositBtn() {
+		return depositBtn;
+	}
+
+	/**
+	 * @return the withdrawBtn
+	 */
+	public static JButton getWithdrawBtn() {
+		return withdrawBtn;
 	}
 
 	

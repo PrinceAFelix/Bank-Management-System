@@ -21,6 +21,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.JFormattedTextField;
 
 import bankmanagementsystem.controller.BankController;
 import bankmanagementsystem.controller.BankController.MouseClickListener;
@@ -34,15 +35,24 @@ public class Components {
 	
 	public JTextField setTextFieldFocusListener(JTextField textfield, String placeholder) {
 		
-		textfield.setBackground(new Color(246, 246, 246));
-		textfield.setColumns(10);
-		textfield.setBorder(BorderFactory.createCompoundBorder(
-				textfield.getBorder(), 
-		        BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+		
+		if(textfield instanceof JFormattedTextField) {
+			textfield.setPreferredSize(new Dimension(50, 40));
+			textfield.setBorder(null);
+			textfield.setFont(new Font("SansSerif", Font.PLAIN, 14));
+		}else {
+			textfield.setBackground(new Color(246, 246, 246));
+			textfield.setColumns(10);
+			textfield.setBorder(BorderFactory.createCompoundBorder(
+					textfield.getBorder(), 
+			        BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+			
+		}
 		textfield.setText(placeholder);
 		textfield.setForeground(Color.GRAY);
 		
-
+		
+		
 		
 		textfield.addFocusListener(new FocusListener() {
 		    @Override
@@ -61,6 +71,7 @@ public class Components {
 		        }
 		    }
 		    });
+		
 		
 		return textfield;
 	}

@@ -16,7 +16,6 @@ import bankmanagementsystem.view.DisplayCustomersPage;
 import bankmanagementsystem.view.LogIn;
 import bankmanagementsystem.view.ModificationPage;
 import bankmanagementsystem.view.RegisterPage;
-import bankmanagementsystem.view.TransactionPage;
 import bankmanagementsystem.view.UnregisterPage;
 import bankmanagementsystem.view.UserAccount;
 

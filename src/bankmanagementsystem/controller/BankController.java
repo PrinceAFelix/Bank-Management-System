@@ -16,11 +16,12 @@ import bankmanagementsystem.Chequing;
 import bankmanagementsystem.model.AdminUser;
 import bankmanagementsystem.model.User;
 import bankmanagementsystem.view.Admin;
+import bankmanagementsystem.view.AtmTransactionPage;
 import bankmanagementsystem.view.DisplayCustomersPage;
 import bankmanagementsystem.view.LogIn;
 import bankmanagementsystem.view.ModificationPage;
 import bankmanagementsystem.view.RegisterPage;
-import bankmanagementsystem.view.TransactionPage;
+import bankmanagementsystem.view.TransactionHistoryPage;
 import bankmanagementsystem.view.UnregisterPage;
 import bankmanagementsystem.view.UserAccount;
 import bankmanagementsystem.view.UserAccountPage;
@@ -53,7 +54,8 @@ public class BankController implements ActionListener {
 		UserAccount u = new UserAccount();
 		UserAccountPage up = new UserAccountPage();
 		User activeUser = null;
-		TransactionPage transaction  = new TransactionPage();
+		TransactionHistoryPage transaction  = new TransactionHistoryPage();
+		AtmTransactionPage atm = new AtmTransactionPage();
 		
 		
 		if(ae.getSource() ==  LogIn.getLoginBtn()) {
@@ -256,6 +258,28 @@ public class BankController implements ActionListener {
 		}
 		
 		
+		if(ae.getSource().equals(UserAccountPage.getDepositBtn())) {
+			BankView.getPanel().add(atm.atmTransactionPanel(BankView.getController(), BankView.getMouseController(), "Deposit"), "atmtransaction");
+			cardLayout.show(BankView.getPanel(), "atmtransaction");
+			AtmTransactionPage.setOperation(0);
+		}
+		
+		if(ae.getSource().equals(UserAccountPage.getWithdrawBtn())) {
+			BankView.getPanel().add(atm.atmTransactionPanel(BankView.getController(), BankView.getMouseController(), "Withdrawal"), "atmtransaction");
+			cardLayout.show(BankView.getPanel(), "atmtransaction");
+			AtmTransactionPage.setOperation(1);
+		}
+		
+		
+		if(ae.getSource().equals(AtmTransactionPage.getContinueBtn())) {
+			atm.processOperation(UserAccountPage.getActiveUser(), Float.valueOf(String.valueOf(AtmTransactionPage.getFormattedTextField().getValue())), AtmTransactionPage.getComboBox().getSelectedIndex());
+		}
+		
+		if(ae.getSource().equals(AtmTransactionPage.getComboBox())) {
+			AtmTransactionPage.setAccount(String.valueOf(AtmTransactionPage.getComboBox().getSelectedItem()));
+		}
+		
+		
 		
 	}
 	
@@ -301,7 +325,7 @@ public class BankController implements ActionListener {
 	        	cardLayout.show(BankView.getPanel(), "user");
 	        }
 	        
-	        if(e.getSource().equals(TransactionPage.getCancelBtn())) {
+	        if(e.getSource().equals(TransactionHistoryPage.getCancelBtn())) {
 	        	cardLayout.show(BankView.getPanel(), "useraccounts");
 	        	
 	        }
@@ -315,6 +339,11 @@ public class BankController implements ActionListener {
 		        }
 	        }
 	     
+	        
+	        
+	        if(e.getSource().equals(AtmTransactionPage.getCancelBtn())) {
+	        	cardLayout.show(BankView.getPanel(), "user");
+	        }
 	        
 	     
 	    }

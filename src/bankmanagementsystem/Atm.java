@@ -6,7 +6,7 @@ public class Atm {
 
 	public String atmLocation;
 
-	Atm() {
+	public Atm() {
 	}
 
 	public Atm(String adr) {

@@ -36,6 +36,7 @@ public class RegisterPage extends Results {
 	private static JButton submitForm;
 	private static JLabel cancelBtn;
 	
+	
 	private JPanel panel;
 	
 	private static String[] fields;
