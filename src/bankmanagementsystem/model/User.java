@@ -72,7 +72,7 @@ public class User {
 		UserAccount temp = new Chequing("19836482", 200, "Chequing");
 		UserAccount temp1 = new Savings("19836362", 200, "Savings");
 		this.userAccount.add(temp);
-		this.userAccount.add(temp1);
+//		this.userAccount.add(temp1);
 		this.transactions = new ArrayList<ArrayList<AtmTransaction>>();
 		
 		this.transactions.add(new ArrayList<AtmTransaction>());//Represents Chequing

@@ -13,16 +13,23 @@ public class Atm {
 		this.atmLocation = adr;
 	}
 
-	public void deposit(User user, float amount, int depositForm) {
-
+	public boolean deposit(User user, float amount, int depositForm) {
+		
+		if(!validateActiveAccount(user, depositForm)) return false;
+		
 		user.getUserAccount().get(depositForm).accountBalance += amount;
 		System.out.printf("\nSuccessfully deposit %.2f into your account\n\n", amount);
+		
+		return true;
 	}
 
-	public void withdraw(User user, float amount, int withdrawFrom) {
-
+	public boolean withdraw(User user, float amount, int withdrawFrom) {
+		if(!validateActiveAccount(user, withdrawFrom)) return false;
+		
 		user.getUserAccount().get(withdrawFrom).accountBalance -= amount;
 		System.out.printf("\nSuccessfully withdraw %.2f from your account\n\n", amount);
+		
+		return true;
 	}
 
 	public void checkBalance(User user, int thisAccount) {
