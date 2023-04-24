@@ -259,13 +259,13 @@ public class BankController implements ActionListener {
 		
 		
 		if(ae.getSource().equals(UserAccountPage.getDepositBtn())) {
-			BankView.getPanel().add(atm.atmTransactionPanel(BankView.getController(), BankView.getMouseController(), "Deposit"), "atmtransaction");
+			BankView.getPanel().add(atm.atmTransactionPanel(UserAccountPage.getActiveUser(), BankView.getController(), BankView.getMouseController(), "Deposit"), "atmtransaction");
 			cardLayout.show(BankView.getPanel(), "atmtransaction");
 			AtmTransactionPage.setOperation(0);
 		}
 		
 		if(ae.getSource().equals(UserAccountPage.getWithdrawBtn())) {
-			BankView.getPanel().add(atm.atmTransactionPanel(BankView.getController(), BankView.getMouseController(), "Withdrawal"), "atmtransaction");
+			BankView.getPanel().add(atm.atmTransactionPanel(UserAccountPage.getActiveUser(), BankView.getController(), BankView.getMouseController(), "Withdrawal"), "atmtransaction");
 			cardLayout.show(BankView.getPanel(), "atmtransaction");
 			AtmTransactionPage.setOperation(1);
 		}

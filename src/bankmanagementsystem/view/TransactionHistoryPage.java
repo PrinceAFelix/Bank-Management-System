@@ -5,16 +5,19 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import bankmanagementsystem.AtmTransaction;
 import bankmanagementsystem.controller.BankController;
 import bankmanagementsystem.controller.BankController.MouseClickListener;
 import bankmanagementsystem.model.User;
@@ -31,7 +34,10 @@ public class TransactionHistoryPage {
 		panel.setLayout(new BorderLayout(0, 0));
 	}
 	
-	private int i = 0;
+	private int i = 0, preferredHeight = 0;
+	
+	
+	
 	public JPanel header(User user, int account) {
 		JPanel header = new JPanel();
 		
@@ -85,10 +91,13 @@ public class TransactionHistoryPage {
 	
 	
 	public JPanel chequingPanel(BankController controller, MouseClickListener mousecontroller, User user, int account) {
+
 		
 		panel.add(header(user, account), BorderLayout.NORTH);
 		panel.add(transactions(user, account), BorderLayout.CENTER);
 		panel.add(footer(mousecontroller, "Back"), BorderLayout.SOUTH);
+
+
 		
 		return panel;
 	}
@@ -96,32 +105,59 @@ public class TransactionHistoryPage {
 	
 	
 	public JPanel transactions(User user, int account) {
+		
+		JPanel panel = new JPanel();
+		panel.setLayout(new BorderLayout()); 
+
+		
 		JPanel transactionPanel = new JPanel();
 		transactionPanel.setBackground(new Color(217, 217, 217));
 		transactionPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+		transactionPanel.setPreferredSize(new Dimension(350, 350));
+		transactionPanel.setAlignmentY(FlowLayout.LEADING);
+		panel.add(transactionPanel);
 		
 		JLabel transactionLabel = new JLabel("TRANSACTIONS");
 		transactionLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		transactionPanel.add(transactionLabel);
+
 		transactionLabel.setPreferredSize(new Dimension(350, 50));
 		transactionLabel.setForeground(Color.WHITE);
 		transactionLabel.setBackground(new Color(5, 52, 96));
 		transactionLabel.setOpaque(true);
+		transactionPanel.add(transactionLabel);
 		
-		
-		
+		preferredHeight = panel.getPreferredSize().height; 
+
+
+
 		user.getTransactions(account).forEach((tr) -> {
-			transactionPanel.add(transactionItem(transactionPanel, user, account, i++));
-		
+			
+			transactionPanel.add(transactionItem(transactionPanel, tr.transaction_Date, tr.transaction_Type, tr.transaction_Amount));
+			i++;
+			if (i >= 5) { // if more than 5 components added, adjust preferred height
+				preferredHeight += 70;
+				transactionPanel.setPreferredSize(new Dimension(350, preferredHeight));
+		    }
+			
 		});
-
-
 		
-		return transactionPanel;
+		
+		
+		
+		
+		
+		JScrollPane scrollPane = new JScrollPane(transactionPanel);
+		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+		panel.add(scrollPane, BorderLayout.CENTER);
+		
+
+		return panel;
 	}
 	
 	
-	public JPanel transactionItem(JPanel transactionPanel, User user, int account, int index) {
+	public JPanel transactionItem(JPanel transactionPanel, String dt, String ttype, float amount) {
 		JPanel transactionItem = new JPanel();
 		
 		transactionItem.setPreferredSize(new Dimension(350, 70));
@@ -129,13 +165,14 @@ public class TransactionHistoryPage {
 		transactionItem.setLayout(new BorderLayout(0, 0));
 		
 //		String color = isDeposit ? "black" : "#3EBB61";
-		String color = "#3EBB61";
+		String color = ttype == "Withdrawal" ? "#000000" : "#3EBB61";
+		String addSign = color == "#000000" ? "-" : "";
 		
 		JLabel itemLabel = new JLabel(
 				"<html>"
 				+ "<body>"
-				+ 	"<span style='font-size: 9px; color: rgba(0, 0, 0, 0.4);'>"+ user.getTransactions(account).get(index).transaction_Date +"</span><br>"
-				+ 	"<span style='font-size: 12px; color: black;'>" + user.getTransactions(account).get(index).transaction_Type + "</span><br>"
+				+ 	"<span style='font-size: 9px; color: rgba(0, 0, 0, 0.4);'>"+ dt +"</span><br>"
+				+ 	"<span style='font-size: 12px; color: black;'>" +ttype + "</span><br>"
 				+ "</body>"
 				+"</html>"
 				);
@@ -143,7 +180,7 @@ public class TransactionHistoryPage {
 		JLabel ammountLabel = new JLabel(
 				"<html>"
 				+ "<body>"
-				+ 	"<span style='font-weight: bold; font-size: 14px; color: " + color + ";'>$" + String.valueOf(String.format("%.2f", user.getTransactions(account).get(index).transaction_Amount)) + "</span><br>"
+				+ 	"<span style='font-weight: bold; font-size: 14px; color: " + color + ";'>" + addSign + "$" + String.valueOf(String.format("%.2f", amount)) + "</span><br>"
 				+ "</body>"
 				+"</html>"
 				);

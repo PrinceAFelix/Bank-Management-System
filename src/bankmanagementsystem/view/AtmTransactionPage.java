@@ -87,17 +87,17 @@ public JPanel header(String headerTitle) {
 		
 	}
 	
-	public JPanel atmTransactionPanel(BankController controller, MouseClickListener mousecontroller, String operation) {
+	public JPanel atmTransactionPanel(User user, BankController controller, MouseClickListener mousecontroller, String operation) {
 		
 		panel.add(header(operation), BorderLayout.NORTH);
-		panel.add(main(controller), BorderLayout.CENTER);
+		panel.add(main(user, controller), BorderLayout.CENTER);
 		panel.add(footer(mousecontroller, "Cancel"), BorderLayout.SOUTH);
 		
 		return panel;
 		
 	}
 	
-	public JPanel main(BankController controller) {
+	public JPanel main(User user, BankController controller) {
 		JPanel transactionPanel = new JPanel();
 		transactionPanel.add(Box.createRigidArea(new Dimension(80, 80)));
 		transactionPanel.setBackground(new Color(217, 217, 217));
@@ -124,8 +124,11 @@ public JPanel header(String headerTitle) {
 		
 		accountPanel.add(fromAccount, BorderLayout.WEST);
 		
+		System.out.println();
+		String[] option = user.getUserAccount().size() == 1 ? new String[]{"Chequing"} : new String[]{"Chequing","Savings"};
 
-		comboBox = new JComboBox<Object>(new String[]{"Chequing", "Savings"});
+		comboBox = new JComboBox<Object>(option);
+
 		comboBox.setPreferredSize(new Dimension(150, 50));
 		comboBox.addActionListener(controller);
 		comboBox.setSelectedIndex(-1);
