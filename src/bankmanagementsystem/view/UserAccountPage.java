@@ -33,7 +33,7 @@ public class UserAccountPage {
 	protected static User activeUser;
 	
 	
-	public JPanel header(String headerTitle) {
+public JPanel header(String headerTitle) {
 		
 		JPanel panel = new JPanel();
 

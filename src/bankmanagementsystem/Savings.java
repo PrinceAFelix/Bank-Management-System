@@ -34,14 +34,11 @@ public class Savings extends UserAccount {
 	}
 
 	@Override
-	public boolean addAccount(Scanner sc, User user) {
+	public boolean addAccount(User user, float val) {
 		if (user.getUserAccount().size() == 2 && user.getUserAccount().get(1).accountTitle.equals("Savings")) {
 			System.out.println("\nAlready have a Savings Account\n");
 			return false;
 		}
-
-		System.out.print("\nEnter the amount you'd like to deposit into your new Account: ");
-		float val = sc.nextFloat();
 
 		UserAccount temp = new Savings(String.format("%04d", User.getAccountNumberCounter()), val, "Savings");
 
@@ -64,14 +61,16 @@ public class Savings extends UserAccount {
 //	}
 
 	@Override
-	public boolean deleteAccount(Scanner sc, User user) {
-		if (user.getUserAccount().size() == 2 && user.getUserAccount().get(1).accountTitle.equals("Savings")) {
-			user.getUserAccount().remove(1);
-			System.out.println("\nSuccessfully delete Svaings Account");
-			return true;
+	public boolean deleteAccount(User user) {
+		
+		if (user.getUserAccount().size() != 2) {
+			System.out.println("\nYou do not have a Savings Account\n");
+			return false;
 		}
-
-		return false;
+		
+		user.getUserAccount().remove(1);
+		System.out.println("\nSuccessfully delete Svaings Account");
+		return true;
 
 	}
 

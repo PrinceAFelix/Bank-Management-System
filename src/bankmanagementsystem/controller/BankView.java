@@ -17,7 +17,7 @@ import bankmanagementsystem.view.LogIn;
 import bankmanagementsystem.view.ModificationPage;
 import bankmanagementsystem.view.RegisterPage;
 import bankmanagementsystem.view.UnregisterPage;
-import bankmanagementsystem.view.UserAccount;
+import bankmanagementsystem.view.UserAccounts;
 
 public class BankView extends JFrame {
 	

@@ -15,15 +15,19 @@ import bankmanagementsystem.controller.BankController;
 import bankmanagementsystem.controller.BankController.MouseClickListener;
 import bankmanagementsystem.model.User;
 
-public class UserAccount extends UserAccountPage {
+public class UserAccounts extends UserAccountPage {
 	
 	private static JLabel backBtn;
 	private User user;
 	
 	private static JButton chequingBtn;
 	private static JButton savingsBtn;
+	private static JButton openAccountBtn;
+	private static JButton deleteAccountBtn;
 	
 	Components comp = new Components();
+	
+	
 	
 	public JPanel userAccountPanel(BankController contorller, MouseClickListener mouseListener) {
 		user = super.getActiveUser();
@@ -91,12 +95,13 @@ public class UserAccount extends UserAccountPage {
 		JPanel accountsOptions = new JPanel();
 		main.add(accountsOptions, BorderLayout.CENTER);
 		
-		JButton openAccountBtn = accountBtns(null, new Dimension(280, 50), "Open Account");
+		openAccountBtn = accountBtns(null, new Dimension(280, 50), "Open Account");
 		accountsOptions.add(openAccountBtn);
+		openAccountBtn.addActionListener(contorller);
 		
-		JButton deleteAccountBtn = accountBtns(null, new Dimension(280, 50), "Delete Account");
+		deleteAccountBtn = accountBtns(null, new Dimension(280, 50), "Delete Account");
 		accountsOptions.add(deleteAccountBtn);
-		
+		deleteAccountBtn.addActionListener(contorller);
 		return main;
 	}
 	
@@ -145,6 +150,15 @@ public class UserAccount extends UserAccountPage {
 	public static JButton getSavingsBtn() {
 		return savingsBtn;
 	}
+
+	
+	public static JButton getOpenAccBtn() {
+		return openAccountBtn;
+	}
+	
+	public static JButton getDeleteAccBtn() {
+		return deleteAccountBtn;
+	}
 	
 	
 	
@@ -157,7 +171,7 @@ public class UserAccount extends UserAccountPage {
 	 * @param cancelBtn the cancelBtn to set
 	 */
 	public static void setBackBtn(JLabel backBtn) {
-		UserAccount.backBtn = backBtn;
+		UserAccounts.backBtn = backBtn;
 	}
 
 }

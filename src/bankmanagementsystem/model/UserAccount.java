@@ -20,13 +20,13 @@ public abstract class UserAccount {
 		this.accountTitle = at;
 	}
 
-	public abstract boolean addAccount(Scanner sc, User user);
+	public abstract boolean addAccount(User user, float val);
 
 //	public abstract boolean updateAccount(Scanner sc, User user);
 
 //	public abstract boolean edit_account(Scanner sc, User user);
 
-	public abstract boolean deleteAccount(Scanner sc, User user);
+	public abstract boolean deleteAccount(User user);
 
 	protected long accountNumberGenerator() {
 		long smallest = 1000_0000_0000_0000L;

@@ -28,15 +28,13 @@ public class Chequing extends UserAccount {
 	}
 
 	@Override
-	public boolean addAccount(Scanner sc, User user) {
+	public boolean addAccount(User user, float val) {
 
 		if (user.getUserAccount().size() <= 2 && user.getUserAccount().get(0).accountTitle.equals("Chequing")) {
 			System.out.println("\nAlready have a Chequing Account\n");
 			return false;
 		}
 
-		System.out.print("Enter the amount you'd like to deposit into your new Account: ");
-		float val = sc.nextFloat();
 
 		Chequing temp = new Chequing(String.format("%04d", User.getAccountNumberCounter()), val, "Chequing");
 
@@ -58,7 +56,7 @@ public class Chequing extends UserAccount {
 //	}
 
 	@Override
-	public boolean deleteAccount(Scanner sc, User user) {
+	public boolean deleteAccount(User user) {
 		// TODO Auto-generated method stub
 		return true;
 	}

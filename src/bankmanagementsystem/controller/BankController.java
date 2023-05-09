@@ -2,6 +2,7 @@ package bankmanagementsystem.controller;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -13,17 +14,20 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
 import bankmanagementsystem.Chequing;
+import bankmanagementsystem.Savings;
 import bankmanagementsystem.model.AdminUser;
 import bankmanagementsystem.model.User;
+import bankmanagementsystem.model.UserAccount;
 import bankmanagementsystem.view.Admin;
 import bankmanagementsystem.view.AtmTransactionPage;
 import bankmanagementsystem.view.DisplayCustomersPage;
 import bankmanagementsystem.view.LogIn;
+import bankmanagementsystem.view.ManageUserAccounts;
 import bankmanagementsystem.view.ModificationPage;
 import bankmanagementsystem.view.RegisterPage;
 import bankmanagementsystem.view.TransactionHistoryPage;
 import bankmanagementsystem.view.UnregisterPage;
-import bankmanagementsystem.view.UserAccount;
+import bankmanagementsystem.view.UserAccounts;
 import bankmanagementsystem.view.UserAccountPage;
 
 
@@ -39,6 +43,8 @@ public class BankController implements ActionListener {
 
 	CardLayout cardLayout = (CardLayout) BankView.getPanel().getLayout();
 	
+	ManageUserAccounts modal;
+	UserAccount tempAccount = null;
 
 	public BankController(){
 		
@@ -51,7 +57,7 @@ public class BankController implements ActionListener {
 	public void actionPerformed(ActionEvent ae) {
 		
 		Admin a = new Admin();
-		UserAccount u = new UserAccount();
+		UserAccounts u = new UserAccounts();
 		UserAccountPage up = new UserAccountPage();
 		User activeUser = null;
 		TransactionHistoryPage transaction  = new TransactionHistoryPage();
@@ -59,6 +65,7 @@ public class BankController implements ActionListener {
 		
 		
 		if(ae.getSource() ==  LogIn.getLoginBtn()) {
+
 			
 			//Admin Login
 			if(LogIn.getCredential().getText().equals(admin.getUsername()) 
@@ -244,15 +251,62 @@ public class BankController implements ActionListener {
 			cardLayout.show(BankView.getPanel(), "useraccounts");
 		}
 		
+		if(ae.getSource().equals(UserAccounts.getOpenAccBtn())) {
+			modal = new ManageUserAccounts(BankView.getPanel(), BankView.getController(), true, "open");
+			modal.setVisible(true);
+		}
+		
+		if(ae.getSource().equals(UserAccounts.getDeleteAccBtn())) {
+			modal = new ManageUserAccounts(BankView.getPanel(), BankView.getController(), false, "delete");
+			modal.setVisible(true);
+		}
+		
+		if(ae.getSource().equals(ManageUserAccounts.getCancelbtn())) {
+			modal.setVisible(false);
+		}
+		
+		if(ae.getSource().equals(ManageUserAccounts.getConfirmbtn())) {
+
+			int selectedAccount = ManageUserAccounts.getAccounts().getSelectedIndex();
+			String amount = ManageUserAccounts.getAmountField().getText();
+			
+			if(ae.getActionCommand().equals("open")) {
+				if( selectedAccount != 0 && !amount.isBlank()) {
+					tempAccount = new Savings();
+					tempAccount.addAccount(UserAccountPage.getActiveUser(), Float.valueOf(amount));
+					cardLayout.show(BankView.getPanel(), "user");
+					modal.setVisible(false);
+				}else {
+					System.out.println("Empty Fields");
+				}
+				
+			}else if(ae.getActionCommand().equals("delete")){
+				if(selectedAccount != 0) {
+					tempAccount = new Savings();
+					tempAccount.deleteAccount(UserAccountPage.getActiveUser());
+					cardLayout.show(BankView.getPanel(), "user");
+					modal.setVisible(false);
+				}else {
+					System.out.println("Empty Fields");
+				}
+			
+			}
+			
+
+		}
 		
 		
 		
-		if(ae.getSource().equals(UserAccount.getChequingBtn())) {
+		
+		
+		
+		
+		if(ae.getSource().equals(UserAccounts.getChequingBtn())) {
 			BankView.getPanel().add(transaction.chequingPanel(BankView.getController(), BankView.getMouseController(), UserAccountPage.getActiveUser(), 0), "transaction");
 			cardLayout.show(BankView.getPanel(), "transaction");
 		}
 		
-		if(ae.getSource().equals(UserAccount.getSavingsBtn())) {
+		if(ae.getSource().equals(UserAccounts.getSavingsBtn())) {
 			BankView.getPanel().add(transaction.chequingPanel(BankView.getController(), BankView.getMouseController(), UserAccountPage.getActiveUser(), 1), "transaction");
 			cardLayout.show(BankView.getPanel(), "transaction");
 		}
@@ -321,7 +375,7 @@ public class BankController implements ActionListener {
 				
 	        }
 	        
-	        if(e.getSource().equals(UserAccount.getBackBtn())) {
+	        if(e.getSource().equals(UserAccounts.getBackBtn())) {
 	        	cardLayout.show(BankView.getPanel(), "user");
 	        }
 	        

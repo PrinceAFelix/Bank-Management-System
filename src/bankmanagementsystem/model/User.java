@@ -71,31 +71,14 @@ public class User {
 		setAccountNumberCounter(9999);
 		this.userAccount = new ArrayList<UserAccount>();
 		UserAccount temp = new Chequing("19836482", 200, "Chequing");
-		UserAccount temp1 = new Savings("19836362", 200, "Savings");
+//		UserAccount temp1 = new Savings("19836362", 200, "Savings");
 		this.userAccount.add(temp);
-		this.userAccount.add(temp1);
+//		this.userAccount.add(temp1);
 		this.transactions = new ArrayList<ArrayList<AtmTransaction>>();
 		
 		this.transactions.add(new ArrayList<AtmTransaction>());//Represents Chequing
 		this.transactions.add(new ArrayList<AtmTransaction>());//Represents Savings
-		
-		AtmTransaction transactionTemp = new AtmTransaction(random.nextInt(10000),
-				"Chequing", comp.getCurrentDate(), "Deposit", 44,
-				this.getUserAccount().get(0).accountBalance);
-		this.getTransactions(0).add(transactionTemp);
-		this.getTransactions(0).add(transactionTemp);
-		this.getTransactions(0).add(transactionTemp);
-		this.getTransactions(0).add(transactionTemp);
-		this.getTransactions(0).add(transactionTemp);
-		this.getTransactions(0).add(transactionTemp);
-		this.getTransactions(0).add(transactionTemp);
-		this.getTransactions(0).add(transactionTemp);
-		this.getTransactions(0).add(transactionTemp);
-		this.getTransactions(0).add(transactionTemp);
-		transactionTemp = new AtmTransaction(random.nextInt(10000),
-				"Chequing", comp.getCurrentDate(), "Deposit", 50,
-				this.getUserAccount().get(0).accountBalance);
-		this.getTransactions(0).add(transactionTemp);
+
 
 		this.id = id;
 		this.fullName = fname;

@@ -38,7 +38,7 @@ public class Admin {
 //		exitBtn = new JButton("Exit");
 	}
 	public JPanel header(String headerTitle, String loc, String ID) {
-	
+		
 		JPanel panel = new JPanel();
 
 		panel.setBackground(new Color(57, 118, 174));

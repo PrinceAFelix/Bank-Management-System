@@ -323,8 +323,9 @@ public class Bank {
 						default:
 							break;
 						}
+	
 
-						tempAccount.addAccount(sc, activeUser);
+						tempAccount.addAccount(activeUser, 0);
 
 						break;
 					} while (true);
@@ -351,7 +352,7 @@ public class Bank {
 							break;
 						}
 
-						tempAccount.deleteAccount(sc, activeUser);
+						tempAccount.deleteAccount(activeUser);
 
 						break;
 					} while (true);
