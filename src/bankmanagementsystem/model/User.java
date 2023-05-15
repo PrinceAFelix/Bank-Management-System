@@ -1,5 +1,6 @@
 package bankmanagementsystem.model;
 
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.InputMismatchException;
@@ -10,6 +11,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import bankmanagementsystem.AtmTransaction;
 import bankmanagementsystem.Chequing;
 import bankmanagementsystem.Savings;
+import bankmanagementsystem.service.JDBC;
 import bankmanagementsystem.view.Components;
 
 public class User {
@@ -34,6 +36,10 @@ public class User {
 	Components comp = new Components();
 
 	int index;
+	
+	
+	JDBC sqlConnect = new JDBC();
+
 
 	public User() {
 		userAccount = new ArrayList<UserAccount>();
@@ -139,6 +145,11 @@ public class User {
 			
 			this.userAccount.add(temp);
 			
+			
+
+			sqlConnect.insertUserfull(getFullName(), getEmail(), getPhone(), getPassword(), getUsername(), getAddress(), getCardNumber(), temp);
+			
+
 
 		} catch (Exception e) {
 			return -1;

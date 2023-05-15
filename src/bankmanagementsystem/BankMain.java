@@ -8,6 +8,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 
 import bankmanagementsystem.controller.BankView;
+import bankmanagementsystem.service.JDBC;
 
 
 
@@ -23,7 +24,6 @@ public class BankMain {
 	    	  //mfe.printStackTrace();	
 	    	} 
 	    }
-		
 		
 		
 		EventQueue.invokeLater(new Runnable(){
