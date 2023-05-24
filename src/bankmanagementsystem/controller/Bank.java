@@ -95,7 +95,7 @@ public class Bank {
 //				admin.addCustomer(users);
 				break;
 			case 2:
-				admin.deleteCustomer(users, user, "0000");
+//				admin.deleteCustomer(user, "0000");
 				break;
 			case 3:
 				AdminUser.viewCustomers(users);

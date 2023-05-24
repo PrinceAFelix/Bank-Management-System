@@ -159,7 +159,7 @@ public class BankController implements ActionListener {
 		if(ae.getSource().equals(UnregisterPage.getSubmitBtn())) {
 			User user = new User();
 			try{
-				String[] deletedUser = admin.deleteCustomer(users, user , UnregisterPage.getTextField().getText());
+				String[] deletedUser = admin.deleteCustomer(user , String.valueOf(UnregisterPage.getTextField().getText()));
 				UnregisterPage.setIsFormSubmit(true);
 				BankView.unregister.update(BankView.unregister.getPanel(), users.get(users.size()-1), BankView.getController(), BankView.getMouseController(), deletedUser);
 			}catch(Exception e) {

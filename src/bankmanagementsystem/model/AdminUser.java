@@ -32,11 +32,11 @@ public class AdminUser extends User {
 		
 	}
 
-	public String[] deleteCustomer(ArrayList<User> users, User user, String id) {
+	public String[] deleteCustomer(User user, String id) {
 		try {
 
 			
-			 return user.deleteUser(users, id);
+			 return user.deleteUser(id);
 			 
 			  
 

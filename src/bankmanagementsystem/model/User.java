@@ -147,7 +147,7 @@ public class User {
 			
 			
 
-			sqlConnect.insertUserfull(getFullName(), getEmail(), getPhone(), getPassword(), getUsername(), getAddress(), getCardNumber(), temp);
+			sqlConnect.insertUser(getId() ,getFullName(), getEmail(), getPhone(), getPassword(), getUsername(), getAddress(), getCardNumber(), temp);
 			
 
 
@@ -159,22 +159,35 @@ public class User {
 
 	}
 
-	public String[] deleteUser(ArrayList<User> user, String userId) {
+	public String[] deleteUser(String userId) {
 		String[] deletedUser = new String[2];
 		// For faster search -> Learn Binary Search to search specific user
 
 		try {
-			for (int i = 0; i < user.size(); i++) {
-				if ((user.get(i).id).equals(userId)) {
-					deletedUser[0] = user.get(i).getId();
-					deletedUser[1] = user.get(i).getFullName();
-					user.remove(i);
-					System.out.printf("\nSuccessfully deregister a customer with ID number: %s\n", userId);
-					return deletedUser;
-				}
-			}
-		} catch (Exception e) {
+			
+			
+			deletedUser = sqlConnect.getUser(userId);
+			
+			sqlConnect.deleteUser(userId);
+			
+			
+			
+			
+			
+//			for (int i = 0; i < user.size(); i++) {
+//				if ((user.get(i).id).equals(userId)) {
+//					deletedUser[0] = user.get(i).getId();
+//					deletedUser[1] = user.get(i).getFullName();
+//					user.remove(i);
+//					System.out.printf("\nSuccessfully deregister a customer with ID number: %s\n", userId);
+//					return deletedUser;
+//				}
+//			}
+			
 			return deletedUser;
+	
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 		}
 
 		System.out.printf("\nNo customer match with ID number: %s\n", userId);

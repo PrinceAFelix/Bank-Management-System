@@ -26,6 +26,11 @@ public class BankMain {
 	    }
 		
 		
+		JDBC sqlConnect = new JDBC();
+		
+//		sqlConnect.deleteUser(1);
+		
+		
 		EventQueue.invokeLater(new Runnable(){
 		       @Override
 		       public void run(){ 	
