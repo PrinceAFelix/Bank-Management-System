@@ -177,11 +177,11 @@ public class UnregisterPage extends Results {
 
 
 	@Override
-	public void condition(User user, BankController controller, MouseClickListener mousecontroller, String[] deleteduser) {
+	public void condition(User user, BankController controller, MouseClickListener mousecontroller) {
 		
 		if(isFormSubmit) {
 			 
-			 panel.add(comp.showResults(user, false, deleteduser), BorderLayout.CENTER);
+			 panel.add(comp.showResults(user, false), BorderLayout.CENTER);
 			 panel.add(footer(mousecontroller, isFormSubmit ? "Return Home" : "Cancel"), BorderLayout.SOUTH);
 		 }else {
 			 unregisterPanel(controller,  mousecontroller);

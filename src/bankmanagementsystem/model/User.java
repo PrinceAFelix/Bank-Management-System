@@ -111,56 +111,56 @@ public class User {
 	
 	}
 
-	public long addUser(String[] fields) {
+	public User addUser(String[] fields) {
 
 		/* return a random long of 16 length */
 		long smallest = 1000_0000_0000_0000L;
 		long biggest = 9999_9999_9999_9999L;
 
 		try {
-
 			
-			setId(String.format("%04d", idCounter++));
-
-
-			setFullName(getFullName(fields[0], fields[1]));
-
-			setUsername(fields[2]);
+			User user = new User();
 			
-			setEmail(fields[3]);
+			user.setId(String.format("%04d", idCounter++));
 
-			setPhone(fields[4]);
+
+			user.setFullName(getFullName(fields[0], fields[1]));
+
+			user.setUsername(fields[2]);
 			
-			setAddress(fields[5]);
+			user.setEmail(fields[3]);
+
+			user.setPhone(fields[4]);
+			
+			user.setAddress(fields[5]);
 		
 			if(fields[6].equals(fields[7])) {
-				setPassword(fields[7]);
+				user.setPassword(fields[7]);
 			}else {
 				throw new Exception("Password Not Match");
 			}
 
-			setCardNumber(ThreadLocalRandom.current().nextLong(smallest, biggest + 1));
+			user.setCardNumber(ThreadLocalRandom.current().nextLong(smallest, biggest + 1));
 
 			Chequing temp = new Chequing(String.format("%04d", getAccountNumberCounter()), 500, "Chequing");
 			
-			this.userAccount.add(temp);
+			user.userAccount.add(temp);
 			
+	
+			sqlConnect.insertUser(user.getId() ,user.getFullName(), user.getEmail(), user.getPhone(), user.getPassword(), user.getUsername(), user.getAddress(), user.getCardNumber(), temp);
 			
-
-			sqlConnect.insertUser(getId() ,getFullName(), getEmail(), getPhone(), getPassword(), getUsername(), getAddress(), getCardNumber(), temp);
-			
-
+			return user;
 
 		} catch (Exception e) {
-			return -1;
+			return null;
 		}
 
-		return getCardNumber();
+		
 
 	}
 
-	public String[] deleteUser(String userId) {
-		String[] deletedUser = new String[2];
+	public User deleteUser(String userId) {
+		User deletedUser = new User();
 		// For faster search -> Learn Binary Search to search specific user
 
 		try {

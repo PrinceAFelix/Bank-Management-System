@@ -6,8 +6,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import bankmanagementsystem.Chequing;
+import bankmanagementsystem.model.User;
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class JDBC {
@@ -115,10 +118,10 @@ public class JDBC {
 	}
 
 	
-	public String[] getUser(String id) {
+	public User getUser(String id) {
+	
 		
-		
-		String sql = "SELECT fullname FROM users "
+		String sql = "SELECT * FROM users "
 				+ "WHERE id = ?";
 	
     try (Connection connection = DriverManager.getConnection (dburl, dbuser, dbpassword);) {
@@ -126,8 +129,7 @@ public class JDBC {
 		statement.setString(1, id);
 		ResultSet rs = statement.executeQuery();
 		if(rs.next())
-			return new String[] {String.valueOf(id), rs.getString("fullname")};
-		
+			return new User(id, rs.getString("fullname"), rs.getString("email"), rs.getString("phone"), rs.getString("password"), rs.getString("username"), rs.getString("address"), Long.valueOf(rs.getString("cardnumber")));
 		return null;
 
     }catch (SQLException e) {
@@ -137,6 +139,46 @@ public class JDBC {
     }
     
 		
+		
+		
+	}
+	
+	
+	public ArrayList<User> getCustomersList(){
+		
+		ArrayList<User> userList = new ArrayList<>();
+		
+		System.out.println(userList.size());
+		  
+		  String sql = "SELECT * FROM users ";
+		  
+		  try (Connection connection = DriverManager.getConnection (dburl, dbuser, dbpassword);) {
+				PreparedStatement statement = connection.prepareStatement(sql);
+				ResultSet rs = statement.executeQuery();
+				
+				
+				while (rs.next()) {
+	                
+	                User user = new User(rs.getString("id"), rs.getString("fullname"), rs.getString("email"), rs.getString("phone"), rs.getString("password"), rs.getString("username"), rs.getString("address"), Long.valueOf(rs.getString("cardnumber")));
+	                userList.add(user);
+	            }
+				  
+				
+
+		    }catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+		    }
+		  
+		  
+		  
+
+
+			System.out.println(userList.size());
+		  
+		  return userList;
+
 		
 		
 	}

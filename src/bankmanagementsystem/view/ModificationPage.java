@@ -287,8 +287,7 @@ public class ModificationPage extends Results {
 
 
 	@Override
-	public void condition(User user, BankController controller, MouseClickListener mousecontroller,
-			String[] deleteduser) {
+	public void condition(User user, BankController controller, MouseClickListener mousecontroller) {
 		
 		panel.add(header("Edit"), BorderLayout.NORTH);
 		panel.add(modifyForms(controller, user), BorderLayout.CENTER);

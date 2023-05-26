@@ -135,7 +135,7 @@ public class Components {
 	}
 	
 	
-	public JPanel showResults(User user, boolean isRegister, String[] deletedUser) {
+	public JPanel showResults(User user, boolean isRegister) {
 		JPanel panel = new JPanel();
 	
 		panel.setBackground(Color.WHITE);
@@ -146,7 +146,7 @@ public class Components {
 				"<div style='text-align: center;'>"+
 	            "<span style='font-size: 14px; color: Black; '>Successfully Removed</span>" +
 	            "<br>" +
-	            "<span style='font-size: 12px; color: gray;'>" + deletedUser[1] + "</span>" +
+	            "<span style='font-size: 12px; color: gray;'>" + user.getFullName() + "</span>" +
 	            "</div>" +
 	            "</body></html>");
 		
@@ -156,7 +156,7 @@ public class Components {
 		JLabel idLabel = new JLabel("User's ID");
 		idLabel.setFont(new Font("Lucida Grande", Font.BOLD, 15));
 
-		JLabel idValue = new JLabel(isRegister ? user.getId() : deletedUser[0]);
+		JLabel idValue = new JLabel(user.getId());
 		idValue.setFont(new Font("Lucida Grande", Font.PLAIN, 14));
 
 		if(isRegister) {

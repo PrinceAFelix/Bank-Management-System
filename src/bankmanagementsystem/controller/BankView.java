@@ -53,7 +53,7 @@ public class BankView extends JFrame {
 		panel.add(l.logInPanel(controller), "login");
 		panel.add(register.registerPanel(controller, mousecontroller), "register");
 		panel.add(unregister.unregisterPanel(controller, mousecontroller), "remove");
-		panel.add(display.displayPanel(controller, mousecontroller, controller.getUsers()), "display");
+	
 		panel.add(modify.ModifyPanel(controller, mousecontroller), "modify");
 		
 		mainFrame.setLayout(new BorderLayout());

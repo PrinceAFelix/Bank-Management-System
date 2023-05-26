@@ -25,16 +25,16 @@ public abstract class Results {
 	
 	
 	
-	public void update(JPanel panel, User user, BankController controller, MouseClickListener mousecontroller, String[] deleteduser) {
+	public void update(JPanel panel, User user, BankController controller, MouseClickListener mousecontroller) {
 		
 		 panel.removeAll();
 		 
-		 condition(user, controller, mousecontroller, deleteduser);
+		 condition(user, controller, mousecontroller);
 		 
 		 panel.revalidate(); 
 	     panel.repaint(); 
 	}
 	
-	public abstract void condition(User user, BankController controller, MouseClickListener mousecontroller, String[] deleteduser);
+	public abstract void condition(User user, BankController controller, MouseClickListener mousecontroller);
 	
 }

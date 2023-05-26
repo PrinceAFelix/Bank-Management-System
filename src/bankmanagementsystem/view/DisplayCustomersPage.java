@@ -244,6 +244,8 @@ public class DisplayCustomersPage extends Results {
 
 			
 		}
+		
+		
 
 		displayPanel.setLayout(gl_displayPanel);
 		
@@ -340,13 +342,7 @@ public class DisplayCustomersPage extends Results {
 	}
 	
 	
-	public ArrayList<JLabel> list() {
-		ArrayList<JLabel> customerList = new ArrayList<>();
-		
-		
-		
-		return customerList;
-	}
+
 	
 	public static boolean getIsShwoingInformation() {
 		return isShwoingInformation;
@@ -403,7 +399,7 @@ public class DisplayCustomersPage extends Results {
 
 
 	@Override
-	public void condition(User user, BankController controller, MouseClickListener mousecontroller, String[] deleteduser) {
+	public void condition(User user, BankController controller, MouseClickListener mousecontroller) {
 		panel.add(header("Customers"), BorderLayout.NORTH);
 		panel.add(showUser(user), BorderLayout.CENTER);
 		panel.add(footer(mousecontroller, "Back"), BorderLayout.SOUTH);

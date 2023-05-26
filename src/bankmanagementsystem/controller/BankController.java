@@ -18,6 +18,7 @@ import bankmanagementsystem.Savings;
 import bankmanagementsystem.model.AdminUser;
 import bankmanagementsystem.model.User;
 import bankmanagementsystem.model.UserAccount;
+import bankmanagementsystem.service.JDBC;
 import bankmanagementsystem.view.Admin;
 import bankmanagementsystem.view.AtmTransactionPage;
 import bankmanagementsystem.view.DisplayCustomersPage;
@@ -45,6 +46,8 @@ public class BankController implements ActionListener {
 	
 	ManageUserAccounts modal;
 	UserAccount tempAccount = null;
+	
+	JDBC sqlConnect = new JDBC();
 
 	public BankController(){
 		
@@ -140,9 +143,11 @@ public class BankController implements ActionListener {
 			
 			
 			if(RegisterPage.verifyEmptyFields()) {
-				admin.addCustomer(users, RegisterPage.getFields());
+				User addedUser = admin.addCustomer(RegisterPage.getFields());
+				
+				
 				RegisterPage.setIsFormSubmit(true);
-				BankView.register.update(BankView.register.getPanel(), users.get(users.size()-1), BankView.getController(), BankView.getMouseController(), null);
+				BankView.register.update(BankView.register.getPanel(), addedUser, BankView.getController(), BankView.getMouseController());
 			}
 		}
 		
@@ -159,9 +164,9 @@ public class BankController implements ActionListener {
 		if(ae.getSource().equals(UnregisterPage.getSubmitBtn())) {
 			User user = new User();
 			try{
-				String[] deletedUser = admin.deleteCustomer(user , String.valueOf(UnregisterPage.getTextField().getText()));
+				User deletedUser = admin.deleteCustomer(user , String.valueOf(UnregisterPage.getTextField().getText()));
 				UnregisterPage.setIsFormSubmit(true);
-				BankView.unregister.update(BankView.unregister.getPanel(), users.get(users.size()-1), BankView.getController(), BankView.getMouseController(), deletedUser);
+				BankView.unregister.update(BankView.unregister.getPanel(), deletedUser, BankView.getController(), BankView.getMouseController());
 			}catch(Exception e) {
 				e.getMessage();
 			}
@@ -173,16 +178,28 @@ public class BankController implements ActionListener {
 		
 		//Display
 		
+		
+		/**
+		 * BUG 
+		 * 
+		 * -> Can't return home in admin page after going to display users twice
+		 * 
+		 */
+		
 		if(ae.getSource().equals(Admin.getDisplayCustomersBtn())) {
 			System.out.println("display");
+			DisplayCustomersPage.setIsSearch(false);
+			BankView.getPanel().add(BankView.display.displayPanel(BankView.getController(), BankView.getMouseController(), BankView.getController().getUsers()), "display");
 			cardLayout.show(BankView.getPanel(), "display");
+		
 		}
 		
 		
 		if(ae.getSource().equals(DisplayCustomersPage.getBtnSearch())) {
 			BankView.display.setUserInput(BankView.display.getTextField().getText());
 			DisplayCustomersPage.setIsSearch(true);
-			BankView.display.defaultUpdate(BankView.display.getPanel(), BankView.getController(), BankView.getMouseController(), users);
+			BankView.display.defaultUpdate(BankView.display.getPanel(), BankView.getController(), BankView.getMouseController(),  BankView.getController().getUsers());
+	
 		}
 		
 		
@@ -202,7 +219,7 @@ public class BankController implements ActionListener {
 			if(user != -1) {
 				BankView.modify.setModifyingUser(BankView.modify.getModifyingUser(), user, getUsers().get(user));
 				ModificationPage.setEditing(true);
-				BankView.modify.update(BankView.modify.getPanel(), getUsers().get(user), BankView.getController(), BankView.getMouseController(), null);
+				BankView.modify.update(BankView.modify.getPanel(), getUsers().get(user), BankView.getController(), BankView.getMouseController());
 			}else {
 				ModificationPage.getTextField().setForeground(Color.RED);
 			}
@@ -352,9 +369,9 @@ public class BankController implements ActionListener {
 	        	
 				RegisterPage.setIsFormSubmit(false);
 				UnregisterPage.setIsFormSubmit(false);
-				BankView.register.update(BankView.register.getPanel(), users.get(users.size()-1), BankView.getController(), BankView.getMouseController(), null);
-				BankView.unregister.update(BankView.unregister.getPanel(), users.get(users.size()-1), BankView.getController(), BankView.getMouseController(), null);
-				BankView.display.defaultUpdate(BankView.display.getPanel(), BankView.getController(), BankView.getMouseController(), users);
+				BankView.register.update(BankView.register.getPanel(), users.get(users.size()-1), BankView.getController(), BankView.getMouseController());
+				BankView.unregister.update(BankView.unregister.getPanel(), users.get(users.size()-1), BankView.getController(), BankView.getMouseController());
+				BankView.display.defaultUpdate(BankView.display.getPanel(), BankView.getController(), BankView.getMouseController(), BankView.getController().getUsers());
 				BankView.modify.defaultUpdate(BankView.modify.getPanel(), BankView.getController(), BankView.getMouseController(), users);
 				
 				cardLayout.show(BankView.getPanel(), "adminmain");
@@ -388,7 +405,7 @@ public class BankController implements ActionListener {
 	        for(int i = 0; i < DisplayCustomersPage.userBtn.length; i++) {
 	        	if(e.getSource().equals(DisplayCustomersPage.userBtn[i])) {
 		        	User user = DisplayCustomersPage.map.get(DisplayCustomersPage.userBtn[i]);
-		        	BankView.display.update(BankView.display.getPanel(), user, BankView.getController(), BankView.getMouseController(), null);
+		        	BankView.display.update(BankView.display.getPanel(), user, BankView.getController(), BankView.getMouseController());
 		        	DisplayCustomersPage.setIsShwoingInformation(true);
 		        }
 	        }
@@ -406,7 +423,7 @@ public class BankController implements ActionListener {
 	
 	
 	public ArrayList<User> getUsers(){
-		return users;
+		return sqlConnect.getCustomersList();
 	}
 	
 	

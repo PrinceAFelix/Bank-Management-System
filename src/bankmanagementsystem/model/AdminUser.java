@@ -18,21 +18,22 @@ public class AdminUser extends User {
 		super(id, username, password);
 	}
 
-	public long addCustomer(ArrayList<User> users, String[] fields) {
+	public User addCustomer(String[] fields) {
 		try {
 			User temp = new User();
-			long cardNum = temp.addUser(fields);
-			users.add(temp);
-			return cardNum;
+			
+			return temp.addUser(fields);
+			
 		} catch (InputMismatchException ime) {
-			return -1;
+			System.out.println(ime.getMessage());
 		} catch (Exception e) {
-			return -1;
+			System.out.println(e.getMessage());
 		}
 		
+		return null;
 	}
 
-	public String[] deleteCustomer(User user, String id) {
+	public User deleteCustomer(User user, String id) {
 		try {
 
 			
@@ -41,11 +42,13 @@ public class AdminUser extends User {
 			  
 
 		} catch (InputMismatchException ime) {
-			return  Stream.<String>empty().toArray(String[]::new);
+			System.out.println(ime.getMessage());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
-			return  Stream.<String>empty().toArray(String[]::new);
+			
 		}
+		
+		return null;
 	}
 
 	public void editCustomer(ArrayList<User> users, int key, User value) {
