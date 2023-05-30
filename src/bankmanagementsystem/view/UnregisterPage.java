@@ -180,7 +180,6 @@ public class UnregisterPage extends Results {
 	public void condition(User user, BankController controller, MouseClickListener mousecontroller) {
 		
 		if(isFormSubmit) {
-			 
 			 panel.add(comp.showResults(user, false), BorderLayout.CENTER);
 			 panel.add(footer(mousecontroller, isFormSubmit ? "Return Home" : "Cancel"), BorderLayout.SOUTH);
 		 }else {

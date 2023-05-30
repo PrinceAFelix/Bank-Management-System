@@ -189,7 +189,6 @@ public class BankController implements ActionListener {
 		if(ae.getSource().equals(Admin.getDisplayCustomersBtn())) {
 			System.out.println("display");
 			DisplayCustomersPage.setIsSearch(false);
-			BankView.getPanel().add(BankView.display.displayPanel(BankView.getController(), BankView.getMouseController(), BankView.getController().getUsers()), "display");
 			cardLayout.show(BankView.getPanel(), "display");
 		
 		}
@@ -366,17 +365,22 @@ public class BankController implements ActionListener {
 	        		|| e.getSource() == DisplayCustomersPage.getCancelBtn()
 	        		|| e.getSource().equals(ModificationPage.getCancelBtn())) {
 				
-	        	
+	        
 				RegisterPage.setIsFormSubmit(false);
 				UnregisterPage.setIsFormSubmit(false);
 				BankView.register.update(BankView.register.getPanel(), users.get(users.size()-1), BankView.getController(), BankView.getMouseController());
 				BankView.unregister.update(BankView.unregister.getPanel(), users.get(users.size()-1), BankView.getController(), BankView.getMouseController());
+				
+		
+				
 				BankView.display.defaultUpdate(BankView.display.getPanel(), BankView.getController(), BankView.getMouseController(), BankView.getController().getUsers());
 				BankView.modify.defaultUpdate(BankView.modify.getPanel(), BankView.getController(), BankView.getMouseController(), users);
 				
 				cardLayout.show(BankView.getPanel(), "adminmain");
 				
-				System.out.println(DisplayCustomersPage.getIsSearch());
+				
+
+				
 				
 				if(DisplayCustomersPage.getIsShwoingInformation()) {
 					cardLayout.show(BankView.getPanel(), "display");

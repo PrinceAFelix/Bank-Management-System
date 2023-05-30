@@ -15,8 +15,8 @@ import io.github.cdimascio.dotenv.Dotenv;
 
 public class JDBC {
 	
-	private final String dburl = "";
-	private final String dbuser = "";
+	private final String dburl = "jdbc:postgresql://localhost/";
+	private final String dbuser = "postgres";
 	private final String dbpassword = "";
 	
 
@@ -146,38 +146,40 @@ public class JDBC {
 	
 	public ArrayList<User> getCustomersList(){
 		
-		ArrayList<User> userList = new ArrayList<>();
-		
-		System.out.println(userList.size());
-		  
-		  String sql = "SELECT * FROM users ";
-		  
-		  try (Connection connection = DriverManager.getConnection (dburl, dbuser, dbpassword);) {
-				PreparedStatement statement = connection.prepareStatement(sql);
-				ResultSet rs = statement.executeQuery();
-				
-				
-				while (rs.next()) {
-	                
-	                User user = new User(rs.getString("id"), rs.getString("fullname"), rs.getString("email"), rs.getString("phone"), rs.getString("password"), rs.getString("username"), rs.getString("address"), Long.valueOf(rs.getString("cardnumber")));
-	                userList.add(user);
-	            }
-				  
-				
+		ArrayList<User> c = new ArrayList<User>();
+		c.add(new User("0001", "ajidjw", " jawaindwa", "1893929323", "01832", "awnud", "awjhudhwa", Long.valueOf(1022394648)));
 
-		    }catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				return null;
-		    }
+		return c;
+
+		  
+//		  String sql = "SELECT * FROM users ";
+//		  
+//		  try (Connection connection = DriverManager.getConnection (dburl, dbuser, dbpassword);) {
+//				PreparedStatement statement = connection.prepareStatement(sql);
+//				ResultSet rs = statement.executeQuery();
+//				
+//				ArrayList<User> userList = new ArrayList<>();
+//				
+//				while (rs.next()) {
+//	                User user = new User(rs.getString("id"), rs.getString("fullname"), rs.getString("email"), rs.getString("phone"), rs.getString("password"), rs.getString("username"), rs.getString("address"), Long.valueOf(rs.getString("cardnumber")));
+//	                userList.add(user);
+//	            }
+//				  
+//				 return userList;
+//
+//		    }catch (SQLException e) {
+//
+//				e.printStackTrace();
+//				return null;
+//		    }
 		  
 		  
 		  
 
 
-			System.out.println(userList.size());
+			
 		  
-		  return userList;
+		 
 
 		
 		

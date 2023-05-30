@@ -413,6 +413,7 @@ public class DisplayCustomersPage extends Results {
 		panel.add(header("Customers"), BorderLayout.NORTH);
 		panel.add(listPanel(controller, mousecontroller, users), BorderLayout.CENTER);
 		panel.add(footer(mousecontroller, "Return Home"), BorderLayout.SOUTH);
+
 	}
 
 
