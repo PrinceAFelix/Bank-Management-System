@@ -53,6 +53,7 @@ public class BankController implements ActionListener {
 		
 		admin = new AdminUser("adm001", "admin", "admin");
 		users.add(new User("0001", "John Doe", "doe@test.com", "123456789", "12345", "doe", "doe St", 123));
+		sqlConnect.getCustomersList();
 		
 	}
 	
@@ -145,7 +146,7 @@ public class BankController implements ActionListener {
 			if(RegisterPage.verifyEmptyFields()) {
 				User addedUser = admin.addCustomer(RegisterPage.getFields());
 				
-				
+				sqlConnect.getCustomersList();
 				RegisterPage.setIsFormSubmit(true);
 				BankView.register.update(BankView.register.getPanel(), addedUser, BankView.getController(), BankView.getMouseController());
 			}
@@ -166,6 +167,7 @@ public class BankController implements ActionListener {
 			try{
 				User deletedUser = admin.deleteCustomer(user , String.valueOf(UnregisterPage.getTextField().getText()));
 				UnregisterPage.setIsFormSubmit(true);
+				sqlConnect.getCustomersList();
 				BankView.unregister.update(BankView.unregister.getPanel(), deletedUser, BankView.getController(), BankView.getMouseController());
 			}catch(Exception e) {
 				e.getMessage();
@@ -177,14 +179,6 @@ public class BankController implements ActionListener {
 		//End Remove
 		
 		//Display
-		
-		
-		/**
-		 * BUG 
-		 * 
-		 * -> Can't return home in admin page after going to display users twice
-		 * 
-		 */
 		
 		if(ae.getSource().equals(Admin.getDisplayCustomersBtn())) {
 			System.out.println("display");
@@ -213,7 +207,7 @@ public class BankController implements ActionListener {
 		}
 		
 		if(ae.getSource().equals(ModificationPage.getcConfirmBtn())) {
-			int user = admin.searchCustomer(users, UserAccountPage.getActiveUser(), ModificationPage.getTextField().getText());
+			int user = admin.searchCustomer(BankView.getController().getUsers(), UserAccountPage.getActiveUser(), ModificationPage.getTextField().getText());
 			System.out.println(user);
 			if(user != -1) {
 				BankView.modify.setModifyingUser(BankView.modify.getModifyingUser(), user, getUsers().get(user));
@@ -232,14 +226,21 @@ public class BankController implements ActionListener {
 				
 				User temp = entry.getValue();
 				
-				temp.setFullName(BankView.modify.getFirstName().getText() + " " + BankView.modify.getLastName().getText());
-				temp.setUsername(BankView.modify.getUsername().getText());
-				temp.setEmail(BankView.modify.getEmail().getText());
-				temp.setPhone(BankView.modify.getPhoneNumber().getText());
-				temp.setAddress(BankView.modify.getAddress().getText());
+				String[] fields = new String[] {BankView.modify.getFirstName().getText() + " " + BankView.modify.getLastName().getText(),
+												BankView.modify.getUsername().getText(),
+												BankView.modify.getEmail().getText(),
+												BankView.modify.getPhoneNumber().getText(),
+												BankView.modify.getAddress().getText(),
+												};
 				
-				admin.editCustomer(users, entry.getKey(), temp);
-				BankView.modify.defaultUpdate(BankView.modify.getPanel(), BankView.getController(), BankView.getMouseController(), users);
+				temp.setFullName(fields[0]);
+				temp.setUsername(fields[1]);
+				temp.setEmail(fields[2]);
+				temp.setPhone(fields[3]);
+				temp.setAddress(fields[4]);
+				
+				admin.editCustomer( BankView.getController().getUsers(), entry.getKey(), temp, fields);
+				BankView.modify.defaultUpdate(BankView.modify.getPanel(), BankView.getController(), BankView.getMouseController(),  BankView.getController().getUsers());
 				
 			}catch(Exception e) {
 				
@@ -427,7 +428,7 @@ public class BankController implements ActionListener {
 	
 	
 	public ArrayList<User> getUsers(){
-		return sqlConnect.getCustomersList();
+		return sqlConnect.getUsersList();
 	}
 	
 	

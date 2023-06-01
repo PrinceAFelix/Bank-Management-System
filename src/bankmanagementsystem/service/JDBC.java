@@ -20,7 +20,12 @@ public class JDBC {
 	private final String dbpassword = "";
 	
 
-	 
+	private ArrayList<User> usersptr = new ArrayList<User>();
+	
+	
+	public JDBC() {
+		
+	}
 
 	
 	
@@ -116,6 +121,32 @@ public class JDBC {
 		
 
 	}
+	
+	
+	public boolean editCustomer(String[] fields, String id) {
+		
+		String sql = "UPDATE users "
+				+ "SET fullname=?, username=?, email=?, phone=?, address=? "
+				+ "WHERE id = ?";
+	
+	    try (Connection connection = DriverManager.getConnection (dburl, dbuser, dbpassword);) {
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, fields[0]);
+			statement.setString(2, fields[1]);
+			statement.setString(3, fields[2]);
+			statement.setString(4, fields[3]);
+			statement.setString(5, fields[4]);
+			statement.setString(6, id);
+			statement.executeUpdate();
+	
+	        return true;
+	    }catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return false;
+	    }
+
+	}
 
 	
 	public User getUser(String id) {
@@ -144,46 +175,59 @@ public class JDBC {
 	}
 	
 	
-	public ArrayList<User> getCustomersList(){
+	public boolean getCustomersList(){
 		
-		ArrayList<User> c = new ArrayList<User>();
-		c.add(new User("0001", "ajidjw", " jawaindwa", "1893929323", "01832", "awnud", "awjhudhwa", Long.valueOf(1022394648)));
-
-		return c;
+		ArrayList<User> userList = new ArrayList<User>();
 
 		  
-//		  String sql = "SELECT * FROM users ";
-//		  
-//		  try (Connection connection = DriverManager.getConnection (dburl, dbuser, dbpassword);) {
-//				PreparedStatement statement = connection.prepareStatement(sql);
-//				ResultSet rs = statement.executeQuery();
-//				
-//				ArrayList<User> userList = new ArrayList<>();
-//				
-//				while (rs.next()) {
-//	                User user = new User(rs.getString("id"), rs.getString("fullname"), rs.getString("email"), rs.getString("phone"), rs.getString("password"), rs.getString("username"), rs.getString("address"), Long.valueOf(rs.getString("cardnumber")));
-//	                userList.add(user);
-//	            }
-//				  
-//				 return userList;
-//
-//		    }catch (SQLException e) {
-//
-//				e.printStackTrace();
-//				return null;
-//		    }
+		  String sql = "SELECT * FROM users ";
 		  
-		  
-		  
+		  try (Connection connection = DriverManager.getConnection (dburl, dbuser, dbpassword);) {
+				PreparedStatement statement = connection.prepareStatement(sql);
+				ResultSet rs = statement.executeQuery();
+				
+				
+				while (rs.next()) {
+	                User user = new User(rs.getString("id"), rs.getString("fullname"), rs.getString("email"), rs.getString("phone"), rs.getString("password"), rs.getString("username"), rs.getString("address"), Long.valueOf(rs.getString("cardnumber")));
+	                userList.add(user);
+	            }
+				  
+				setUsersList(userList);
+				
+				return true;
 
+		    }catch (SQLException e) {
 
-			
-		  
-		 
-
+				e.printStackTrace();
+				return false;
 		
+		    }
+		  
+		  
 		
 	}
+
+
+
+	/**
+	 * @return the usersptr
+	 */
+	public ArrayList<User> getUsersList() {
+		return usersptr;
+	}
+
+
+
+	/**
+	 * @param usersptr the usersptr to set
+	 */
+	public void setUsersList(ArrayList<User> usersptr) {
+		this.usersptr = usersptr;
+	}
+	
+	
+	
+	
 	
 	
 

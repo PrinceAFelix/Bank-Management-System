@@ -51,9 +51,10 @@ public class AdminUser extends User {
 		return null;
 	}
 
-	public void editCustomer(ArrayList<User> users, int key, User value) {
+	public void editCustomer(ArrayList<User> users, int key, User value, String[] fields) {
 		try {
 			users.set(key, value);
+			value.editUser(fields, value.getId());
 		} catch (InputMismatchException ime) {
 
 		} catch (Exception e) {
