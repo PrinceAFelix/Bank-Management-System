@@ -26,6 +26,7 @@ import bankmanagementsystem.AtmTransaction;
 import bankmanagementsystem.controller.BankController;
 import bankmanagementsystem.controller.BankController.MouseClickListener;
 import bankmanagementsystem.model.User;
+import bankmanagementsystem.model.UserAccount;
 
 public class AtmTransactionPage {
 
@@ -87,17 +88,17 @@ public JPanel header(String headerTitle) {
 		
 	}
 	
-	public JPanel atmTransactionPanel(User user, BankController controller, MouseClickListener mousecontroller, String operation) {
+	public JPanel atmTransactionPanel(ArrayList<UserAccount> accounts, BankController controller, MouseClickListener mousecontroller, String operation) {
 		
 		panel.add(header(operation), BorderLayout.NORTH);
-		panel.add(main(user, controller), BorderLayout.CENTER);
+		panel.add(main(accounts, controller), BorderLayout.CENTER);
 		panel.add(footer(mousecontroller, "Cancel"), BorderLayout.SOUTH);
 		
 		return panel;
 		
 	}
 	
-	public JPanel main(User user, BankController controller) {
+	public JPanel main(ArrayList<UserAccount> accounts, BankController controller) {
 		JPanel transactionPanel = new JPanel();
 		transactionPanel.add(Box.createRigidArea(new Dimension(80, 80)));
 		transactionPanel.setBackground(new Color(217, 217, 217));
@@ -125,7 +126,7 @@ public JPanel header(String headerTitle) {
 		accountPanel.add(fromAccount, BorderLayout.WEST);
 		
 		System.out.println();
-		String[] option = user.getUserAccount().size() == 1 ? new String[]{"Chequing"} : new String[]{"Chequing","Savings"};
+		String[] option = accounts.size() == 1 ? new String[]{"Chequing"} : new String[]{"Chequing","Savings"};
 
 		comboBox = new JComboBox<Object>(option);
 
@@ -194,17 +195,17 @@ public JPanel header(String headerTitle) {
 	
 	
 	
-	public boolean processOperation(User user, float amount, int account) {
+	public boolean processOperation(ArrayList<UserAccount> accounts, float amount, int account) {
 		Random random = new Random();
 		
 		if(getOperation() == 0) {
-			if(!atm.deposit(user, amount, account)) return false;
+			if(!atm.deposit(accounts, amount, account)) return false;
 		}else if(getOperation() == 1) {
-			if(!atm.withdraw(user, amount, account)) return false;
+			if(!atm.withdraw(accounts, amount, account)) return false;
 		}
 		AtmTransaction transactionTemp = new AtmTransaction(random.nextInt(10000),
 				account == 0 ? "Chequing" : "Savings", comp.getCurrentDate(), getOperation() == 0 ? "Deposit" : "Withdrawal", amount,
-				user.getUserAccount().get(account).accountBalance);
+				accounts.get(account).accountBalance);
 		
 		UserAccountPage.getActiveUser().getTransactions(account).add(transactionTemp);
 		

@@ -20,17 +20,17 @@ public class Chequing extends UserAccount {
 		this.account_title = title;
 	}
 
-	public void view_Account(User user) {
-		System.out.printf("\n----------------%s----------------", user.getUserAccount().get(0).accountTitle);
+	public void view_Account(ArrayList<UserAccount> accounts) {
+		System.out.printf("\n----------------%s----------------", accounts.get(0).accountTitle);
 		System.out.printf("\nAccount Number: %s\n" + "Accouunt Balance: %.2f\n",
-				user.getUserAccount().get(0).accountNumber, user.getUserAccount().get(0).accountBalance);
+				accounts.get(0).accountNumber, accounts.get(0).accountBalance);
 		System.out.println("---------------------------------\n");
 	}
 
 	@Override
-	public boolean addAccount(User user, float val) {
+	public boolean addAccount(ArrayList<UserAccount> accounts, float val) {
 
-		if (user.getUserAccount().size() <= 2 && user.getUserAccount().get(0).accountTitle.equals("Chequing")) {
+		if (accounts.size() <= 2 && accounts.get(0).accountTitle.equals("Chequing")) {
 			System.out.println("\nAlready have a Chequing Account\n");
 			return false;
 		}
@@ -38,7 +38,7 @@ public class Chequing extends UserAccount {
 
 		Chequing temp = new Chequing(String.format("%04d", User.getAccountNumberCounter()), val, "Chequing");
 
-		user.getUserAccount().add(temp);
+		//Perform Account insert
 
 		return true;
 	}

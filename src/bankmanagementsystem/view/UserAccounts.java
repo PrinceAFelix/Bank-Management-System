@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.LayoutManager;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -14,12 +15,14 @@ import javax.swing.JPanel;
 import bankmanagementsystem.controller.BankController;
 import bankmanagementsystem.controller.BankController.MouseClickListener;
 import bankmanagementsystem.model.User;
+import bankmanagementsystem.model.UserAccount;
+import bankmanagementsystem.service.JDBC;
 
 public class UserAccounts extends UserAccountPage {
 	
 	private static JLabel backBtn;
 	private User user;
-	
+	private ArrayList<UserAccount> useraccounts;
 	private static JButton chequingBtn;
 	private static JButton savingsBtn;
 	private static JButton openAccountBtn;
@@ -27,26 +30,26 @@ public class UserAccounts extends UserAccountPage {
 	
 	Components comp = new Components();
 	
-	
+	JDBC sqlconnect = new JDBC();
 	
 	public JPanel userAccountPanel(BankController contorller, MouseClickListener mouseListener) {
 		user = super.getActiveUser();
-		
+		useraccounts = sqlconnect.getUserAccounts(super.getActiveUser().getId());
 		setBackBtn(new JLabel("Back"));
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout());
 		
-		panel.add(super.header(user.getFullName()), BorderLayout.NORTH);
-		panel.add(main(contorller, user), BorderLayout.CENTER);
+		panel.add(super.header(super.getActiveUser().getFullName()), BorderLayout.NORTH);
+		panel.add(main(contorller, useraccounts), BorderLayout.CENTER);
 		panel.add(comp.setFooter(mouseListener, getBackBtn()), BorderLayout.SOUTH);
 		
 		return panel;
 	}
 	
-	private JPanel main(BankController contorller, User user) {
+	private JPanel main(BankController contorller, ArrayList<UserAccount> useraccount) {
 		
-		boolean savingIsNull = user.getUserAccount().size() == 1 ? true : false;
+		boolean savingIsNull = useraccount.size() == 1 ? true : false;
 		
 		JPanel main = new JPanel();
 		
@@ -60,12 +63,12 @@ public class UserAccounts extends UserAccountPage {
 		
 		main.add(accounts, BorderLayout.NORTH);
 		
-		float[] balance = {user.getUserAccount().get(0).accountBalance, savingIsNull ? 0 : user.getUserAccount().get(1).accountBalance};
+		float[] balance = {useraccount.get(0).accountBalance, savingIsNull ? 0 : useraccount.get(1).accountBalance};
 		
 		JLabel[] amount = {new JLabel(setAmountText(String.valueOf(String.format("%.2f", balance[0])), "14px")), new JLabel(setAmountText(String.valueOf(String.format("%.2f", balance[1])), "14px")), new JLabel(setAmountText(String.valueOf(String.format("%.2f", balance[0] + balance[1])), "10px"))};
 	
 		
-		JLabel chequing = new JLabel(setTitleText("CHEQUING", user.getUserAccount().get(0).accountNumber));
+		JLabel chequing = new JLabel(setTitleText("CHEQUING", useraccount.get(0).accountNumber));
 		chequingBtn = accountBtns(new BorderLayout(0, 0), new Dimension(280, 70), "");
 	
 		accounts.add(chequingBtn);
@@ -75,7 +78,7 @@ public class UserAccounts extends UserAccountPage {
 		chequingBtn.addActionListener(contorller);
 		
 		if(!savingIsNull) {
-			JLabel saving = new JLabel(setTitleText("SAVINGS", user.getUserAccount().get(1).accountNumber));
+			JLabel saving = new JLabel(setTitleText("SAVINGS", useraccount.get(1).accountNumber));
 			savingsBtn = accountBtns(new BorderLayout(0, 0), new Dimension(280, 70), "");
 			accounts.add(savingsBtn);
 			savingsBtn.add(saving, BorderLayout.WEST);

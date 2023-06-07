@@ -205,15 +205,15 @@ public class Bank {
 								break;
 							}
 
-							if (atm.validateActiveAccount(activeUser, isChequing)) {
-								System.out.print("Enter amount to deposit: ");
-								value = sc.nextFloat();
-								atm.deposit(activeUser, value, isChequing);
-								transactionTemp = new AtmTransaction(random.nextInt(10000),
-										userChoice == 1 ? "Chequing" : "Savings", date, "deposit", value,
-										activeUser.getUserAccount().get(isChequing).accountBalance);
-//								activeUser.getTransactions().add(transactionTemp);
-							}
+//							if (atm.validateActiveAccount(activeUser, isChequing)) {
+//								System.out.print("Enter amount to deposit: ");
+//								value = sc.nextFloat();
+//								atm.deposit(activeUser, value, isChequing);
+////								transactionTemp = new AtmTransaction(random.nextInt(10000),
+////										userChoice == 1 ? "Chequing" : "Savings", date, "deposit", value,
+////										activeUser.getUserAccount().get(isChequing).accountBalance);
+////								activeUser.getTransactions().add(transactionTemp);
+//							}
 
 							break;
 
@@ -247,16 +247,16 @@ public class Bank {
 							default:
 								break;
 							}
-							if (atm.validateActiveAccount(activeUser, isChequing)) {
-								System.out.print("Enter amount to withdraw: ");
-								value = sc.nextFloat();
-								atm.withdraw(activeUser, value, isChequing);
-								;
-								transactionTemp = new AtmTransaction(random.nextInt(10000),
-										userChoice == 1 ? "Chequing" : "Savings", date, "withdraw", value,
-										activeUser.getUserAccount().get(isChequing).accountBalance);
-//								activeUser.getTransactions().add(transactionTemp);
-							}
+//							if (atm.validateActiveAccount(activeUser, isChequing)) {
+//								System.out.print("Enter amount to withdraw: ");
+//								value = sc.nextFloat();
+//								atm.withdraw(activeUser, value, isChequing);
+//								;
+////								transactionTemp = new AtmTransaction(random.nextInt(10000),
+////										userChoice == 1 ? "Chequing" : "Savings", date, "withdraw", value,
+////										activeUser.getUserAccount().get(isChequing).accountBalance);
+////								activeUser.getTransactions().add(transactionTemp);
+//							}
 
 							break;
 
@@ -290,8 +290,8 @@ public class Bank {
 								break;
 							}
 
-							if (atm.validateActiveAccount(activeUser, isChequing))
-								atm.checkBalance(activeUser, isChequing);
+//							if (atm.validateActiveAccount(activeUser, isChequing))
+//								atm.checkBalance(activeUser, isChequing);
 
 							break;
 
@@ -325,7 +325,7 @@ public class Bank {
 						}
 	
 
-						tempAccount.addAccount(activeUser, 0);
+//						tempAccount.addAccount(activeUser, 0);
 
 						break;
 					} while (true);
@@ -374,7 +374,7 @@ public class Bank {
 							switch (userChoice) {
 							case 1:
 								Chequing temp = new Chequing();
-								temp.view_Account(activeUser);
+//								temp.view_Account(activeUser);
 								break;
 							case 2:
 								Savings temp1 = new Savings();

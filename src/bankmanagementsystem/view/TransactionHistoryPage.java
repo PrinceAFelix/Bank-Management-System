@@ -21,6 +21,7 @@ import bankmanagementsystem.AtmTransaction;
 import bankmanagementsystem.controller.BankController;
 import bankmanagementsystem.controller.BankController.MouseClickListener;
 import bankmanagementsystem.model.User;
+import bankmanagementsystem.model.UserAccount;
 
 public class TransactionHistoryPage {
 	
@@ -38,7 +39,7 @@ public class TransactionHistoryPage {
 	
 	
 	
-	public JPanel header(User user, int account) {
+	public JPanel header(ArrayList<UserAccount> accounts, int account) {
 		JPanel header = new JPanel();
 		
 		header.setBackground(new Color(57, 118, 174));
@@ -46,7 +47,7 @@ public class TransactionHistoryPage {
 		header.setPreferredSize(new Dimension(350, 150));
 		
 		
-		JLabel accountBalance = new JLabel(String.valueOf(String.format("$%.2f", user.getUserAccount().get(account).accountBalance)));
+		JLabel accountBalance = new JLabel(String.valueOf(String.format("$%.2f", accounts.get(account).accountBalance)));
 		accountBalance.setHorizontalAlignment(SwingConstants.CENTER);
 		accountBalance.setForeground(new Color(100, 184, 106));
 		accountBalance.setFont(new Font("Lucida Grande", Font.BOLD, 28));
@@ -55,8 +56,8 @@ public class TransactionHistoryPage {
 		JLabel accountLabel = new JLabel(
 				"<html>"
 				+ "<body>"
-				+ 	"<span style='font-size: 14px; color: white;'>" + user.getUserAccount().get(account).accountTitle.toUpperCase() + "</span><br>"
-				+ 	"<span style=\"color: rgba(255, 255, 255, 0.4);\">" + user.getUserAccount().get(account).accountNumber + "</span>"
+				+ 	"<span style='font-size: 14px; color: white;'>" + accounts.get(account).accountTitle.toUpperCase() + "</span><br>"
+				+ 	"<span style=\"color: rgba(255, 255, 255, 0.4);\">" + accounts.get(account).accountNumber + "</span>"
 				+ "</body>"
 				+"</html>"
 				);
@@ -90,11 +91,11 @@ public class TransactionHistoryPage {
 	
 	
 	
-	public JPanel chequingPanel(BankController controller, MouseClickListener mousecontroller, User user, int account) {
+	public JPanel chequingPanel(BankController controller, MouseClickListener mousecontroller, ArrayList<UserAccount> accounts, int account) {
 
 		
-		panel.add(header(user, account), BorderLayout.NORTH);
-		panel.add(transactions(user, account), BorderLayout.CENTER);
+		panel.add(header(accounts, account), BorderLayout.NORTH);
+		panel.add(transactions(accounts, account), BorderLayout.CENTER);
 		panel.add(footer(mousecontroller, "Back"), BorderLayout.SOUTH);
 
 
@@ -104,7 +105,7 @@ public class TransactionHistoryPage {
 	
 	
 	
-	public JPanel transactions(User user, int account) {
+	public JPanel transactions(ArrayList<UserAccount> accounts, int account) {
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout()); 
@@ -130,16 +131,16 @@ public class TransactionHistoryPage {
 
 
 
-		user.getTransactions(account).forEach((tr) -> {
-			
-			transactionPanel.add(transactionItem(transactionPanel, tr.transaction_Date, tr.transaction_Type, tr.transaction_Amount));
-			i++;
-			if (i >= 5) { // if more than 5 components added, adjust preferred height
-				preferredHeight += 70;
-				transactionPanel.setPreferredSize(new Dimension(350, preferredHeight));
-		    }
-			
-		});
+//		user.getTransactions(account).forEach((tr) -> {
+//			
+//			transactionPanel.add(transactionItem(transactionPanel, tr.transaction_Date, tr.transaction_Type, tr.transaction_Amount));
+//			i++;
+//			if (i >= 5) { // if more than 5 components added, adjust preferred height
+//				preferredHeight += 70;
+//				transactionPanel.setPreferredSize(new Dimension(350, preferredHeight));
+//		    }
+//			
+//		});
 		
 		
 		

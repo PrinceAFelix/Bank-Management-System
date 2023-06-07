@@ -83,22 +83,32 @@ public class BankController implements ActionListener {
 				activeUser = admin;
 			}
 			
-			for (int i = 0; i < users.size(); i++) {
-				if(((String.valueOf(users.get(i).getCardNumber())).equals(LogIn.getCredential().getText()))){
-					if (users.get(i).verifyPassword(users.get(i).getPassword(), String.valueOf(LogIn.getPasswordField().getPassword()) )) {
-						activeUser = users.get(i);
-						
-						UserAccountPage.setActiveUser(activeUser);
-						System.out.println("Sign in");
-						BankView.getPanel().add(up.userPanel(BankView.getController()), "user");
-						cardLayout.show(BankView.getPanel(), "user");
-					}
-						
-				}
+//			for (int i = 0; i < users.size(); i++) {
+//				if(((String.valueOf(users.get(i).getCardNumber())).equals(LogIn.getCredential().getText()))){
+//					if (users.get(i).verifyPassword(users.get(i).getPassword(), String.valueOf(LogIn.getPasswordField().getPassword()) )) {
+//						activeUser = users.get(i);
+//						
+//						UserAccountPage.setActiveUser(activeUser);
+//						System.out.println("Sign in");
+//						BankView.getPanel().add(up.userPanel(BankView.getController()), "user");
+//						cardLayout.show(BankView.getPanel(), "user");
+//					}
+//						
+//				}
+//				
+//			}
+			
+			String authenticatedUser = sqlConnect.authenticateUser(LogIn.getCredential().getText(), String.valueOf(LogIn.getPasswordField().getPassword()));
+			
+			if(!authenticatedUser.isEmpty()) {
 				
+				UserAccountPage.setActiveUser(sqlConnect.getUser(authenticatedUser));
+				System.out.println("Sign in");
+				BankView.getPanel().add(up.userPanel(BankView.getController()), "user");
+				cardLayout.show(BankView.getPanel(), "user");
 			}
 			
-			UserAccountPage.setActiveUser(activeUser);
+	
 			
 			//Process login for customers
 		
@@ -287,27 +297,27 @@ public class BankController implements ActionListener {
 			int selectedAccount = ManageUserAccounts.getAccounts().getSelectedIndex();
 			String amount = ManageUserAccounts.getAmountField().getText();
 			
-			if(ae.getActionCommand().equals("open")) {
-				if( selectedAccount != 0 && !amount.isBlank()) {
-					tempAccount = new Savings();
-					tempAccount.addAccount(UserAccountPage.getActiveUser(), Float.valueOf(amount));
-					cardLayout.show(BankView.getPanel(), "user");
-					modal.setVisible(false);
-				}else {
-					System.out.println("Empty Fields");
-				}
-				
-			}else if(ae.getActionCommand().equals("delete")){
-				if(selectedAccount != 0) {
-					tempAccount = new Savings();
-					tempAccount.deleteAccount(UserAccountPage.getActiveUser());
-					cardLayout.show(BankView.getPanel(), "user");
-					modal.setVisible(false);
-				}else {
-					System.out.println("Empty Fields");
-				}
-			
-			}
+//			if(ae.getActionCommand().equals("open")) {
+//				if( selectedAccount != 0 && !amount.isBlank()) {
+//					tempAccount = new Savings();
+//					tempAccount.addAccount(UserAccountPage.getActiveUser(), Float.valueOf(amount));
+//					cardLayout.show(BankView.getPanel(), "user");
+//					modal.setVisible(false);
+//				}else {
+//					System.out.println("Empty Fields");
+//				}
+//				
+//			}else if(ae.getActionCommand().equals("delete")){
+//				if(selectedAccount != 0) {
+//					tempAccount = new Savings();
+//					tempAccount.deleteAccount(UserAccountPage.getActiveUser());
+//					cardLayout.show(BankView.getPanel(), "user");
+//					modal.setVisible(false);
+//				}else {
+//					System.out.println("Empty Fields");
+//				}
+//			
+//			}
 			
 
 		}
@@ -319,31 +329,31 @@ public class BankController implements ActionListener {
 		
 		
 		if(ae.getSource().equals(UserAccounts.getChequingBtn())) {
-			BankView.getPanel().add(transaction.chequingPanel(BankView.getController(), BankView.getMouseController(), UserAccountPage.getActiveUser(), 0), "transaction");
+			BankView.getPanel().add(transaction.chequingPanel(BankView.getController(), BankView.getMouseController(), getUserAccount(), 0), "transaction");
 			cardLayout.show(BankView.getPanel(), "transaction");
 		}
 		
 		if(ae.getSource().equals(UserAccounts.getSavingsBtn())) {
-			BankView.getPanel().add(transaction.chequingPanel(BankView.getController(), BankView.getMouseController(), UserAccountPage.getActiveUser(), 1), "transaction");
+			BankView.getPanel().add(transaction.chequingPanel(BankView.getController(), BankView.getMouseController(), getUserAccount(), 1), "transaction");
 			cardLayout.show(BankView.getPanel(), "transaction");
 		}
 		
 		
 		if(ae.getSource().equals(UserAccountPage.getDepositBtn())) {
-			BankView.getPanel().add(atm.atmTransactionPanel(UserAccountPage.getActiveUser(), BankView.getController(), BankView.getMouseController(), "Deposit"), "atmtransaction");
+			BankView.getPanel().add(atm.atmTransactionPanel(getUserAccount(), BankView.getController(), BankView.getMouseController(), "Deposit"), "atmtransaction");
 			cardLayout.show(BankView.getPanel(), "atmtransaction");
 			AtmTransactionPage.setOperation(0);
 		}
 		
 		if(ae.getSource().equals(UserAccountPage.getWithdrawBtn())) {
-			BankView.getPanel().add(atm.atmTransactionPanel(UserAccountPage.getActiveUser(), BankView.getController(), BankView.getMouseController(), "Withdrawal"), "atmtransaction");
+			BankView.getPanel().add(atm.atmTransactionPanel(getUserAccount(), BankView.getController(), BankView.getMouseController(), "Withdrawal"), "atmtransaction");
 			cardLayout.show(BankView.getPanel(), "atmtransaction");
 			AtmTransactionPage.setOperation(1);
 		}
 		
 		
 		if(ae.getSource().equals(AtmTransactionPage.getContinueBtn())) {
-			atm.processOperation(UserAccountPage.getActiveUser(), Float.valueOf(String.valueOf(AtmTransactionPage.getFormattedTextField().getValue())), AtmTransactionPage.getComboBox().getSelectedIndex());
+			atm.processOperation(getUserAccount(), Float.valueOf(String.valueOf(AtmTransactionPage.getFormattedTextField().getValue())), AtmTransactionPage.getComboBox().getSelectedIndex());
 		}
 		
 		if(ae.getSource().equals(AtmTransactionPage.getComboBox())) {
@@ -429,6 +439,10 @@ public class BankController implements ActionListener {
 	
 	public ArrayList<User> getUsers(){
 		return sqlConnect.getUsersList();
+	}
+	
+	public ArrayList<UserAccount> getUserAccount(){
+		return sqlConnect.getUserAccount();
 	}
 	
 	

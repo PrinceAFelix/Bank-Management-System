@@ -1,6 +1,9 @@
 package bankmanagementsystem;
 
+import java.util.ArrayList;
+
 import bankmanagementsystem.model.User;
+import bankmanagementsystem.model.UserAccount;
 
 public class Atm {
 
@@ -13,33 +16,33 @@ public class Atm {
 		this.atmLocation = adr;
 	}
 
-	public boolean deposit(User user, float amount, int depositForm) {
+	public boolean deposit(ArrayList<UserAccount> accounts, float amount, int depositForm) {
 		
-		if(!validateActiveAccount(user, depositForm)) return false;
+		if(!validateActiveAccount(accounts, depositForm)) return false;
 		
-		user.getUserAccount().get(depositForm).accountBalance += amount;
+		accounts.get(depositForm).accountBalance += amount;
 		System.out.printf("\nSuccessfully deposit %.2f into your account\n\n", amount);
 		
 		return true;
 	}
 
-	public boolean withdraw(User user, float amount, int withdrawFrom) {
-		if(!validateActiveAccount(user, withdrawFrom)) return false;
+	public boolean withdraw(ArrayList<UserAccount> accounts, float amount, int withdrawFrom) {
+		if(!validateActiveAccount(accounts, withdrawFrom)) return false;
 		
-		user.getUserAccount().get(withdrawFrom).accountBalance -= amount;
+		accounts.get(withdrawFrom).accountBalance -= amount;
 		System.out.printf("\nSuccessfully withdraw %.2f from your account\n\n", amount);
 		
 		return true;
 	}
 
-	public void checkBalance(User user, int thisAccount) {
+	public void checkBalance(ArrayList<UserAccount> accounts, int thisAccount) {
 
-		System.out.printf("\nYour balance is: %.2f\n\n", user.getUserAccount().get(thisAccount).accountBalance);
+		System.out.printf("\nYour balance is: %.2f\n\n", accounts.get(thisAccount).accountBalance);
 	}
 
-	public boolean validateActiveAccount(User user, int account) {
+	public boolean validateActiveAccount(ArrayList<UserAccount> accounts, int account) {
 
-		if (account == 1 && user.getUserAccount().size() < 2) {
+		if (account == 1 && accounts.size() < 2) {
 			System.out.println("\nYou Do not have a Savings Account\n");
 			return false;
 		}

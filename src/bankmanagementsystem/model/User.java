@@ -24,8 +24,7 @@ public class User {
 	private String username;
 	private String address;
 	private long cardNumber;
-
-	private ArrayList<UserAccount> userAccount;
+//	private ArrayList<UserAccount> userAccount;
 	private ArrayList<ArrayList<AtmTransaction>> transactions;
 
 	private static long idCounter = 0;
@@ -42,7 +41,7 @@ public class User {
 
 
 	public User() {
-		userAccount = new ArrayList<UserAccount>();
+//		userAccount = new ArrayList<UserAccount>();
 		transactions = new ArrayList<ArrayList<AtmTransaction>>();
 	}
 
@@ -75,10 +74,10 @@ public class User {
 		
 		
 		setAccountNumberCounter(9999);
-		this.userAccount = new ArrayList<UserAccount>();
-		UserAccount temp = new Chequing("19836482", 200, "Chequing");
+//		this.userAccount = new ArrayList<UserAccount>();
+//		UserAccount temp = new Chequing("19836482", 200, "Chequing");
 //		UserAccount temp1 = new Savings("19836362", 200, "Savings");
-		this.userAccount.add(temp);
+//		this.userAccount.add(temp);
 //		this.userAccount.add(temp1);
 		this.transactions = new ArrayList<ArrayList<AtmTransaction>>();
 		
@@ -97,9 +96,9 @@ public class User {
 
 	}
 
-	public ArrayList<UserAccount> getUserAccount() {
-		return userAccount;
-	}
+//	public ArrayList<UserAccount> getUserAccount() {
+//		return userAccount;
+//	}
 
 	public ArrayList<AtmTransaction> getTransactions(int account) {
 		
@@ -144,10 +143,11 @@ public class User {
 
 			Chequing temp = new Chequing(String.format("%04d", getAccountNumberCounter()), 500, "Chequing");
 			
-			user.userAccount.add(temp);
+//			user.userAccount.add(temp);
 			
+			System.out.println(user.getCardNumber());
 	
-			sqlConnect.insertUser(user.getId() ,user.getFullName(), user.getEmail(), user.getPhone(), user.getPassword(), user.getUsername(), user.getAddress(), user.getCardNumber(), temp);
+			sqlConnect.insertUser(user.getId() ,user.getFullName(), user.getEmail(), user.getPhone(), user.getPassword(), user.getUsername(), user.getAddress(), String.valueOf(user.getCardNumber()), temp);
 			
 			return user;
 

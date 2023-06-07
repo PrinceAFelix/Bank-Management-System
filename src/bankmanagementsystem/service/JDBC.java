@@ -9,8 +9,11 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import bankmanagementsystem.AtmTransaction;
 import bankmanagementsystem.Chequing;
+import bankmanagementsystem.Savings;
 import bankmanagementsystem.model.User;
+import bankmanagementsystem.model.UserAccount;
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class JDBC {
@@ -19,9 +22,13 @@ public class JDBC {
 	private final String dbuser = "postgres";
 	private final String dbpassword = "";
 	
+	
 
 	private ArrayList<User> usersptr = new ArrayList<User>();
-	
+	private ArrayList<UserAccount> userAccount = new ArrayList<UserAccount>();
+//	private ArrayList<ArrayList<AtmTransaction>> transactions = new ArrayList<ArrayList<AtmTransaction>>();
+
+	int tempid = 0;
 	
 	public JDBC() {
 		
@@ -58,13 +65,14 @@ public class JDBC {
 //		return null;
 //		
 //		
-//	}
+//	} 
 	
 	
-	public boolean insertUser(String id, String fname, String email, String phone, String password, String username, String address, long cnum, Chequing account) {
+	
+	public boolean insertUser(String id, String fname, String email, String phone, String password, String username, String address, String cnum, Chequing account) {
 
 		
-		String accountSql = "INSERT INTO user_accounts (account_number, account_balance, account_title) VALUES (?, ?, ?)";
+		String accountSql = "INSERT INTO user_accounts (id, accountnumber, balance, accounttitle) VALUES (?, ?, ?, ?)";
 
 
 		String sql = "INSERT INTO users (id, fullname, email, phone, password, username, address, cardnumber) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -78,14 +86,15 @@ public class JDBC {
 	            statement.setString(5, password);
 	            statement.setString(6, username);
 	            statement.setString(7, address);
-	            statement.setLong(8, cnum);
+	            statement.setString(8, cnum);
 	            statement.executeUpdate();
 	            
-//	            statement = connection.prepareStatement(accountSql);
-//	            statement.setString(1, account.accountNumber);
-//	            statement.setFloat(2, account.accountBalance);
-//	            statement.setString(3, account.account_title);
-//	            statement.executeUpdate();
+	            statement = connection.prepareStatement(accountSql);
+	            statement.setString(1, String.format("%04d", tempid));
+	            statement.setString(2, account.accountNumber);
+	            statement.setFloat(3, account.accountBalance);
+	            statement.setString(4, account.account_title);
+	            statement.executeUpdate();
 	            
 	            
 	            return true;
@@ -97,14 +106,16 @@ public class JDBC {
 		
 	}
 	
-	
+//	  String sql = "SELECT users.*, user_accounts.* "
+//		  		+ "FROM users "
+//		  		+ "JOIN user_accounts.id ON users.id = user_accounts.id "
+//		  		+ "WHERE users.id = ?";
 	
 	public boolean deleteUser(String id) {
 		
-		
-		
 		String sql = "DELETE FROM users "
 					+ "WHERE id = ?";
+		
 		
 	    try (Connection connection = DriverManager.getConnection (dburl, dbuser, dbpassword);) {
     		PreparedStatement statement = connection.prepareStatement(sql);
@@ -202,10 +213,91 @@ public class JDBC {
 				return false;
 		
 		    }
-		  
-		  
-		
+
 	}
+	
+	
+	
+	//User Accounts
+	
+	public ArrayList<UserAccount> getUserAccounts(String userid) {
+		
+		ArrayList<UserAccount> accounts = new ArrayList<UserAccount>();
+		
+		  String sql = "SELECT user_accounts.* "
+		  		+ "FROM users "
+		  		+ "JOIN user_accounts ON users.id = user_accounts.id "
+		  		+ "WHERE users.id = ?";
+
+		  
+		  try (Connection connection = DriverManager.getConnection (dburl, dbuser, dbpassword);) {
+				PreparedStatement statement = connection.prepareStatement(sql);
+				statement.setString(1, userid);
+				ResultSet rs = statement.executeQuery();
+				UserAccount temp = null;
+				
+				while (rs.next()) {
+	               if(rs.getString("accounttitle").equals("Chequing")) {
+	            	   temp = new Chequing(rs.getString("accountnumber"), Float.valueOf(rs.getString("balance")), "Chequing");
+	               }else {
+	            	   temp = new Savings(rs.getString("accountnumber"), Float.valueOf(rs.getString("balance")), "Savings");
+	               }
+	               
+	               
+	               accounts.add(temp);
+	              
+	            }
+				
+				
+				
+				setUserAccount(accounts);
+				  
+				
+				return getUserAccount();
+				
+				
+				
+
+		    }catch (SQLException e) {
+
+				e.printStackTrace();
+				return null;
+		
+		    }
+		  
+		  
+	}
+	
+	
+	public String authenticateUser(String cardnumber, String password) {
+		 String sql = "SELECT * FROM users "
+			  		+ "WHERE users.cardnumber = ? AND users.password = ?";
+		 
+		 try (Connection connection = DriverManager.getConnection (dburl, dbuser, dbpassword);) {
+				PreparedStatement statement = connection.prepareStatement(sql);
+				statement.setString(1, cardnumber);
+				statement.setString(2, password);
+				ResultSet rs = statement.executeQuery();
+
+				while (rs.next()) {
+					return rs.getString("id");
+				}
+				
+//				return rs.next();
+				
+				
+
+		    }catch (SQLException e) {
+
+				e.printStackTrace();
+				 return null;
+		
+		    }
+		return "";
+
+
+	}
+	
 
 
 
@@ -224,6 +316,27 @@ public class JDBC {
 	public void setUsersList(ArrayList<User> usersptr) {
 		this.usersptr = usersptr;
 	}
+
+
+
+	/**
+	 * @return the userAccount
+	 */
+	public ArrayList<UserAccount> getUserAccount() {
+		return userAccount;
+	}
+
+
+
+	/**
+	 * @param userAccount the userAccount to set
+	 */
+	public void setUserAccount(ArrayList<UserAccount> userAccount) {
+		this.userAccount = userAccount;
+	}
+	
+	
+
 	
 	
 	
