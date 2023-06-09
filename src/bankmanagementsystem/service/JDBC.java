@@ -163,6 +163,7 @@ public class JDBC {
 	public User getUser(String id) {
 	
 		
+		
 		String sql = "SELECT * FROM users "
 				+ "WHERE id = ?";
 	
@@ -170,6 +171,9 @@ public class JDBC {
 		PreparedStatement statement = connection.prepareStatement(sql);
 		statement.setString(1, id);
 		ResultSet rs = statement.executeQuery();
+		
+		//Get the accounts associated
+		getUserAccounts(id);
 		if(rs.next())
 			return new User(id, rs.getString("fullname"), rs.getString("email"), rs.getString("phone"), rs.getString("password"), rs.getString("username"), rs.getString("address"), Long.valueOf(rs.getString("cardnumber")));
 		return null;
@@ -249,10 +253,10 @@ public class JDBC {
 	            }
 				
 				
-				
+				System.out.println(temp.accountTitle);
 				setUserAccount(accounts);
 				  
-				
+
 				return getUserAccount();
 				
 				
@@ -282,10 +286,7 @@ public class JDBC {
 				while (rs.next()) {
 					return rs.getString("id");
 				}
-				
-//				return rs.next();
-				
-				
+	
 
 		    }catch (SQLException e) {
 

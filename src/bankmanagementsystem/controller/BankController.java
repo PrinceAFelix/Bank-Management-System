@@ -54,6 +54,8 @@ public class BankController implements ActionListener {
 		admin = new AdminUser("adm001", "admin", "admin");
 		users.add(new User("0001", "John Doe", "doe@test.com", "123456789", "12345", "doe", "doe St", 123));
 		sqlConnect.getCustomersList();
+
+		
 		
 	}
 	
