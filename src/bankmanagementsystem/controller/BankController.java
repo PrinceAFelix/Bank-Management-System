@@ -355,7 +355,7 @@ public class BankController implements ActionListener {
 		
 		
 		if(ae.getSource().equals(AtmTransactionPage.getContinueBtn())) {
-			atm.processOperation(getUserAccount(), Float.valueOf(String.valueOf(AtmTransactionPage.getFormattedTextField().getValue())), AtmTransactionPage.getComboBox().getSelectedIndex());
+			atm.processOperation(UserAccountPage.getActiveUser().getId(), Float.valueOf(String.valueOf(AtmTransactionPage.getFormattedTextField().getValue())), AtmTransactionPage.getComboBox().getSelectedIndex());
 		}
 		
 		if(ae.getSource().equals(AtmTransactionPage.getComboBox())) {

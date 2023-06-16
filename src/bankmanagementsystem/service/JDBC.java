@@ -162,8 +162,6 @@ public class JDBC {
 	
 	public User getUser(String id) {
 	
-		
-		
 		String sql = "SELECT * FROM users "
 				+ "WHERE id = ?";
 	
@@ -174,6 +172,8 @@ public class JDBC {
 		
 		//Get the accounts associated
 		getUserAccounts(id);
+		
+	
 		if(rs.next())
 			return new User(id, rs.getString("fullname"), rs.getString("email"), rs.getString("phone"), rs.getString("password"), rs.getString("username"), rs.getString("address"), Long.valueOf(rs.getString("cardnumber")));
 		return null;
@@ -270,6 +270,41 @@ public class JDBC {
 		    }
 		  
 		  
+	}
+	
+	
+	public boolean depositMoney(String userid, float amount, int account) {
+		
+		
+		String sql = "UPDATE user_accounts "
+		           + "SET balance = balance + ? "
+		           + "FROM users "
+		           + "WHERE users.id = ?";
+		  
+		  System.out.println(getUserAccount().size());
+		  
+		  getUserAccounts("0000");
+		
+		 getUserAccount().get(account).accountBalance += amount;
+		 
+		 try (Connection connection = DriverManager.getConnection (dburl, dbuser, dbpassword);) {
+				PreparedStatement statement = connection.prepareStatement(sql);
+				statement.setFloat(1,  amount);
+				statement.setString(2, userid);
+				
+				statement.executeUpdate();
+				
+		 }catch (SQLException e) {
+
+				e.printStackTrace();
+				return false;
+		
+		    }
+		  
+		 
+		
+		
+		return true;
 	}
 	
 	
