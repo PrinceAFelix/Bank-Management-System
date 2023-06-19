@@ -196,6 +196,7 @@ public JPanel header(String headerTitle) {
 	 * @param activeUser the activeUser to set
 	 */
 	public static void setActiveUser(User activeUser) {
+		
 		UserAccountPage.activeUser = activeUser;
 	}
 

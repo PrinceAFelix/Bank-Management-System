@@ -19,14 +19,14 @@ public class Atm {
 		this.atmLocation = adr;
 	}
 
-	public boolean deposit(String userid, float amount, int depositForm) {
+	public boolean deposit(User user, String userid, float amount, int depositForm) {
 		
 //		if(!validateActiveAccount(accounts, depositForm)) return false;
 		
 //		accounts.get(depositForm).accountBalance += amount;
 		
 		
-		sqlConnect.depositMoney(userid, amount, depositForm);
+		sqlConnect.depositMoney(user, userid, amount, depositForm);
 		
 		System.out.printf("\nSuccessfully deposit %.2f into your account\n\n", amount);
 		

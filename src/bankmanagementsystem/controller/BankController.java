@@ -105,6 +105,7 @@ public class BankController implements ActionListener {
 			if(!authenticatedUser.isEmpty()) {
 				
 				UserAccountPage.setActiveUser(sqlConnect.getUser(authenticatedUser));
+				UserAccountPage.getActiveUser().setUserAccount(sqlConnect.getUserAccounts(authenticatedUser));
 				System.out.println("Sign in");
 				BankView.getPanel().add(up.userPanel(BankView.getController()), "user");
 				cardLayout.show(BankView.getPanel(), "user");
@@ -342,6 +343,9 @@ public class BankController implements ActionListener {
 		
 		
 		if(ae.getSource().equals(UserAccountPage.getDepositBtn())) {
+			
+			System.out.println("Size: " + sqlConnect.getUserAccount().size());
+			
 			BankView.getPanel().add(atm.atmTransactionPanel(getUserAccount(), BankView.getController(), BankView.getMouseController(), "Deposit"), "atmtransaction");
 			cardLayout.show(BankView.getPanel(), "atmtransaction");
 			AtmTransactionPage.setOperation(0);
@@ -355,7 +359,7 @@ public class BankController implements ActionListener {
 		
 		
 		if(ae.getSource().equals(AtmTransactionPage.getContinueBtn())) {
-			atm.processOperation(UserAccountPage.getActiveUser().getId(), Float.valueOf(String.valueOf(AtmTransactionPage.getFormattedTextField().getValue())), AtmTransactionPage.getComboBox().getSelectedIndex());
+			atm.processOperation(UserAccountPage.getActiveUser(), Float.valueOf(String.valueOf(AtmTransactionPage.getFormattedTextField().getValue())), AtmTransactionPage.getComboBox().getSelectedIndex());
 		}
 		
 		if(ae.getSource().equals(AtmTransactionPage.getComboBox())) {

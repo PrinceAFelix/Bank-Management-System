@@ -24,7 +24,7 @@ public class User {
 	private String username;
 	private String address;
 	private long cardNumber;
-//	private ArrayList<UserAccount> userAccount;
+	private ArrayList<UserAccount> userAccount;
 	private ArrayList<ArrayList<AtmTransaction>> transactions;
 
 	private static long idCounter = 0;
@@ -96,9 +96,13 @@ public class User {
 
 	}
 
-//	public ArrayList<UserAccount> getUserAccount() {
-//		return userAccount;
-//	}
+	public ArrayList<UserAccount> getUserAccount() {
+		return userAccount;
+	}
+	
+	public ArrayList<UserAccount> setUserAccount( ArrayList<UserAccount> userAccount) {
+		return this.userAccount = userAccount;
+	}
 
 	public ArrayList<AtmTransaction> getTransactions(int account) {
 		

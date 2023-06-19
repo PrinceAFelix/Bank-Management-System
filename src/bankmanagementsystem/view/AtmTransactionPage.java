@@ -195,11 +195,11 @@ public JPanel header(String headerTitle) {
 	
 	
 	
-	public boolean processOperation(String userid, float amount, int account) {
+	public boolean processOperation(User user, float amount, int account) {
 		Random random = new Random();
 		
 		if(getOperation() == 0) {
-			if(!atm.deposit(userid, amount, account)) return false;
+			if(!atm.deposit(user, user.getId(), amount, account)) return false;
 		}else if(getOperation() == 1) {
 //			if(!atm.withdraw(accounts, amount, account)) return false;
 		}
