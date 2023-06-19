@@ -273,7 +273,7 @@ public class JDBC {
 	}
 	
 	
-	public boolean depositMoney(User user, String userid, float amount, int account) {
+	public boolean depositMoney(User user, float amount, int account) {
 		
 		
 		String sql = "UPDATE user_accounts "
@@ -290,7 +290,7 @@ public class JDBC {
 		 try (Connection connection = DriverManager.getConnection (dburl, dbuser, dbpassword);) {
 				PreparedStatement statement = connection.prepareStatement(sql);
 				statement.setFloat(1,  amount);
-				statement.setString(2, userid);
+				statement.setString(2, user.getId());
 				
 				statement.executeUpdate();
 				return true;
@@ -306,7 +306,7 @@ public class JDBC {
 	}
 	
 	
-	public boolean withdrawMoney(String userid, float amount, int account) {
+	public boolean withdrawMoney(User user, float amount, int account) {
 		
 		
 		String sql = "UPDATE user_accounts "
@@ -318,12 +318,12 @@ public class JDBC {
 		  
 		
 		
-		 getUserAccount().get(account).accountBalance -= amount;
+		  user.getUserAccount().get(account).accountBalance -= amount;
 		 
 		 try (Connection connection = DriverManager.getConnection (dburl, dbuser, dbpassword);) {
 				PreparedStatement statement = connection.prepareStatement(sql);
 				statement.setFloat(1,  amount);
-				statement.setString(2, userid);
+				statement.setString(2, user.getId());
 				
 				statement.executeUpdate();
 				return true;

@@ -19,24 +19,27 @@ public class Atm {
 		this.atmLocation = adr;
 	}
 
-	public boolean deposit(User user, String userid, float amount, int depositForm) {
+	public boolean deposit(User user, float amount, int depositForm) {
 		
 //		if(!validateActiveAccount(accounts, depositForm)) return false;
 		
 //		accounts.get(depositForm).accountBalance += amount;
 		
 		
-		sqlConnect.depositMoney(user, userid, amount, depositForm);
+		sqlConnect.depositMoney(user, amount, depositForm);
 		
 		System.out.printf("\nSuccessfully deposit %.2f into your account\n\n", amount);
 		
 		return true;
 	}
 
-	public boolean withdraw(float amount, int withdrawFrom) {
+	public boolean withdraw(User user, float amount,  int withdrawFrom) {
 //		if(!validateActiveAccount(accounts, withdrawFrom)) return false;
 		
 //		accounts.get(withdrawFrom).accountBalance -= amount;
+		
+		sqlConnect.withdrawMoney(user, amount, withdrawFrom);
+		
 		System.out.printf("\nSuccessfully withdraw %.2f from your account\n\n", amount);
 		
 		return true;

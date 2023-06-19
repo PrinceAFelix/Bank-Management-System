@@ -199,9 +199,9 @@ public JPanel header(String headerTitle) {
 		Random random = new Random();
 		
 		if(getOperation() == 0) {
-			if(!atm.deposit(user, user.getId(), amount, account)) return false;
+			if(!atm.deposit(user, amount, account)) return false;
 		}else if(getOperation() == 1) {
-//			if(!atm.withdraw(accounts, amount, account)) return false;
+			if(!atm.withdraw(user, amount, account)) return false;
 		}
 //		AtmTransaction transactionTemp = new AtmTransaction(random.nextInt(10000),
 //				account == 0 ? "Chequing" : "Savings", comp.getCurrentDate(), getOperation() == 0 ? "Deposit" : "Withdrawal", amount,
