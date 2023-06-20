@@ -28,7 +28,7 @@ public class JDBC {
 	private ArrayList<UserAccount> userAccount = new ArrayList<UserAccount>();
 //	private ArrayList<ArrayList<AtmTransaction>> transactions = new ArrayList<ArrayList<AtmTransaction>>();
 
-	int tempid = 0;
+	
 	
 	public JDBC() {
 		
@@ -90,7 +90,7 @@ public class JDBC {
 	            statement.executeUpdate();
 	            
 	            statement = connection.prepareStatement(accountSql);
-	            statement.setString(1, String.format("%04d", tempid));
+	            statement.setString(1, id);
 	            statement.setString(2, account.accountNumber);
 	            statement.setFloat(3, account.accountBalance);
 	            statement.setString(4, account.account_title);
@@ -275,11 +275,18 @@ public class JDBC {
 	
 	public boolean depositMoney(User user, float amount, int account) {
 		
+//		
+//		UPDATE public.user_accounts
+//		SET balance = balance + 10
+//		FROM users
+//		WHERE public.user_accounts.id = public.users.id
+//		AND public.users.id = '0001';
 		
 		String sql = "UPDATE user_accounts "
 		           + "SET balance = balance + ? "
 		           + "FROM users "
-		           + "WHERE users.id = ?";
+		           + "WHERE user_accounts.id = users.id "
+		           + "AND users.id = ?";
 		  
 		  System.out.println(getUserAccount().size());
 		  
@@ -310,9 +317,10 @@ public class JDBC {
 		
 		
 		String sql = "UPDATE user_accounts "
-		           + "SET balance = balance - ? "
+		           + "SET balance = balance + ? "
 		           + "FROM users "
-		           + "WHERE users.id = ?";
+		           + "WHERE user_accounts.id = users.id "
+		           + "AND users.id = ?";
 		  
 		  System.out.println(getUserAccount().size());
 		  

@@ -27,8 +27,8 @@ public class User {
 	private ArrayList<UserAccount> userAccount;
 	private ArrayList<ArrayList<AtmTransaction>> transactions;
 
-	private static long idCounter = 0;
-	private static long accountNumberCounter;
+	private static long idCounter = 1;
+	private static long accountNumberCounter = 9998;
 	
 	Random random = new Random();
 	
@@ -73,7 +73,7 @@ public class User {
 	public User(String id, String fname, String e, String phone, String pwd, String usrn, String adr, long cnum) {
 		
 		
-		setAccountNumberCounter(9999);
+		setAccountNumberCounter(accountNumberCounter--);
 //		this.userAccount = new ArrayList<UserAccount>();
 //		UserAccount temp = new Chequing("19836482", 200, "Chequing");
 //		UserAccount temp1 = new Savings("19836362", 200, "Savings");
