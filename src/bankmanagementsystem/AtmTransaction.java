@@ -5,12 +5,12 @@ import java.util.Date;
 
 public class AtmTransaction {
 
-	protected int id;
-	public String account;
-	public String transaction_Date;
-	public String transaction_Type;
-	public float transaction_Amount;
-	public float post_balance;
+	private int id;
+	private String account;
+	private String transaction_Date;
+	private String transaction_Type;
+	private float transaction_Amount;
+	private float post_balance;
 
 	private int index;
 
@@ -49,6 +49,90 @@ public class AtmTransaction {
 
 		System.out.println(
 				"\n<******************************************************************************************************>\n\n");
+	}
+
+	/**
+	 * @return the id
+	 */
+	public int getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the account
+	 */
+	public String getAccount() {
+		return account;
+	}
+
+	/**
+	 * @param account the account to set
+	 */
+	public void setAccount(String account) {
+		this.account = account;
+	}
+
+	/**
+	 * @return the transaction_Date
+	 */
+	public String getTransaction_Date() {
+		return transaction_Date;
+	}
+
+	/**
+	 * @param transaction_Date the transaction_Date to set
+	 */
+	public void setTransaction_Date(String transaction_Date) {
+		this.transaction_Date = transaction_Date;
+	}
+
+	/**
+	 * @return the transaction_Type
+	 */
+	public String getTransaction_Type() {
+		return transaction_Type;
+	}
+
+	/**
+	 * @param transaction_Type the transaction_Type to set
+	 */
+	public void setTransaction_Type(String transaction_Type) {
+		this.transaction_Type = transaction_Type;
+	}
+
+	/**
+	 * @return the transaction_Amount
+	 */
+	public float getTransaction_Amount() {
+		return transaction_Amount;
+	}
+
+	/**
+	 * @param transaction_Amount the transaction_Amount to set
+	 */
+	public void setTransaction_Amount(float transaction_Amount) {
+		this.transaction_Amount = transaction_Amount;
+	}
+
+	/**
+	 * @return the post_balance
+	 */
+	public float getPost_balance() {
+		return post_balance;
+	}
+
+	/**
+	 * @param post_balance the post_balance to set
+	 */
+	public void setPost_balance(float post_balance) {
+		this.post_balance = post_balance;
 	}
 
 }

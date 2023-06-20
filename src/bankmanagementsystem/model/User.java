@@ -27,7 +27,7 @@ public class User {
 	private ArrayList<UserAccount> userAccount;
 	private ArrayList<ArrayList<AtmTransaction>> transactions;
 
-	private static long idCounter = 1;
+	private static long idCounter = 2;
 	private static long accountNumberCounter = 9998;
 	
 	Random random = new Random();

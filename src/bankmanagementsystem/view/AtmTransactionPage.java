@@ -195,21 +195,23 @@ public JPanel header(String headerTitle) {
 	
 	
 	
-	public boolean processOperation(User user, float amount, int account) {
+	public AtmTransaction processOperation(User user, float amount, int account) {
 		Random random = new Random();
 		
 		if(getOperation() == 0) {
-			if(!atm.deposit(user, amount, account)) return false;
+			if(!atm.deposit(user, amount, account)) return null;
 		}else if(getOperation() == 1) {
-			if(!atm.withdraw(user, amount, account)) return false;
+			if(!atm.withdraw(user, amount, account)) return null;
 		}
-//		AtmTransaction transactionTemp = new AtmTransaction(random.nextInt(10000),
-//				account == 0 ? "Chequing" : "Savings", comp.getCurrentDate(), getOperation() == 0 ? "Deposit" : "Withdrawal", amount,
-//				accounts.get(account).accountBalance);
+		return new AtmTransaction(random.nextInt(10000),
+				account == 0 ? "Chequing" : "Savings", comp.getCurrentDate(), getOperation() == 0 ? "Deposit" : "Withdrawal", amount,
+				user.getUserAccount().get(account).accountBalance);
+		
+//		accounts.get(account).accountBalance
 		
 //		UserAccountPage.getActiveUser().getTransactions(account).add(transactionTemp);
 		
-		return true;
+		
 	}
 	
 	

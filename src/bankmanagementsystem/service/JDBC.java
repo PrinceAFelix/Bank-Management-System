@@ -106,10 +106,7 @@ public class JDBC {
 		
 	}
 	
-//	  String sql = "SELECT users.*, user_accounts.* "
-//		  		+ "FROM users "
-//		  		+ "JOIN user_accounts.id ON users.id = user_accounts.id "
-//		  		+ "WHERE users.id = ?";
+
 	
 	public boolean deleteUser(String id) {
 		
@@ -275,12 +272,7 @@ public class JDBC {
 	
 	public boolean depositMoney(User user, float amount, int account) {
 		
-//		
-//		UPDATE public.user_accounts
-//		SET balance = balance + 10
-//		FROM users
-//		WHERE public.user_accounts.id = public.users.id
-//		AND public.users.id = '0001';
+
 		
 		String sql = "UPDATE user_accounts "
 		           + "SET balance = balance + ? "
@@ -317,7 +309,7 @@ public class JDBC {
 		
 		
 		String sql = "UPDATE user_accounts "
-		           + "SET balance = balance + ? "
+		           + "SET balance = balance - ? "
 		           + "FROM users "
 		           + "WHERE user_accounts.id = users.id "
 		           + "AND users.id = ?";
@@ -371,6 +363,33 @@ public class JDBC {
 		return "";
 
 
+	}
+	
+	
+	
+	public boolean transaction(User user, AtmTransaction transaction) {
+		
+		String sql = "INSERT INTO transactions (accountid, account, datetime, transacttype, amount, postbalance) VALUES (?, ?, ?, ?, ?, ?)";
+		
+		 try (Connection connection = DriverManager.getConnection (dburl, dbuser, dbpassword);) {
+			 
+			 PreparedStatement statement = connection.prepareStatement(sql);
+			 statement.setString(1, user.getId());
+			 statement.setString(2,transaction.getAccount());
+			 statement.setString(3,transaction.getTransaction_Date());
+			 statement.setString(4,transaction.getTransaction_Type());
+			 statement.setFloat(5, transaction.getTransaction_Amount());
+			 statement.setFloat(6,transaction.getPost_balance());
+			 statement.executeUpdate();
+			 
+		 }catch (SQLException e) {
+
+				e.printStackTrace();
+				 return false;
+		
+		    }
+		
+		return true;
 	}
 	
 
