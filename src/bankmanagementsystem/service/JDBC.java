@@ -34,41 +34,7 @@ public class JDBC {
 		
 	}
 
-	
-	
-//	public Connection connect() {
-//		try{
-//		
-//			Connection connection = DriverManager.getConnection (dotenv.get("URL"), dotenv.get("USER"), dotenv.get("PASSWORD"));
-//			if(connection != null) {
-//				System.out.println("Connected to PostgreSQL server successfully!");
-//			}else {
-//				System.out.println("Failed to connect PostgreSQL server");
-//			}
-//			       
-//			
-//
-//		    
-//			Statement statement = connection.createStatement ();
-//			ResultSet resultSet = statement.executeQuery("SELECT VERSION()");
-//			
-//			if(resultSet.next()) {
-//				System.out.println(resultSet.getString(1));
-//			}
-//			
-//			return connection;
-//
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return null;
-//		
-//		
-//	} 
-	
-	
-	
+
 	public boolean insertUser(String id, String fname, String email, String phone, String password, String username, String address, String cnum, UserAccount account) {
 
 		
@@ -121,7 +87,7 @@ public class JDBC {
 
             return true;
 	    }catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 			return false;
 	    }
@@ -149,7 +115,7 @@ public class JDBC {
 	
 	        return true;
 	    }catch (SQLException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 			return false;
 	    }
@@ -177,7 +143,7 @@ public class JDBC {
 		return null;
 
     }catch (SQLException e) {
-		// TODO Auto-generated catch block
+		
 		e.printStackTrace();
 		return null;
     }
@@ -251,7 +217,7 @@ public class JDBC {
 	            }
 				
 				
-				System.out.println(temp.accountTitle);
+
 				setUserAccount(accounts);
 				  
 
@@ -337,7 +303,7 @@ public class JDBC {
 		           + "WHERE " + (account == 0 ? " user_accounts.accountid1 " : "user_accounts.accountid2") + " = users.id "
 		           + "AND users.id = ?";
 		  
-		  System.out.println(getUserAccount().size());
+	
 		  
 	
 		
@@ -371,7 +337,7 @@ public class JDBC {
 		           + "WHERE " + (account == 0 ? " user_accounts.accountid1 " : "user_accounts.accountid2") + " = users.id "
 		           + "AND users.id = ?";
 		  
-		  System.out.println(getUserAccount().size());
+		 
 		  
 		
 		
@@ -473,17 +439,8 @@ public class JDBC {
 			AtmTransaction temp = null;
 			
 			while (rs.next()) {
-//				private int id;
-//				private String account;
-//				private String transaction_Date;
-//				private String transaction_Type;
-//				private float transaction_Amount;
-//				private float post_balance;
-				
-				
+
 				temp = new AtmTransaction(Integer.parseInt(rs.getString("id")), rs.getString("account"), rs.getString("datetime"), rs.getString("transacttype"), Float.valueOf(rs.getString("amount")), Float.valueOf(rs.getString("postbalance")));
-				
-				
 				
 				if(rs.getString("account").equals("Chequing")) {
 					transactiontemp.get(0).add(temp);
@@ -492,14 +449,11 @@ public class JDBC {
 					
 				}
 				
-				System.out.println("HERE: " + rs.getString("account"));
+				
 				
 				
 			}
 	
-			System.out.println("Transaction Chequing size: " + transactiontemp.get(0).size());
-			System.out.println("Transaction Savings size: " + transactiontemp.get(1).size());
-			
 			
 			setTransactions(transactiontemp);
 			

@@ -125,7 +125,7 @@ public JPanel header(String headerTitle) {
 		
 		accountPanel.add(fromAccount, BorderLayout.WEST);
 		
-		System.out.println();
+
 		String[] option = accounts.size() == 1 ? new String[]{"Chequing"} : new String[]{"Chequing","Savings"};
 
 		comboBox = new JComboBox<Object>(option);

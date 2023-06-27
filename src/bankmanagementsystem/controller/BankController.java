@@ -65,7 +65,7 @@ public class BankController implements ActionListener {
 		Admin a = new Admin();
 		UserAccounts u = new UserAccounts();
 		UserAccountPage up = new UserAccountPage();
-		User activeUser = null;
+
 		TransactionHistoryPage transaction  = new TransactionHistoryPage();
 		AtmTransactionPage atm = new AtmTransactionPage();
 		
@@ -76,29 +76,14 @@ public class BankController implements ActionListener {
 			//Admin Login
 			if(LogIn.getCredential().getText().equals(admin.getUsername()) 
 					&& String.valueOf(LogIn.getPasswordField().getPassword()).equals(admin.getPassword())) {
-				System.out.println("Authenticate");
+				
 				
 				bank = new BankView("1000", "B01", "Bank Street", "Bank of PA");
 				BankView.getPanel().add(a.adminPanel(BankView.getController(), bank.address, bank.atmNumber), "adminmain");
 				cardLayout.show(BankView.getPanel(), "adminmain");
-				
-				activeUser = admin;
-			}
 			
-//			for (int i = 0; i < users.size(); i++) {
-//				if(((String.valueOf(users.get(i).getCardNumber())).equals(LogIn.getCredential().getText()))){
-//					if (users.get(i).verifyPassword(users.get(i).getPassword(), String.valueOf(LogIn.getPasswordField().getPassword()) )) {
-//						activeUser = users.get(i);
-//						
-//						UserAccountPage.setActiveUser(activeUser);
-//						System.out.println("Sign in");
-//						BankView.getPanel().add(up.userPanel(BankView.getController()), "user");
-//						cardLayout.show(BankView.getPanel(), "user");
-//					}
-//						
-//				}
-//				
-//			}
+			}
+
 			
 			String authenticatedUser = sqlConnect.authenticateUser(LogIn.getCredential().getText(), String.valueOf(LogIn.getPasswordField().getPassword()));
 			
@@ -106,7 +91,7 @@ public class BankController implements ActionListener {
 				
 				UserAccountPage.setActiveUser(sqlConnect.getUser(authenticatedUser));
 				UserAccountPage.getActiveUser().setUserAccount(sqlConnect.getUserAccounts(authenticatedUser));
-				System.out.println("Sign in");
+				
 				BankView.getPanel().add(up.userPanel(BankView.getController()), "user");
 				cardLayout.show(BankView.getPanel(), "user");
 				
@@ -125,7 +110,7 @@ public class BankController implements ActionListener {
 
 		
 		if(ae.getSource().equals(Admin.getExitBtn())) {
-			System.out.println("Exit");
+			
 			cardLayout.show(BankView.getPanel(), "login");
 			LogIn.getCredential().setText("");
 			LogIn.getPasswordField().setText("");
@@ -134,7 +119,7 @@ public class BankController implements ActionListener {
 		
 		//Register
 		if(ae.getSource().equals(Admin.getRegisterBtn())) {
-			System.out.println("Register");
+
 			cardLayout.show(BankView.getPanel(), "register");
 
 		}
@@ -176,7 +161,7 @@ public class BankController implements ActionListener {
 		//Remove
 		
 		if(ae.getSource().equals(Admin.getUnRegisterBtn())) {
-			System.out.println("Remove");
+		
 			cardLayout.show(BankView.getPanel(), "remove");
 		}
 		
@@ -199,7 +184,7 @@ public class BankController implements ActionListener {
 		//Display
 		
 		if(ae.getSource().equals(Admin.getDisplayCustomersBtn())) {
-			System.out.println("display");
+			
 			DisplayCustomersPage.setIsSearch(false);
 			cardLayout.show(BankView.getPanel(), "display");
 		
@@ -220,13 +205,13 @@ public class BankController implements ActionListener {
 		
 		//Modify
 		if(ae.getSource().equals(Admin.getModifyCustomerBtn())) {
-			System.out.println("modify");
+			
 			cardLayout.show(BankView.getPanel(), "modify");
 		}
 		
 		if(ae.getSource().equals(ModificationPage.getcConfirmBtn())) {
 			int user = admin.searchCustomer(BankView.getController().getUsers(), UserAccountPage.getActiveUser(), ModificationPage.getTextField().getText());
-			System.out.println(user);
+			
 			if(user != -1) {
 				BankView.modify.setModifyingUser(BankView.modify.getModifyingUser(), user, getUsers().get(user));
 				ModificationPage.setEditing(true);
@@ -281,7 +266,7 @@ public class BankController implements ActionListener {
 			LogIn.getPasswordField().setText("");
 		}
 		if(ae.getSource().equals(UserAccountPage.getAccountBtn())) {
-			System.out.println("Accounts");
+		
 			BankView.getPanel().add(u.userAccountPanel(BankView.getController(), BankView.getMouseController()), "useraccounts");
 			cardLayout.show(BankView.getPanel(), "useraccounts");
 		}
@@ -318,7 +303,7 @@ public class BankController implements ActionListener {
 					cardLayout.show(BankView.getPanel(), "user");
 					modal.setVisible(false);
 				}else {
-					System.out.println("Empty Fields");
+					//Empty
 				}
 				
 			}else if(ae.getActionCommand().equals("delete")){
@@ -330,7 +315,7 @@ public class BankController implements ActionListener {
 					cardLayout.show(BankView.getPanel(), "user");
 					modal.setVisible(false);
 				}else {
-					System.out.println("Empty Fields");
+					//Empty
 				}
 			
 			}
@@ -360,7 +345,7 @@ public class BankController implements ActionListener {
 		
 		if(ae.getSource().equals(UserAccountPage.getDepositBtn())) {
 			
-			System.out.println("Size: " + sqlConnect.getUserAccount().size());
+		
 			
 			BankView.getPanel().add(atm.atmTransactionPanel(getUserAccount(), BankView.getController(), BankView.getMouseController(), "Deposit"), "atmtransaction");
 			cardLayout.show(BankView.getPanel(), "atmtransaction");

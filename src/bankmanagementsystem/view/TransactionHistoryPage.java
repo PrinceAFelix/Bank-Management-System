@@ -46,7 +46,7 @@ public class TransactionHistoryPage {
 	
 		header.setPreferredSize(new Dimension(350, 150));
 		
-		System.out.println(accounts.size());
+		
 		
 		JLabel accountBalance = new JLabel(String.valueOf(String.format("$%.2f", accounts.get(account).accountBalance)));
 		accountBalance.setHorizontalAlignment(SwingConstants.CENTER);

@@ -124,7 +124,7 @@ public class UserAccounts extends UserAccountPage {
 			btn.setOpaque(true);
 			btn.setBorderPainted(false);
 			btn.setText("");
-			System.out.println("Total");
+		
 		}
 
 		return btn;

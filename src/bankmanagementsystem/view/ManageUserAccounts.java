@@ -70,7 +70,7 @@ public class ManageUserAccounts extends JDialog{
         
 
 
-        JLabel inputLabel = new JLabel("Choose an account");
+       
         
         
         String[] accountOptions = {"", "Savings"};

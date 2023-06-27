@@ -116,7 +116,7 @@ public class User {
 	 * @param transactions the transactions to set
 	 */
 	public void setTransactions(ArrayList<ArrayList<AtmTransaction>> transactions) {
-		System.out.println("SIZE: " + transactions.size());
+		
 		this.transactions = transactions;
 	}
 
@@ -153,7 +153,6 @@ public class User {
 
 			Chequing temp = new Chequing(String.format("%04d", getAccountNumberCounter()), 500, "Chequing");
 			
-//			user.userAccount.add(temp);
 			
 			System.out.println(user.getCardNumber());
 	
@@ -171,7 +170,7 @@ public class User {
 
 	public User deleteUser(String userId) {
 		User deletedUser = new User();
-		// For faster search -> Learn Binary Search to search specific user
+		
 
 		try {
 			
