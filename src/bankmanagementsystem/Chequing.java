@@ -28,19 +28,19 @@ public class Chequing extends UserAccount {
 	}
 
 	@Override
-	public boolean addAccount(ArrayList<UserAccount> accounts, float val) {
+	public UserAccount addAccount(ArrayList<UserAccount> accounts, float val) {
 
 		if (accounts.size() <= 2 && accounts.get(0).accountTitle.equals("Chequing")) {
 			System.out.println("\nAlready have a Chequing Account\n");
-			return false;
+			return null;
 		}
 
 
-		Chequing temp = new Chequing(String.format("%04d", User.getAccountNumberCounter()), val, "Chequing");
+		return new Chequing(String.format("%04d", User.getAccountNumberCounter()), val, "Chequing");
 
 		//Perform Account insert
 
-		return true;
+	
 	}
 
 //	@Override

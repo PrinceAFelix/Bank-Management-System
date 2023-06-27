@@ -378,7 +378,7 @@ public class Bank {
 								break;
 							case 2:
 								Savings temp1 = new Savings();
-								temp1.view_Account(activeUser);
+//								temp1.view_Account(activeUser);
 								break;
 							default:
 								break;

@@ -42,7 +42,7 @@ public class User {
 
 	public User() {
 //		userAccount = new ArrayList<UserAccount>();
-		transactions = new ArrayList<ArrayList<AtmTransaction>>();
+//		transactions = new ArrayList<ArrayList<AtmTransaction>>();
 	}
 
 	/**
@@ -79,10 +79,10 @@ public class User {
 //		UserAccount temp1 = new Savings("19836362", 200, "Savings");
 //		this.userAccount.add(temp);
 //		this.userAccount.add(temp1);
-		this.transactions = new ArrayList<ArrayList<AtmTransaction>>();
-		
-		this.transactions.add(new ArrayList<AtmTransaction>());//Represents Chequing
-		this.transactions.add(new ArrayList<AtmTransaction>());//Represents Savings
+//		this.transactions = new ArrayList<ArrayList<AtmTransaction>>();
+//		
+//		this.transactions.add(new ArrayList<AtmTransaction>());//Represents Chequing
+//		this.transactions.add(new ArrayList<AtmTransaction>());//Represents Savings
 
 
 		this.id = id;
@@ -106,12 +106,18 @@ public class User {
 
 	public ArrayList<AtmTransaction> getTransactions(int account) {
 		
-		
 		 Collections.reverse(this.transactions.get(account));
-		 
-		 
+
 		 return transactions.get(account);
 	
+	}
+	
+	/**
+	 * @param transactions the transactions to set
+	 */
+	public void setTransactions(ArrayList<ArrayList<AtmTransaction>> transactions) {
+		System.out.println("SIZE: " + transactions.size());
+		this.transactions = transactions;
 	}
 
 	public User addUser(String[] fields) {
@@ -359,5 +365,7 @@ public class User {
 	public static void setAccountNumberCounter(long accountNumberCounter) {
 		User.accountNumberCounter = accountNumberCounter;
 	}
+
+
 
 }

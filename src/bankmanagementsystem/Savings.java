@@ -20,31 +20,28 @@ public class Savings extends UserAccount {
 		this.account_title = title;
 	}
 
-	public void view_Account(User user) {
+	public void view_Account(ArrayList<UserAccount> accounts) {
 
-		if (verifyAccount(user) == false) {
-			System.out.println("\nYou don't have a savings account\n");
-			return;
-		}
+	
 
-		System.out.printf("\n----------------%s----------------", user.getUserAccount().get(1).accountTitle);
+		System.out.printf("\n----------------%s----------------",accounts.get(1).accountTitle);
 		System.out.printf("\nAccount Number: %s\n" + "Accouunt Balance: %.2f\n",
-				user.getUserAccount().get(1).accountNumber, user.getUserAccount().get(1).accountBalance);
+				accounts.get(1).accountNumber, accounts.get(1).accountBalance);
 		System.out.println("---------------------------------\n");
 	}
 
 	@Override
-	public boolean addAccount(User user, float val) {
-		if (user.getUserAccount().size() == 2 && user.getUserAccount().get(1).accountTitle.equals("Savings")) {
+	public UserAccount addAccount(ArrayList<UserAccount> accounts, float val) {
+		if (accounts.size() == 2 && accounts.get(1).accountTitle.equals("Savings")) {
 			System.out.println("\nAlready have a Savings Account\n");
-			return false;
+			return null;
 		}
 
-		UserAccount temp = new Savings(String.format("%04d", User.getAccountNumberCounter()), val, "Savings");
+		return new Savings(String.format("%04d", User.getAccountNumberCounter()), val, "Savings");
 
-		user.getUserAccount().add(temp);
+		
 
-		return true;
+	
 
 	}
 

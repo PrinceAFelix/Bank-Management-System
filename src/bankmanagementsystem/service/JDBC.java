@@ -26,7 +26,7 @@ public class JDBC {
 
 	private ArrayList<User> usersptr = new ArrayList<User>();
 	private ArrayList<UserAccount> userAccount = new ArrayList<UserAccount>();
-//	private ArrayList<ArrayList<AtmTransaction>> transactions = new ArrayList<ArrayList<AtmTransaction>>();
+	private ArrayList<ArrayList<AtmTransaction>> transactions = new ArrayList<ArrayList<AtmTransaction>>();
 
 	
 	
@@ -45,7 +45,7 @@ public class JDBC {
 //			}else {
 //				System.out.println("Failed to connect PostgreSQL server");
 //			}
-//			
+//			       
 //			
 //
 //		    
@@ -69,10 +69,10 @@ public class JDBC {
 	
 	
 	
-	public boolean insertUser(String id, String fname, String email, String phone, String password, String username, String address, String cnum, Chequing account) {
+	public boolean insertUser(String id, String fname, String email, String phone, String password, String username, String address, String cnum, UserAccount account) {
 
 		
-		String accountSql = "INSERT INTO user_accounts (id, accountnumber, balance, accounttitle) VALUES (?, ?, ?, ?)";
+		String accountSql = "INSERT INTO user_accounts (accountid1, accountnumber, balance, accounttitle) VALUES (?, ?, ?, ?)";
 
 
 		String sql = "INSERT INTO users (id, fullname, email, phone, password, username, address, cardnumber) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -93,7 +93,7 @@ public class JDBC {
 	            statement.setString(1, id);
 	            statement.setString(2, account.accountNumber);
 	            statement.setFloat(3, account.accountBalance);
-	            statement.setString(4, account.account_title);
+	            statement.setString(4, account.accountTitle);
 	            statement.executeUpdate();
 	            
 	            
@@ -167,9 +167,10 @@ public class JDBC {
 		statement.setString(1, id);
 		ResultSet rs = statement.executeQuery();
 		
+		
 		//Get the accounts associated
 		getUserAccounts(id);
-		
+		getTransactionsDB(id, "Chequing");
 	
 		if(rs.next())
 			return new User(id, rs.getString("fullname"), rs.getString("email"), rs.getString("phone"), rs.getString("password"), rs.getString("username"), rs.getString("address"), Long.valueOf(rs.getString("cardnumber")));
@@ -227,7 +228,7 @@ public class JDBC {
 		
 		  String sql = "SELECT user_accounts.* "
 		  		+ "FROM users "
-		  		+ "JOIN user_accounts ON users.id = user_accounts.id "
+		  		+ "JOIN user_accounts ON users.id = user_accounts.accountid1 OR users.id = user_accounts.accountid2 "
 		  		+ "WHERE users.id = ?";
 
 		  
@@ -269,6 +270,34 @@ public class JDBC {
 		  
 	}
 	
+	public boolean addAccount(User user, UserAccount account) {
+		
+		String sql = "INSERT INTO user_accounts (accountid2, accountnumber, balance, accounttitle) VALUES (?, ?, ?, ?)";
+		
+		
+		 try (Connection connection = DriverManager.getConnection (dburl, dbuser, dbpassword);) {
+				PreparedStatement statement = connection.prepareStatement(sql);
+			    statement.setString(1, user.getId());
+	            statement.setString(2, account.accountNumber);
+	            statement.setFloat(3, account.accountBalance);
+	            statement.setString(4, account.accountTitle);
+	            statement.executeUpdate();
+	            
+	            
+	            getUserAccounts(user.getId()); 
+	            
+	            return true;
+	            
+		 }catch (SQLException e) {
+
+				e.printStackTrace();
+				return false;
+		
+		    }
+		
+		
+	}
+	
 	
 	public boolean depositMoney(User user, float amount, int account) {
 		
@@ -277,7 +306,7 @@ public class JDBC {
 		String sql = "UPDATE user_accounts "
 		           + "SET balance = balance + ? "
 		           + "FROM users "
-		           + "WHERE user_accounts.id = users.id "
+		           + "WHERE " + (account == 0 ? " user_accounts.accountid1 " : "user_accounts.accountid2") + " = users.id "
 		           + "AND users.id = ?";
 		  
 		  System.out.println(getUserAccount().size());
@@ -311,7 +340,7 @@ public class JDBC {
 		String sql = "UPDATE user_accounts "
 		           + "SET balance = balance - ? "
 		           + "FROM users "
-		           + "WHERE user_accounts.id = users.id "
+		           + "WHERE " + (account == 0 ? " user_accounts.accountid1 " : "user_accounts.accountid2") + " = users.id "
 		           + "AND users.id = ?";
 		  
 		  System.out.println(getUserAccount().size());
@@ -343,6 +372,7 @@ public class JDBC {
 		 String sql = "SELECT * FROM users "
 			  		+ "WHERE users.cardnumber = ? AND users.password = ?";
 		 
+		 
 		 try (Connection connection = DriverManager.getConnection (dburl, dbuser, dbpassword);) {
 				PreparedStatement statement = connection.prepareStatement(sql);
 				statement.setString(1, cardnumber);
@@ -352,7 +382,7 @@ public class JDBC {
 				while (rs.next()) {
 					return rs.getString("id");
 				}
-	
+
 
 		    }catch (SQLException e) {
 
@@ -369,7 +399,7 @@ public class JDBC {
 	
 	public boolean transaction(User user, AtmTransaction transaction) {
 		
-		String sql = "INSERT INTO transactions (accountid, account, datetime, transacttype, amount, postbalance) VALUES (?, ?, ?, ?, ?, ?)";
+		String sql = "INSERT INTO transactions (" + (transaction.getAccount() == "Chequing" ? "transactionid1" : "transactionid2") + ", account, datetime, transacttype, amount, postbalance) VALUES (?, ?, ?, ?, ?, ?)";
 		
 		 try (Connection connection = DriverManager.getConnection (dburl, dbuser, dbpassword);) {
 			 
@@ -382,6 +412,10 @@ public class JDBC {
 			 statement.setFloat(6,transaction.getPost_balance());
 			 statement.executeUpdate();
 			 
+			 
+			 getTransactionsDB(user.getId(), transaction.getAccount());
+		
+			 
 		 }catch (SQLException e) {
 
 				e.printStackTrace();
@@ -391,6 +425,67 @@ public class JDBC {
 		
 		return true;
 	}
+	
+	public boolean getTransactionsDB(String id, String account){
+		
+		ArrayList<ArrayList<AtmTransaction>> transactiontemp = new ArrayList<ArrayList<AtmTransaction>>();
+		
+		transactiontemp.add(new ArrayList<AtmTransaction>());//Represents Chequing
+		transactiontemp.add(new ArrayList<AtmTransaction>());//Represents Savings
+		
+		String sql = "SELECT transactions.* "
+				+ "FROM user_accounts "
+				+ "JOIN transactions ON (user_accounts.accountid1 = transactions.transactionid1 OR user_accounts.accountid2 = transactions.transactionid2) "
+				+ "WHERE user_accounts.accountid1 = ? OR user_accounts.accountid2 = ?";
+		try (Connection connection = DriverManager.getConnection (dburl, dbuser, dbpassword);) {
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, id);
+			statement.setString(2, id);
+			ResultSet rs = statement.executeQuery();
+			AtmTransaction temp = null;
+			
+			while (rs.next()) {
+//				private int id;
+//				private String account;
+//				private String transaction_Date;
+//				private String transaction_Type;
+//				private float transaction_Amount;
+//				private float post_balance;
+				
+				
+				temp = new AtmTransaction(Integer.parseInt(rs.getString("id")), rs.getString("account"), rs.getString("datetime"), rs.getString("transacttype"), Float.valueOf(rs.getString("amount")), Float.valueOf(rs.getString("postbalance")));
+				
+				
+				
+				if(rs.getString("account").equals("Chequing")) {
+					transactiontemp.get(0).add(temp);
+				}else if(rs.getString("account").equals("Savings")) {
+					transactiontemp.get(1).add(temp);
+					
+				}
+				
+				System.out.println("HERE: " + rs.getString("account"));
+				
+				
+			}
+	
+			System.out.println("Transaction Chequing size: " + transactiontemp.get(0).size());
+			System.out.println("Transaction Savings size: " + transactiontemp.get(1).size());
+			
+			
+			setTransactions(transactiontemp);
+			
+			return true;
+		}catch (SQLException e) {
+
+			e.printStackTrace();
+			 return false;
+	
+	    }
+		
+	}
+	
+	
 	
 
 
@@ -427,6 +522,25 @@ public class JDBC {
 	 */
 	public void setUserAccount(ArrayList<UserAccount> userAccount) {
 		this.userAccount = userAccount;
+	}
+
+
+
+	/**
+	 * @return the transactions
+	 */
+	public ArrayList<ArrayList<AtmTransaction>> getTransactions() {
+ 
+		return transactions;
+	}
+
+
+
+	/**
+	 * @param transactions the transactions to set
+	 */
+	public void setTransactions(ArrayList<ArrayList<AtmTransaction>> transactions) {
+		this.transactions = transactions;
 	}
 	
 	

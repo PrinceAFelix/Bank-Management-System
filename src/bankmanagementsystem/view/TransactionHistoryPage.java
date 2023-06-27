@@ -92,11 +92,11 @@ public class TransactionHistoryPage {
 	
 	
 	
-	public JPanel chequingPanel(BankController controller, MouseClickListener mousecontroller, ArrayList<UserAccount> accounts, int account) {
+	public JPanel chequingPanel(BankController controller, MouseClickListener mousecontroller, User user, int account) {
 
 		
-		panel.add(header(accounts, account), BorderLayout.NORTH);
-		panel.add(transactions(accounts, account), BorderLayout.CENTER);
+		panel.add(header(user.getUserAccount(), account), BorderLayout.NORTH);
+		panel.add(transactions(user, account), BorderLayout.CENTER);
 		panel.add(footer(mousecontroller, "Back"), BorderLayout.SOUTH);
 
 
@@ -106,7 +106,7 @@ public class TransactionHistoryPage {
 	
 	
 	
-	public JPanel transactions(ArrayList<UserAccount> accounts, int account) {
+	public JPanel transactions(User user, int account) {
 		
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout()); 
@@ -132,16 +132,18 @@ public class TransactionHistoryPage {
 
 
 
-//		user.getTransactions(account).forEach((tr) -> {
-//			
-//			transactionPanel.add(transactionItem(transactionPanel, tr.transaction_Date, tr.transaction_Type, tr.transaction_Amount));
-//			i++;
-//			if (i >= 5) { // if more than 5 components added, adjust preferred height
-//				preferredHeight += 70;
-//				transactionPanel.setPreferredSize(new Dimension(350, preferredHeight));
-//		    }
-//			
-//		});
+		user.getTransactions(account).forEach((tr) -> {
+			
+			
+
+			transactionPanel.add(transactionItem(transactionPanel, tr.getTransaction_Date(), tr.getTransaction_Type(), tr.getTransaction_Amount()));
+			i++;
+			if (i >= 5) { // if more than 5 components added, adjust preferred height
+				preferredHeight += 70;
+				transactionPanel.setPreferredSize(new Dimension(350, preferredHeight));
+		    }
+			
+		});
 		
 		
 		
@@ -166,15 +168,16 @@ public class TransactionHistoryPage {
 		transactionItem.setBackground(Color.WHITE);
 		transactionItem.setLayout(new BorderLayout(0, 0));
 		
-//		String color = isDeposit ? "black" : "#3EBB61";
-		String color = ttype == "Withdrawal" ? "#000000" : "#3EBB61";
-		String addSign = color == "#000000" ? "-" : "";
+
+		String color = ttype.equals("Withdrawal") ? "#000000" : "#3EBB61";
+		
+		String addSign = color.equals("#000000") ? "-" : "";
 		
 		JLabel itemLabel = new JLabel(
 				"<html>"
 				+ "<body>"
 				+ 	"<span style='font-size: 9px; color: rgba(0, 0, 0, 0.4);'>"+ dt +"</span><br>"
-				+ 	"<span style='font-size: 12px; color: black;'>" +ttype + "</span><br>"
+				+ 	"<span style='font-size: 12px; color: black;'>" + ttype + "</span><br>"
 				+ "</body>"
 				+"</html>"
 				);

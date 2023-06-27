@@ -20,7 +20,7 @@ public abstract class UserAccount {
 		this.accountTitle = at;
 	}
 
-	public abstract boolean addAccount(ArrayList<UserAccount> accounts, float val);
+	public abstract UserAccount addAccount(ArrayList<UserAccount> accounts, float val);
 
 //	public abstract boolean updateAccount(Scanner sc, User user);
 

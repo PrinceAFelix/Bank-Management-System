@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 
+import bankmanagementsystem.AtmTransaction;
 import bankmanagementsystem.Chequing;
 import bankmanagementsystem.Savings;
 import bankmanagementsystem.model.AdminUser;
@@ -54,8 +55,7 @@ public class BankController implements ActionListener {
 		admin = new AdminUser("adm001", "admin", "admin");
 		users.add(new User("0001", "John Doe", "doe@test.com", "123456789", "12345", "doe", "doe St", 123));
 		sqlConnect.getCustomersList();
-
-		
+	
 		
 	}
 	
@@ -109,6 +109,11 @@ public class BankController implements ActionListener {
 				System.out.println("Sign in");
 				BankView.getPanel().add(up.userPanel(BankView.getController()), "user");
 				cardLayout.show(BankView.getPanel(), "user");
+				
+				
+				//Get the Transactions of users
+				UserAccountPage.getActiveUser().setTransactions(sqlConnect.getTransactions());
+				
 			}
 			
 	
@@ -300,27 +305,31 @@ public class BankController implements ActionListener {
 			int selectedAccount = ManageUserAccounts.getAccounts().getSelectedIndex();
 			String amount = ManageUserAccounts.getAmountField().getText();
 			
-//			if(ae.getActionCommand().equals("open")) {
-//				if( selectedAccount != 0 && !amount.isBlank()) {
-//					tempAccount = new Savings();
-//					tempAccount.addAccount(UserAccountPage.getActiveUser(), Float.valueOf(amount));
-//					cardLayout.show(BankView.getPanel(), "user");
-//					modal.setVisible(false);
-//				}else {
-//					System.out.println("Empty Fields");
-//				}
-//				
-//			}else if(ae.getActionCommand().equals("delete")){
-//				if(selectedAccount != 0) {
-//					tempAccount = new Savings();
-//					tempAccount.deleteAccount(UserAccountPage.getActiveUser());
-//					cardLayout.show(BankView.getPanel(), "user");
-//					modal.setVisible(false);
-//				}else {
-//					System.out.println("Empty Fields");
-//				}
-//			
-//			}
+			if(ae.getActionCommand().equals("open")) {
+				if( selectedAccount != 0 && !amount.isBlank()) {
+					tempAccount = new Savings();
+					
+					tempAccount = tempAccount.addAccount(UserAccountPage.getActiveUser().getUserAccount(), Float.valueOf(amount));
+					
+					sqlConnect.addAccount(UserAccountPage.getActiveUser(), tempAccount);
+					
+					cardLayout.show(BankView.getPanel(), "user");
+					modal.setVisible(false);
+				}else {
+					System.out.println("Empty Fields");
+				}
+				
+			}else if(ae.getActionCommand().equals("delete")){
+				if(selectedAccount != 0) {
+					tempAccount = new Savings();
+					tempAccount.deleteAccount(UserAccountPage.getActiveUser());
+					cardLayout.show(BankView.getPanel(), "user");
+					modal.setVisible(false);
+				}else {
+					System.out.println("Empty Fields");
+				}
+			
+			}
 			
 
 		}
@@ -332,12 +341,15 @@ public class BankController implements ActionListener {
 		
 		
 		if(ae.getSource().equals(UserAccounts.getChequingBtn())) {
-			BankView.getPanel().add(transaction.chequingPanel(BankView.getController(), BankView.getMouseController(), getUserAccount(), 0), "transaction");
+			
+
+			BankView.getPanel().add(transaction.chequingPanel(BankView.getController(), BankView.getMouseController(), UserAccountPage.getActiveUser(), 0), "transaction");
 			cardLayout.show(BankView.getPanel(), "transaction");
 		}
 		
 		if(ae.getSource().equals(UserAccounts.getSavingsBtn())) {
-			BankView.getPanel().add(transaction.chequingPanel(BankView.getController(), BankView.getMouseController(), getUserAccount(), 1), "transaction");
+
+			BankView.getPanel().add(transaction.chequingPanel(BankView.getController(), BankView.getMouseController(), UserAccountPage.getActiveUser(), 1), "transaction");
 			cardLayout.show(BankView.getPanel(), "transaction");
 		}
 		
@@ -359,7 +371,12 @@ public class BankController implements ActionListener {
 		
 		
 		if(ae.getSource().equals(AtmTransactionPage.getContinueBtn())) {
-			sqlConnect.transaction(UserAccountPage.getActiveUser(), atm.processOperation(UserAccountPage.getActiveUser(), Float.valueOf(String.valueOf(AtmTransactionPage.getFormattedTextField().getValue())), AtmTransactionPage.getComboBox().getSelectedIndex()));
+			
+			AtmTransaction usertransaction = atm.processOperation(UserAccountPage.getActiveUser(), Float.valueOf(String.valueOf(AtmTransactionPage.getFormattedTextField().getValue())), AtmTransactionPage.getComboBox().getSelectedIndex());
+			
+			sqlConnect.transaction(UserAccountPage.getActiveUser(), usertransaction);
+			
+			UserAccountPage.getActiveUser().setTransactions(sqlConnect.getTransactions());
 		
 		}
 		
