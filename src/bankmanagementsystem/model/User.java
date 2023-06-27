@@ -106,7 +106,7 @@ public class User {
 
 	public ArrayList<AtmTransaction> getTransactions(int account) {
 		
-		 Collections.reverse(this.transactions.get(account));
+		 
 
 		 return transactions.get(account);
 	

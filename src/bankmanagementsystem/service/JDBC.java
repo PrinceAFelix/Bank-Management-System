@@ -298,6 +298,34 @@ public class JDBC {
 		
 	}
 	
+	public boolean removeAccount(User user) {
+		String sql = "DELETE FROM user_accounts "
+				+ "WHERE user_accounts.accountid2 = ?";
+
+		
+		
+		 try (Connection connection = DriverManager.getConnection (dburl, dbuser, dbpassword);) {
+				PreparedStatement statement = connection.prepareStatement(sql);
+				statement.setString(1, user.getId());
+				
+	            statement.executeUpdate();
+	            
+	            
+	            getUserAccounts(user.getId()); 
+	            
+	            return true;
+	            
+		 }catch (SQLException e) {
+
+				e.printStackTrace();
+				return false;
+		
+		    }
+	}
+	
+	
+	
+	
 	
 	public boolean depositMoney(User user, float amount, int account) {
 		

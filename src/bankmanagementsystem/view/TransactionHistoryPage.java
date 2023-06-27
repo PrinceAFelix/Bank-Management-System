@@ -129,22 +129,18 @@ public class TransactionHistoryPage {
 		transactionPanel.add(transactionLabel);
 		
 		preferredHeight = panel.getPreferredSize().height; 
-
-
-
-		user.getTransactions(account).forEach((tr) -> {
+		
+		
+		for(int i = user.getTransactions(account).size() - 1; i >= 0; i--) {
 			
-			
-
+			AtmTransaction tr = user.getTransactions(account).get(i);
 			transactionPanel.add(transactionItem(transactionPanel, tr.getTransaction_Date(), tr.getTransaction_Type(), tr.getTransaction_Amount()));
-			i++;
+
 			if (i >= 5) { // if more than 5 components added, adjust preferred height
 				preferredHeight += 70;
 				transactionPanel.setPreferredSize(new Dimension(350, preferredHeight));
 		    }
-			
-		});
-		
+		}
 		
 		
 		

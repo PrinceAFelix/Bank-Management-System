@@ -294,6 +294,8 @@ public class BankController implements ActionListener {
 		if(ae.getSource().equals(UserAccounts.getDeleteAccBtn())) {
 			modal = new ManageUserAccounts(BankView.getPanel(), BankView.getController(), false, "delete");
 			modal.setVisible(true);
+			
+			
 		}
 		
 		if(ae.getSource().equals(ManageUserAccounts.getCancelbtn())) {
@@ -322,7 +324,9 @@ public class BankController implements ActionListener {
 			}else if(ae.getActionCommand().equals("delete")){
 				if(selectedAccount != 0) {
 					tempAccount = new Savings();
-					tempAccount.deleteAccount(UserAccountPage.getActiveUser());
+					if(tempAccount.deleteAccount(UserAccountPage.getActiveUser())) {
+						sqlConnect.removeAccount(UserAccountPage.getActiveUser());
+					}
 					cardLayout.show(BankView.getPanel(), "user");
 					modal.setVisible(false);
 				}else {
